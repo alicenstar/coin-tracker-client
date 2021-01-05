@@ -14,10 +14,10 @@ export const Overview: React.FC = () => {
     });
 
     const fetchData = async () => {
-        const response = await fetch('http://localhost:5000/cmc');
+        const response = await fetch('http://localhost:5000/api/cmc/latest');
         const json = await response.json();
-        setResult({ status: 'loaded', data: json.data });
-    }
+        setResult({ status: 'loaded', data: json.json.data });
+    };
 
     useEffect(() => {
         fetchData();
