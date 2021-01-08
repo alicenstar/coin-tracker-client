@@ -1,16 +1,18 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
+import { useParams } from "react-router-dom";
 
+interface IRouteParams {
+    trackerid: string;
+}
 
 export const Header: React.FC = () => {
+    // let { trackerid } = useParams<IRouteParams>();
     return (
-        <hgroup className="App-header">
-            <Typography variant="h3">
-                Coin Tracker
+        <React.Fragment>
+            <Typography variant="h5">
+                # Welcome
             </Typography>
-            <Typography variant="subtitle1">
-                The easiest way to keep track of your holdings.
-            </Typography>
-        </hgroup>
+        </React.Fragment>
     );
 };
