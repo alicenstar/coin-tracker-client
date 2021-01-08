@@ -18,10 +18,9 @@ document.title = "Coin Tracker 2.0";
 function App(): JSX.Element {
 	return (
 	<div className="App">
-		<Header />
-		<NewTracker />
-
 		<Router>
+			<Header />
+			<NewTracker />
 			<nav>
 				<NavLink to="/coins" className="header-link" activeClassName="header-link-active">
 					Overview

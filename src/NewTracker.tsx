@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { CreateNewTrackerForm } from "./CreateNewTrackerForm";
-
+// import { CreateNewTrackerForm } from "./CreateNewTrackerForm";
+import { NewTrackerForm } from './NewTrackerForm';
 
 export const NewTracker: React.FC = () => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -13,21 +13,21 @@ export const NewTracker: React.FC = () => {
         setModalOpen(false);
     };
 
-    const TrackerForm: React.FC = () => {
-        return (
-            <div id="new-tracker-form">
-                <button className="close" onClick={handleCloseClick}>
-                    <img
-                     src="x.svg"
-                     alt="Close New Tracker Form"
-                     height="22px"
-                     width="22px"
-                    />
-                </button>
-                <CreateNewTrackerForm />
-            </div>
-        );
-    };
+    // const TrackerForm: React.FC = () => {
+    //     return (
+    //         <div id="new-tracker-form">
+    //             <button className="close" onClick={handleCloseClick}>
+    //                 <img
+    //                  src="x.svg"
+    //                  alt="Close New Tracker Form"
+    //                  height="22px"
+    //                  width="22px"
+    //                 />
+    //             </button>
+    //             <CreateNewTrackerForm />
+    //         </div>
+    //     );
+    // };
 
     return (
         <React.Fragment>
@@ -36,7 +36,17 @@ export const NewTracker: React.FC = () => {
             </button>
             {modalOpen && (
                 <div id="modal-container">
-                    <TrackerForm />
+                    <div id="new-tracker-form">
+                        <button className="close" onClick={handleCloseClick}>
+                            <img
+                            src="x.svg"
+                            alt="Close New Tracker Form"
+                            height="22px"
+                            width="22px"
+                            />
+                        </button>
+                        <NewTrackerForm />
+                    </div>
                 </div>
             )}
         </React.Fragment>

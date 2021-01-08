@@ -20,7 +20,7 @@ interface IValidationProp {
 export interface IFieldProps {
     id: string;
     label?: string;
-    type?: "Text" | "Select";
+    type?: "text" | "select";
     value?: string;
     placeholder?: string;
     options?: string[];
@@ -48,6 +48,26 @@ export const minLength: Validator = (
     ? `This field must be at least ${length} characters`
     : "";
 
+export const maxLength: Validator = (
+    fieldName: string,
+    values: IValues,
+    length: number
+): string =>
+    values[fieldName] && values[fieldName].length > length
+        ? `This can not exceed ${length} characters`
+        : "";
+
+export const isEmail: Validator = (
+    fieldName: string,
+    values: IValues
+): string =>
+    values[fieldName] &&
+    values[fieldName].search(
+        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    )
+        ? "This must be a valid email"
+        : "";
+
 
 export const Field: React.FC<IFieldProps> = ({
     id,
@@ -62,7 +82,7 @@ export const Field: React.FC<IFieldProps> = ({
         <div className="form-group">
             {label && <label htmlFor={id}>{label}</label>}
             {type && (
-                (type.toLowerCase() === "Text" && (
+                (type.toLowerCase() === "text" && (
                     <input
                      id={id}
                      type="text"
@@ -72,7 +92,7 @@ export const Field: React.FC<IFieldProps> = ({
                      placeholder={placeholder}
                      className="form-control"
                     />
-                )) || (type.toLowerCase() === "Select" && (
+                )) || (type.toLowerCase() === "select" && (
                     <select
                      name={id}
                      id={id}
@@ -94,5 +114,5 @@ export const Field: React.FC<IFieldProps> = ({
 };
 
 Field.defaultProps = {
-    type: "Text"
+    type: "text"
 };
