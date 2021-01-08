@@ -1,11 +1,16 @@
+import { Typography } from "@material-ui/core";
 import React from "react";
 
 
 export const Header: React.FC = () => {
     return (
         <hgroup className="App-header">
-            <h1>Coin Tracker 2.0</h1>
-            <h4>The easiest way to keep track of your holdings.</h4>
+            <Typography variant="h3">
+                Coin Tracker
+            </Typography>
+            <Typography variant="subtitle1">
+                The easiest way to keep track of your holdings.
+            </Typography>
         </hgroup>
     );
 };

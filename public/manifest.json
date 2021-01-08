@@ -1,0 +1,12 @@
+{
+  "short_name": "Coin Tracker",
+  "name": "Coin Tracker: Anonymous Portfolio",
+  "description": "Cryptocurrency coin and token tracker",
+  "icons": [],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "browser",
+  "scope": "/",
+  "theme_color": "#3367D6",
+  "shortcuts": []
+}
