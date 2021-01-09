@@ -15,7 +15,7 @@ export const Trackers: React.FC = () => {
     return (
         <div className="portfolio-container">
             <NewTransactionForm />
-            Tracker ID: {trackerId}
+            Tracker ID: {trackerId ? trackerId : 'Tracker not found'}
         </div>
     );
 };

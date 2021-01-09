@@ -2,7 +2,6 @@ import React from 'react';
 // import './App.css';
 import { Header } from "./Header";
 import {
-    ClickAwayListener,
 	FormControlLabel,
 	FormGroup,
 	Switch as MuiSwitch,
@@ -29,6 +28,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AssessmentSharpIcon from '@material-ui/icons/AssessmentSharp';
 import WorkSharpIcon from '@material-ui/icons/WorkSharp';
 import clsx from 'clsx';
+import { NavLink } from 'react-router-dom';
+import { useTracker } from './Context';
 
 
 const lightTheme = {
@@ -134,7 +135,9 @@ type Props = {
 };
 
 export default function MiniDrawer({ children } : Props) {
-	const classes = useStyles();
+    const { trackerId, setTrackerId } = useTracker()!;
+    const portfolioLink = trackerId ? `/${trackerId}` : '/';
+    const classes = useStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
 		darkModeOn: false
@@ -165,52 +168,50 @@ export default function MiniDrawer({ children } : Props) {
 	return (
 		<ThemeProvider theme={currentTheme}>
 			<div className={classes.root}>
-                <ClickAwayListener onClickAway={handleDrawerClose}>
-                    <AppBar
-                    position="fixed"
-                    className={clsx(classes.appBar, {
-                        [classes.appBarShift]: state.drawerOpen,
-                    })}
-                    >
-                        <Toolbar>
-                            <IconButton
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            aria-label="menu"
-                            className={clsx(classes.menuButton, {
-                                [classes.hide]: state.drawerOpen,
-                            })}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Header />
-                            <section className={classes.rightToolbar}>
-                                <FormGroup row>
-                                    <FormControlLabel
-                                    label="Dark Mode"
-                                    control={<MuiSwitch
-                                        onChange={toggleTheme}
-                                        checked={state.darkModeOn}
-                                        name="darkSwitch"
-                                        />}
-                                    />
-                                </FormGroup>
-                            </section>
-                        </Toolbar>
-                    </AppBar>
-                </ClickAwayListener>
+                <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShift]: state.drawerOpen,
+                })}
+                >
+                    <Toolbar>
+                        <IconButton
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        aria-label="menu"
+                        className={clsx(classes.menuButton, {
+                            [classes.hide]: state.drawerOpen,
+                        })}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Header />
+                        <section className={classes.rightToolbar}>
+                            <FormGroup row>
+                                <FormControlLabel
+                                label="Dark Mode"
+                                control={<MuiSwitch
+                                    onChange={toggleTheme}
+                                    checked={state.darkModeOn}
+                                    name="darkSwitch"
+                                    />}
+                                />
+                            </FormGroup>
+                        </section>
+                    </Toolbar>
+                </AppBar>
                 <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
+                 variant="permanent"
+                 className={clsx(classes.drawer, {
                     [classes.drawerOpen]: state.drawerOpen,
                     [classes.drawerClose]: !state.drawerOpen,
-                })}
-                classes={{
+                 })}
+                 classes={{
                     paper: clsx({
                     [classes.drawerOpen]: state.drawerOpen,
                     [classes.drawerClose]: !state.drawerOpen,
                     }),
-                }}
+                 }}
                 >
                     <div className={classes.toolbar}>
                         <Typography variant="h5">
@@ -222,19 +223,26 @@ export default function MiniDrawer({ children } : Props) {
                     </div>
                     <Divider />
                     <List>
-                    {['Overview', 'Portfolio'].map((text, index) => (
-                        <ListItem button key={text}>
-                        <ListItemIcon>
-                            {text === 'Overview' && (
-                                <AssessmentSharpIcon />
-                            )}
-                            {text === 'Portfolio' && (
-                                <WorkSharpIcon />
-                            )}
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                        {['Overview', 'Portfolio'].map((text, index) => (
+                            <React.Fragment>
+                                {text === 'Overview' && (
+                                    <ListItem button component={NavLink} key={text} to="/overview">
+                                        <ListItemIcon>
+                                            <AssessmentSharpIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                )}
+                                {text === 'Portfolio' && (
+                                    <ListItem button component={NavLink} key={text} to={portfolioLink}>
+                                        <ListItemIcon>
+                                            <WorkSharpIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={text} />
+                                    </ListItem>
+                                )}
+                            </React.Fragment>
+                        ))}
                     </List>
                 </Drawer>
 				<main className={classes.content}>

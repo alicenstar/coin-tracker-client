@@ -20,12 +20,6 @@ export const TrackerProvider = ({
 }: Props) => {
 	const [ trackerId, setTrackerId ] = React.useState('');
 
-	// React.useEffect(() => {
-	// 	// replace with code to get the theme instead of hardcoding
-	// 	const currentId = 'defaultid';
-	// 	setTrackerId(currentId);
-	// }, []);
-
 	return (
 		<TrackerContext.Provider value={{ trackerId, setTrackerId }}>
 			{children}

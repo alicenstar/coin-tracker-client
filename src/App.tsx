@@ -18,32 +18,25 @@ import { TrackerProvider } from './Context';
 function App(): JSX.Element {
 
 	return (
-		<React.Fragment>
+		<Router>
 			<TrackerProvider>
 				<CssBaseline />
 				<MiniDrawer>
-					<Router>
-						<NewTracker />
-						<nav>
-							<NavLink to="/coins" className="header-link" activeClassName="header-link-active">
-								Overview
-							</NavLink>
-						</nav>
-						<Switch>
-							<Route path="/coins">
-								<Overview />
-							</Route>
-							<Route path="/:id" children={<Trackers />} />
-							<Route exact path="/">
-							</Route>
-							<Route>
-								<Error />
-							</Route>
-						</Switch>
-					</Router>
+					<NewTracker />
+					<Switch>
+						<Route path="/overview">
+							<Overview />
+						</Route>
+						<Route path="/:id" children={<Trackers />} />
+						<Route exact path="/">
+						</Route>
+						<Route>
+							<Error />
+						</Route>
+					</Switch>
 				</MiniDrawer>
 			</TrackerProvider>
-		</React.Fragment>
+		</Router>
 	);
 }
 
