@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Redirect } from 'react-router-dom';
+import { useTracker } from './Context';
 
 type NewTracker = {
     newTrackerName: string;
@@ -15,6 +16,7 @@ type returnedTracker = {
 }
 
 export const NewTrackerForm: React.FC = () => {
+    const { trackerId, setTrackerId } = useTracker()!;
     const [ newTracker, setNewTracker ] = React.useState<returnedTracker | undefined>(undefined);
     const { register, handleSubmit, errors, formState } = useForm<NewTracker>();
     const onSubmit = async (data: NewTracker) => {
@@ -29,6 +31,7 @@ export const NewTrackerForm: React.FC = () => {
             body: JSON.stringify(data),
         });
         const json = await response.json();
+        setTrackerId(json.tracker._id);
         setNewTracker(json.tracker);
 
         console.log("submit finished", json);
