@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "./Table";
+import { DenseTable } from "./Table";
 
 // Make more type safe
 interface IResult {
@@ -29,7 +29,7 @@ export const Overview: React.FC = () => {
                 <div>Loading...</div>
             }
             {result.status === 'loaded' &&
-                <Table
+                <DenseTable
                  data={result.data}
                  headers={[
                     "Name",

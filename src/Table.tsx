@@ -1,4 +1,14 @@
 import React from "react";
+import {
+    makeStyles,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow
+} from "@material-ui/core";
 import { currencyFormatter, percentFormatter } from "./Formatters";
 
 
@@ -8,48 +18,100 @@ interface ITableProps {
     title?: string;
 }
 
-export const Table: React.FC<ITableProps> = ({
+// export const Table: React.FC<ITableProps> = ({
+//     data,
+//     headers,
+//     title
+// }: ITableProps) => {
+//     return (
+//         <div className="table-container">
+//             {title && (
+//                 <h3 className="table-title">{title}</h3>
+//             )}
+//             <table className="holdings-table">
+//                 {headers && (
+//                     <thead>
+//                         <tr>
+//                             {headers.map((header: string, index: number) => (
+//                                 <th key={index}>
+//                                     {header}
+//                                 </th>
+//                             ))}
+//                         </tr>
+//                     </thead>
+//                 )}
+
+//                 <tbody>
+//                     {data.map((coin: any) => (
+//                         <tr key={coin.id}>
+//                             <td>
+//                                 {coin.name}
+//                             </td>
+//                             <td>
+//                                 {coin.symbol}
+//                             </td>
+//                             <td>
+//                                 {currencyFormatter.format(coin.quote.USD.price)}
+//                             </td>
+//                             <td>
+//                                 {percentFormatter.format(coin.quote.USD.percent_change_1h)}
+//                             </td>
+//                         </tr>
+//                     ))}
+//                 </tbody>
+//             </table>
+//         </div>
+//     );
+// }
+
+
+const useStyles = makeStyles({
+    table: {
+      minWidth: 650,
+    },
+  });
+
+export const DenseTable: React.FC<ITableProps> = ({
     data,
     headers,
     title
 }: ITableProps) => {
+    const classes = useStyles();
+  
     return (
-        <div className="table-container">
-            {title && (
-                <h3 className="table-title">{title}</h3>
-            )}
-            <table className="holdings-table">
+        <TableContainer component={Paper}>
+            <Table className={classes.table} size="small" aria-label="a dense table">
                 {headers && (
-                    <thead>
-                        <tr>
+                    <TableHead>
+                        <TableRow>
                             {headers.map((header: string, index: number) => (
-                                <th key={index}>
+                                <TableCell key={index}>
                                     {header}
-                                </th>
+                                </TableCell>
                             ))}
-                        </tr>
-                    </thead>
+                        </TableRow>
+                    </TableHead>
                 )}
-
-                <tbody>
+                
+                <TableBody>
                     {data.map((coin: any) => (
-                        <tr key={coin.id}>
-                            <td>
+                        <TableRow key={coin.id}>
+                            <TableCell>
                                 {coin.name}
-                            </td>
-                            <td>
+                            </TableCell>
+                            <TableCell>
                                 {coin.symbol}
-                            </td>
-                            <td>
+                            </TableCell>
+                            <TableCell>
                                 {currencyFormatter.format(coin.quote.USD.price)}
-                            </td>
-                            <td>
+                            </TableCell>
+                            <TableCell>
                                 {percentFormatter.format(coin.quote.USD.percent_change_1h)}
-                            </td>
-                        </tr>
+                            </TableCell>
+                        </TableRow>
                     ))}
-                </tbody>
-            </table>
-        </div>
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
-}
+  }
