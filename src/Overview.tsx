@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { DenseTable } from "./Table";
 
-// Make more type safe
 interface IResult {
-    status: string;
+    loaded: boolean;
     data: any;
 }
 
 export const Overview: React.FC = () => {
-    const [result, setResult] = useState<IResult>({
-        status: 'loading',
+    const [state, setState] = useState<IResult>({
+        loaded: false,
         data: []
     });
 
     const fetchData = async () => {
         const response = await fetch('http://localhost:5000/api/cmc/latest');
         const json = await response.json();
-        setResult({ status: 'loaded', data: json.json.data });
+        setState({ loaded: true, data: json.json.data });
     };
 
     useEffect(() => {
@@ -25,12 +24,12 @@ export const Overview: React.FC = () => {
 
     return (
         <div className="overview-container">
-            {result.status === 'loading' &&
+            {!state.loaded &&
                 <div>Loading...</div>
             }
-            {result.status === 'loaded' &&
+            {state.loaded &&
                 <DenseTable
-                 data={result.data}
+                 data={state.data}
                  headers={[
                     "Name",
                     "Symbol",

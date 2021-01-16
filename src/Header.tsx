@@ -1,14 +1,18 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import { useTracker } from './Context';
+import { useParams } from "react-router-dom";
 
 
 export const Header: React.FC = () => {
-    const { trackerId, setTrackerId } = useTracker()!;
+    const params = useParams<any>();
+
     return (
         <React.Fragment>
             <Typography variant="h6">
-                # {trackerId}
+                {params.id
+                    ? '# ' + params.id
+                    : '< Create a tracker'
+                }
             </Typography>
         </React.Fragment>
     );

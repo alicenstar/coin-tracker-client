@@ -1,27 +1,34 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Redirect } from 'react-router-dom';
-import { useTracker } from './Context';
+import { useHistory } from 'react-router-dom';
+import { usePageContext } from './PageContext';
 
 type NewTracker = {
     newTrackerName: string;
 };
 
-type returnedTracker = {
+export type returnedTracker = {
     _id: string;
     name: string;
-    createdAt: any;
-    updatedAt: any;
+    owner?: string;
+    createdAt: Date;
+    updatedAt: Date;
     __v: any;
 }
 
+interface IState {
+    tracker: returnedTracker;
+}
+
 export const NewTrackerForm: React.FC = () => {
-    const { trackerId, setTrackerId } = useTracker()!;
-    const [ newTracker, setNewTracker ] = React.useState<returnedTracker | undefined>(undefined);
+    const tracker = React.useRef<IState | null>(null);
     const { register, handleSubmit, errors, formState } = useForm<NewTracker>();
+    const { setPageElement } = usePageContext()!;
+    const history = useHistory();
+
     const onSubmit = async (data: NewTracker) => {
 
-        console.log("submit start", data);
+        // console.log("submit start", data);
 
         const response = await fetch('http://localhost:5000/api/trackers/add', {
             method: 'POST',
@@ -31,11 +38,12 @@ export const NewTrackerForm: React.FC = () => {
             body: JSON.stringify(data),
         });
         const json = await response.json();
-        setTrackerId(json.tracker._id);
-        setNewTracker(json.tracker);
+        tracker.current = json;
 
-        console.log("submit finished", json);
-    }
+        // console.log("submit finished", tracker.current?.tracker._id);
+        history.push(`/${tracker.current?.tracker._id}`);
+        setPageElement('Portfolio');
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -52,9 +60,9 @@ export const NewTrackerForm: React.FC = () => {
                     <div className="error">You must enter a name for your tracker</div>
                 )}
             </div>
-            {formState.isSubmitSuccessful && newTracker && (
-                <Redirect to={'/' + newTracker._id} />
-            )}
+            {/* {formState.isSubmitSuccessful && tracker.current && (
+                <Redirect to={`/${tracker.current.tracker._id}`} />
+            )} */}
             <button type="submit">Create Tracker</button>
         </form>
     );

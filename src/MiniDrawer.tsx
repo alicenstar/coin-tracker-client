@@ -1,6 +1,4 @@
 import React from 'react';
-// import './App.css';
-import { Header } from "./Header";
 import {
 	FormControlLabel,
 	FormGroup,
@@ -20,129 +18,46 @@ import {
 } from '@material-ui/core';
 import {
     createMuiTheme,
-    makeStyles,
     ThemeProvider
 } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AssessmentSharpIcon from '@material-ui/icons/AssessmentSharp';
 import WorkSharpIcon from '@material-ui/icons/WorkSharp';
+import AddIcon from '@material-ui/icons/Add';
 import clsx from 'clsx';
-import { NavLink } from 'react-router-dom';
-import { useTracker } from './Context';
+import { lightTheme, darkTheme } from './Themes';
+import { usePageContext } from './PageContext';
+import { useMiniDrawerStyles } from './MiniDrawerStyles';
+import { Header } from './Header';
+import { useParams } from 'react-router-dom';
 
-
-const lightTheme = {
-	palette: {
-		primary: {
-			main: '#1E3966',
-			dark: '#1E3966'
-		},
-		secondary: {
-			main: '#F5645E'
-		},
-		background: {
-			default: '#F2F2F2'
-		}
-	}
-};
-
-const darkTheme = {
-	palette: {
-		primary: {
-			main: '#2B212B',
-			dark: '#2B212B'
-		},
-		secondary: {
-			main: '#F5645E'
-		},
-		background: {
-			default: '#2B212B'
-		}
-	}
-};
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((currentTheme) => ({
-	root: {
-	  display: 'flex',
-	},
-	appBar: {
-	  zIndex: currentTheme.zIndex.drawer + 1,
-	  transition: currentTheme.transitions.create(['width', 'margin'], {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.leavingScreen,
-      }),
-	},
-	appBarShift: {
-	  marginLeft: drawerWidth,
-	  width: `calc(100% - ${drawerWidth}px)`,
-	  transition: currentTheme.transitions.create(['width', 'margin'], {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.enteringScreen,
-	  }),
-	},
-	menuButton: {
-	  marginRight: 36,
-	},
-	hide: {
-	  display: 'none',
-	},
-	drawer: {
-	  width: drawerWidth,
-	  flexShrink: 0,
-      whiteSpace: 'nowrap',
-	},
-	drawerOpen: {
-	  width: drawerWidth,
-	  transition: currentTheme.transitions.create('width', {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.enteringScreen,
-	  }),
-	},
-	drawerClose: {
-	  transition: currentTheme.transitions.create('width', {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.leavingScreen,
-	  }),
-	  overflowX: 'hidden',
-	  width: currentTheme.spacing(7) + 1,
-	  [currentTheme.breakpoints.up('sm')]: {
-		width: currentTheme.spacing(9) + 1,
-	  },
-	},
-	toolbar: {
-	  display: 'flex',
-	  alignItems: 'center',
-	  justifyContent: 'flex-end',
-	  padding: currentTheme.spacing(0, 1),
-	  // necessary for content to be below app bar
-	  ...currentTheme.mixins.toolbar,
-    },
-    rightToolbar: {
-        marginLeft: 'auto',
-        marginRight: -12
-    },
-	content: {
-	  flexGrow: 1,
-	  padding: currentTheme.spacing(3),
-	},
-  }));
 
 type Props = {
 	children: React.ReactNode
 };
 
 export default function MiniDrawer({ children } : Props) {
-    const { trackerId, setTrackerId } = useTracker()!;
-    const portfolioLink = trackerId ? `/${trackerId}` : '/';
-    const classes = useStyles();
+    const { setPageElement } = usePageContext()!;
+    const params = useParams<any>();
+    let drawerLinks = [
+        'Overview',
+        'Portfolio',
+        'New Tracker'
+    ];
+    const classes = useMiniDrawerStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
-		darkModeOn: false
+        darkModeOn: false,
 	});
-	const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
+    const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
+
+    if (params.id === undefined) {
+        drawerLinks = [
+            'Overview',
+            'New Tracker'
+        ];
+    }
 
 	const toggleTheme = () => {
 		setState({
@@ -163,25 +78,30 @@ export default function MiniDrawer({ children } : Props) {
 			...state,
 			drawerOpen: false
 		});
-	};
+    };
+    
+    const handleNav = (event: React.MouseEvent) => {
+        var element = event.currentTarget.id;
+        setPageElement(element);
+    };
 
 	return (
 		<ThemeProvider theme={currentTheme}>
 			<div className={classes.root}>
                 <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
+                 position="fixed"
+                 className={clsx(classes.appBar, {
                     [classes.appBarShift]: state.drawerOpen,
-                })}
+                 })}
                 >
                     <Toolbar>
                         <IconButton
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        aria-label="menu"
-                        className={clsx(classes.menuButton, {
+                         onClick={handleDrawerOpen}
+                         edge="start"
+                         aria-label="menu"
+                         className={clsx(classes.menuButton, {
                             [classes.hide]: state.drawerOpen,
-                        })}
+                         })}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -189,8 +109,8 @@ export default function MiniDrawer({ children } : Props) {
                         <section className={classes.rightToolbar}>
                             <FormGroup row>
                                 <FormControlLabel
-                                label="Dark Mode"
-                                control={<MuiSwitch
+                                 label="Dark Mode"
+                                 control={<MuiSwitch
                                     onChange={toggleTheme}
                                     checked={state.darkModeOn}
                                     name="darkSwitch"
@@ -223,25 +143,21 @@ export default function MiniDrawer({ children } : Props) {
                     </div>
                     <Divider />
                     <List>
-                        {['Overview', 'Portfolio'].map((text, index) => (
-                            <React.Fragment>
-                                {text === 'Overview' && (
-                                    <ListItem button component={NavLink} key={text} to="/overview">
-                                        <ListItemIcon>
-                                            <AssessmentSharpIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                )}
-                                {text === 'Portfolio' && (
-                                    <ListItem button component={NavLink} key={text} to={portfolioLink}>
-                                        <ListItemIcon>
-                                            <WorkSharpIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary={text} />
-                                    </ListItem>
-                                )}
-                            </React.Fragment>
+                        {drawerLinks.map((text, index) => (
+                            <ListItem button id={text} key={text} onClick={handleNav}>
+                                <ListItemIcon>
+                                    {text === 'Overview' && (
+                                        <AssessmentSharpIcon />
+                                    )}
+                                    {text === 'Portfolio' && (
+                                        <WorkSharpIcon />
+                                    )}
+                                    {text === 'New Tracker' && (
+                                        <AddIcon />
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
                         ))}
                     </List>
                 </Drawer>
@@ -251,5 +167,5 @@ export default function MiniDrawer({ children } : Props) {
 				</main>
 			</div>
 		</ThemeProvider>
-	)
+	);
 };

@@ -1,41 +1,26 @@
 import React from 'react';
-// import './App.css';
-import { Error } from "./Error";
-import { NewTracker } from './NewTracker';
 import {
 	BrowserRouter as Router,
-	Switch,
-	Route,
-	NavLink
+	Route
 } from "react-router-dom";
-import { Overview } from './Overview';
-import { Trackers } from './Trackers';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MiniDrawer from './MiniDrawer';
-import { TrackerProvider } from './Context';
+import { PageProvider } from './PageContext';
+import Dashboard from './Dashboard';
 
 
 function App(): JSX.Element {
 
 	return (
 		<Router>
-			<TrackerProvider>
+			<PageProvider>
 				<CssBaseline />
-				<MiniDrawer>
-					<NewTracker />
-					<Switch>
-						<Route path="/overview">
-							<Overview />
-						</Route>
-						<Route path="/:id" children={<Trackers />} />
-						<Route exact path="/">
-						</Route>
-						<Route>
-							<Error />
-						</Route>
-					</Switch>
-				</MiniDrawer>
-			</TrackerProvider>
+				<Route path="/:id?">
+					<MiniDrawer>
+						<Dashboard />
+					</MiniDrawer>
+				</Route>
+			</PageProvider>
 		</Router>
 	);
 }
