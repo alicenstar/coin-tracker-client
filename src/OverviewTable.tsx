@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
   });
 
-export const DenseTable: React.FC<ITableProps> = ({
+export const OverviewTable: React.FC<ITableProps> = ({
     data,
     headers,
     title
@@ -68,4 +68,4 @@ export const DenseTable: React.FC<ITableProps> = ({
             </Table>
         </TableContainer>
     );
-  }
+}

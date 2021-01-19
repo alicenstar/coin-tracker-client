@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { NewTransactionForm } from "./NewTransactionForm";
 import { returnedTracker } from './NewTrackerForm';
 import { SymbolDropdown } from './Dashboard';
+import { HoldingsTable } from "./HoldingsTable";
+import { Typography } from "@material-ui/core";
 
 
 interface IRouteParams {
@@ -18,7 +20,7 @@ type Props = {
     symbols: SymbolDropdown[];
 }
 
-export const Trackers: React.FC<Props> = ({ symbols }: Props) => {
+export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
     const [ state, setState ] = React.useState<IState>({
         loaded: false,
         tracker: undefined
@@ -26,20 +28,20 @@ export const Trackers: React.FC<Props> = ({ symbols }: Props) => {
     const { id } = useParams<IRouteParams>();
     const trackerId = React.useRef(id);
     
-    React.useEffect(() => {
-        const findTracker = async () => {
-            const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`)
-            const json = await response.json();
-            if (json.tracker) {
-                trackerId.current = json.tracker._id;
-            } else {
-                trackerId.current = '';
-            }
-            setState({ loaded: true, tracker: json.tracker });
-        };
+    const findTracker = React.useCallback(async () => {
+        const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`)
+        const json = await response.json();
+        if (json.tracker) {
+            trackerId.current = json.tracker._id;
+        } else {
+            trackerId.current = '';
+        }
+        setState({ loaded: true, tracker: json.tracker });
+    }, []);
 
+    React.useEffect(() => {
         findTracker();
-    }, [state.loaded]);
+    }, [findTracker]);
 
     return (
         <div className="portfolio-container">
@@ -49,9 +51,23 @@ export const Trackers: React.FC<Props> = ({ symbols }: Props) => {
             {state.tracker
                 ? (
                     <React.Fragment>
-                        <NewTransactionForm symbols={symbols} trackerId={trackerId.current} />
+                        <Typography variant="h6">
+                            Tracker Name: {state.tracker.name}
+                        </Typography>
+                        <NewTransactionForm
+                            symbols={symbols}
+                            trackerId={trackerId.current}
+                            findTracker={findTracker}
+                        />
                         <p>Tracker Name: {state.tracker.name}</p>
-                        <p>Tracker ID: {trackerId.current}</p>
+                        <HoldingsTable
+                            data={state.tracker.holdings}
+                            headers={[
+                            "CoinId",
+                            "Quantity",
+                            ]}
+                            title="Market Overview"
+                        />
                     </React.Fragment>
                 )
                 : 'Tracker not found'

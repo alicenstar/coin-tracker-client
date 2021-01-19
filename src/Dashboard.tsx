@@ -2,7 +2,7 @@ import React from 'react';
 import { usePageContext } from './PageContext';
 import { NewTracker } from './NewTracker';
 import { Overview } from './Overview';
-import { Trackers } from './Portfolio';
+import { Portfolio } from './Portfolio';
 
 
 export type SymbolDropdown = {
@@ -24,7 +24,11 @@ const Dashboard: React.FC = () => {
         symbols: []
     });
     const fetchData = async () => {
-        const response = await fetch('http://localhost:5000/api/cmc/latest');
+        const response = await fetch('http://localhost:5000/api/cmc/latest', {
+            headers: {
+                'Content-type': 'application/json'
+            }
+        });
         const json = await response.json();
         const symbols = json.json.data.map((object: any) => (
             {
@@ -46,7 +50,7 @@ const Dashboard: React.FC = () => {
                 <Overview data={state.data} />
             )}
             {pageElement === 'Portfolio' && (
-                <Trackers symbols={state.symbols} />
+                <Portfolio symbols={state.symbols} />
             )}
             {pageElement === 'New Tracker' && (
                 <NewTracker />

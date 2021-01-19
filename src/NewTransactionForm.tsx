@@ -1,11 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { SymbolDropdown } from './Dashboard';
 
 type NewTransaction = {
     type: "Buy" | "Sell";
-    coinId: string;
+    coinId: number;
     quantity: number;
     trackerId: string;
 };
@@ -13,16 +12,21 @@ type NewTransaction = {
 type Props = {
     symbols: SymbolDropdown[];
     trackerId: string;
+    findTracker: () => void;
 }
 
-export const NewTransactionForm: React.FC<Props> = ({ symbols, trackerId }: Props) => {
-    const { register, handleSubmit, errors, formState } = useForm<NewTransaction>();
+export const NewTransactionForm: React.FC<Props> = ({
+    symbols,
+    trackerId,
+    findTracker
+}: Props) => {
+    const { register, handleSubmit, errors, formState, reset } = useForm<NewTransaction>();
     const onSubmit = async (data: NewTransaction) => {
 
         console.log("submit start", data);
         data['trackerId'] = trackerId;
         console.log('data appended', data);
-        const response = await fetch('http://localhost:5000/api/holdings/new', {
+        const response = await fetch('http://localhost:5000/api/holdings/add', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -30,9 +34,13 @@ export const NewTransactionForm: React.FC<Props> = ({ symbols, trackerId }: Prop
             body: JSON.stringify(data),
         });
         const json = await response.json();
+        
+        // TODO: Add a way to display server side validation error messages
 
         console.log("submit finished", json);
-    }
+        reset();
+        findTracker();
+    };
 
     return (
         <React.Fragment>

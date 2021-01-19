@@ -1,17 +1,17 @@
 import React from "react";
-import { DenseTable } from "./Table";
+import { OverviewTable } from "./OverviewTable";
 
 
 export const Overview = ({ data }: any) => {
     return (
         <div className="overview-container">
-            <DenseTable
+            <OverviewTable
                 data={data}
                 headers={[
-                "Name",
-                "Symbol",
-                "USD Price",
-                "Percent Change 1HR"
+                    "Name",
+                    "Symbol",
+                    "USD Price",
+                    "Percent Change 1HR"
                 ]}
                 title="Market Overview"
             />

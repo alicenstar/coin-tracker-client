@@ -12,6 +12,7 @@ export type returnedTracker = {
     _id: string;
     name: string;
     owner?: string;
+    holdings?: any;
     createdAt: Date;
     updatedAt: Date;
     __v: any;
