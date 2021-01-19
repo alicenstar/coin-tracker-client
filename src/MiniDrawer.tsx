@@ -37,7 +37,7 @@ type Props = {
 	children: React.ReactNode
 };
 
-export default function MiniDrawer({ children } : Props) {
+export default function MiniDrawer({ children }: Props) {
     const { setPageElement } = usePageContext()!;
     const params = useParams<any>();
     let drawerLinks = [

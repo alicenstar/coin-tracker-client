@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { NewTransactionForm } from "./NewTransactionForm";
 import { returnedTracker } from './NewTrackerForm';
+import { SymbolDropdown } from './Dashboard';
 
 
 interface IRouteParams {
@@ -13,7 +14,11 @@ interface IState {
     tracker: returnedTracker | undefined;
 }
 
-export const Trackers: React.FC = () => {
+type Props = {
+    symbols: SymbolDropdown[];
+}
+
+export const Trackers: React.FC<Props> = ({ symbols }: Props) => {
     const [ state, setState ] = React.useState<IState>({
         loaded: false,
         tracker: undefined
@@ -44,7 +49,7 @@ export const Trackers: React.FC = () => {
             {state.tracker
                 ? (
                     <React.Fragment>
-                        <NewTransactionForm />
+                        <NewTransactionForm symbols={symbols} trackerId={trackerId.current} />
                         <p>Tracker Name: {state.tracker.name}</p>
                         <p>Tracker ID: {trackerId.current}</p>
                     </React.Fragment>
