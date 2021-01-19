@@ -36,6 +36,7 @@ const Dashboard: React.FC = () => {
                 id: object.id
             }
         ));
+        console.log(json);
         setState({ loaded: true, data: json.json.data, symbols: symbols });
     };
 
