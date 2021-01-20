@@ -21,10 +21,17 @@ export const NewTransactionForm: React.FC<Props> = ({
     trackerId,
     findTracker
 }: Props) => {
-    const { register, handleSubmit, errors, formState, reset } = useForm<TransactionFormData>();
+    const {
+        register,
+        handleSubmit,
+        errors,
+        setError,
+        formState,
+        reset
+    } = useForm<TransactionFormData>();
     const onSubmit = async (data: TransactionFormData) => {
-
         console.log("submit start", data);
+
         data['trackerId'] = trackerId;
         const response = await fetch('http://localhost:5000/api/holdings/add', {
             method: 'POST',
@@ -34,12 +41,19 @@ export const NewTransactionForm: React.FC<Props> = ({
             body: JSON.stringify(data),
         });
         const json = await response.json();
-        
-        // TODO: Add a way to display server side validation error messages
+        if (!response.ok) {
+            if (json.message === 'Cannot sell more than you own') {
+                setError('quantity', {
+                    type: 'server',
+                    message: 'Cannot sell more than you own'
+                });
+            }
+        } else {
+            reset();
+            findTracker();
+        }
 
         console.log("submit finished", json);
-        reset();
-        findTracker();
     };
 
     return (
@@ -81,7 +95,7 @@ export const NewTransactionForm: React.FC<Props> = ({
                         <div className="field">
                             <label htmlFor="quantity">Quantity to buy/sell</label>
                             <input
-                             type="number"
+                             type="text"
                              name="quantity"
                              placeholder="Transaction Amount"
                              ref={register({
@@ -92,9 +106,7 @@ export const NewTransactionForm: React.FC<Props> = ({
                              })}
                              disabled={formState.isSubmitting}
                             />
-                            {errors.quantity && errors.quantity.type === "required" && (
-                                <div className="error">You must enter a quantity for your transaction</div>
-                            )}
+                            {errors.quantity && (<div className="error">{errors.quantity.message}</div>)}
                         </div>
                         {/* <div className="field">
                             <label htmlFor="newTrackerName">Currency to buy/sell in</label>
