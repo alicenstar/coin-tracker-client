@@ -6,6 +6,7 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 
 const percentFormatter = new Intl.NumberFormat('en-US', {
     style: 'percent',
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2
 });
 

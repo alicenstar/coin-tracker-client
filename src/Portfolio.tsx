@@ -62,8 +62,11 @@ export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
                     <HoldingsTable
                         data={state.tracker.holdings}
                         headers={[
-                        "CoinId",
+                        "Coin Name",
+                        "Market Price",
+                        "% Change 1HR",
                         "Quantity",
+                        "Total Value"
                         ]}
                         title="Market Overview"
                     />
