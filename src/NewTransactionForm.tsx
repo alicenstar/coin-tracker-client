@@ -1,8 +1,9 @@
+import { Box, FormGroup } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { SymbolDropdown } from './Dashboard';
 
-type NewTransaction = {
+type TransactionFormData = {
     type: "Buy" | "Sell";
     coinId: number;
     quantity: number;
@@ -20,8 +21,8 @@ export const NewTransactionForm: React.FC<Props> = ({
     trackerId,
     findTracker
 }: Props) => {
-    const { register, handleSubmit, errors, formState, reset } = useForm<NewTransaction>();
-    const onSubmit = async (data: NewTransaction) => {
+    const { register, handleSubmit, errors, formState, reset } = useForm<TransactionFormData>();
+    const onSubmit = async (data: TransactionFormData) => {
 
         console.log("submit start", data);
         data['trackerId'] = trackerId;
@@ -43,10 +44,10 @@ export const NewTransactionForm: React.FC<Props> = ({
     };
 
     return (
-        <React.Fragment>
+        <Box bgcolor="info.main">
             <h3 id="new-transaction-form-header">New Transaction</h3>
             <div id="new-transaction-container">
-                <div id="new-transaction-form">
+                <FormGroup row>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="field">
                             <label htmlFor="type">Transaction type</label>
@@ -108,8 +109,8 @@ export const NewTransactionForm: React.FC<Props> = ({
                         <button type="submit">Add Transaction</button>
                         {formState.isSubmitted && 'Form is submitted'}
                     </form>
-                </div>
+                </FormGroup>
             </div>
-        </React.Fragment>
+        </Box>
     );
 };

@@ -31,6 +31,8 @@ import { usePageContext } from './PageContext';
 import { useMiniDrawerStyles } from './MiniDrawerStyles';
 import { Header } from './Header';
 import { useParams } from 'react-router-dom';
+import { NewTracker } from './NewTracker';
+import Dashboard from './Dashboard';
 
 
 type Props = {
@@ -40,24 +42,16 @@ type Props = {
 export default function MiniDrawer({ children }: Props) {
     const { setPageElement } = usePageContext()!;
     const params = useParams<any>();
-    let drawerLinks = [
-        'Overview',
-        'Portfolio',
-        'New Tracker'
-    ];
     const classes = useMiniDrawerStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
         darkModeOn: false,
 	});
     const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
-
-    if (params.id === undefined) {
-        drawerLinks = [
-            'Overview',
-            'New Tracker'
-        ];
-    }
+    let drawerLinks;
+    params.id === undefined
+        ? drawerLinks = ['Overview']
+        : drawerLinks = ['Overview', 'Portfolio'];
 
 	const toggleTheme = () => {
 		setState({
@@ -84,6 +78,7 @@ export default function MiniDrawer({ children }: Props) {
         var element = event.currentTarget.id;
         setPageElement(element);
     };
+    const [ open, setOpen ] = React.useState(false);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
@@ -144,7 +139,7 @@ export default function MiniDrawer({ children }: Props) {
                     <Divider />
                     <List>
                         {drawerLinks.map((text, index) => (
-                            <ListItem button id={text} key={text} onClick={handleNav}>
+                            <ListItem button id={text} key={index} onClick={handleNav}>
                                 <ListItemIcon>
                                     {text === 'Overview' && (
                                         <AssessmentSharpIcon />
@@ -152,17 +147,22 @@ export default function MiniDrawer({ children }: Props) {
                                     {text === 'Portfolio' && (
                                         <WorkSharpIcon />
                                     )}
-                                    {text === 'New Tracker' && (
-                                        <AddIcon />
-                                    )}
                                 </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItem>
                         ))}
+                        <ListItem button id='New Tracker' onClick={() => {setOpen(!open);}}>
+                            <ListItemIcon>
+                                <AddIcon />
+                            </ListItemIcon>
+                            <ListItemText primary='New Tracker' />
+                        </ListItem>
                     </List>
                 </Drawer>
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
+                    <NewTracker open={open} setOpen={x => setOpen(x)} />
+                    <Dashboard />
 					{children}
 				</main>
 			</div>

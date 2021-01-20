@@ -6,7 +6,6 @@ import {
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MiniDrawer from './MiniDrawer';
 import { PageProvider } from './PageContext';
-import Dashboard from './Dashboard';
 
 
 function App(): JSX.Element {
@@ -15,11 +14,8 @@ function App(): JSX.Element {
 		<Router>
 			<PageProvider>
 				<CssBaseline />
-				<Route path="/:id?">
-					<MiniDrawer>
-						<Dashboard />
-					</MiniDrawer>
-				</Route>
+				<Route path="/:id?"component={(props: any) => <MiniDrawer {...props} />} />
+
 			</PageProvider>
 		</Router>
 	);

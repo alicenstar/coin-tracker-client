@@ -1,8 +1,8 @@
 import React from 'react';
 import { usePageContext } from './PageContext';
-import { NewTracker } from './NewTracker';
 import { Overview } from './Overview';
 import { Portfolio } from './Portfolio';
+import Loading from './Loading';
 
 
 export type SymbolDropdown = {
@@ -36,7 +36,6 @@ const Dashboard: React.FC = () => {
                 id: object.id
             }
         ));
-        console.log(json);
         setState({ loaded: true, data: json.json.data, symbols: symbols });
     };
 
@@ -46,15 +45,12 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="dashboard-container">
-            {!state.loaded && (<div>Loading...</div>)}
+            {!state.loaded && (<Loading />)}
             {pageElement === 'Overview' && (
                 <Overview data={state.data} />
             )}
             {pageElement === 'Portfolio' && (
-                <Portfolio symbols={state.symbols} />
-            )}
-            {pageElement === 'New Tracker' && (
-                <NewTracker />
+                <Portfolio symbols={state.symbols} key={window.location.pathname} />
             )}
         </div>
     );

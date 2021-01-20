@@ -22,14 +22,19 @@ interface IState {
     tracker: returnedTracker;
 }
 
-export const NewTrackerForm: React.FC = () => {
+type Props = {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+}
+
+export const NewTrackerForm: React.FC<Props> = ({ open, setOpen }: Props) => {
     const tracker = React.useRef<IState | null>(null);
     const { register, handleSubmit, errors, formState } = useForm<NewTracker>();
     const { setPageElement } = usePageContext()!;
     const history = useHistory();
 
     const onSubmit = async (data: FormData) => {
-
+        // setPageElement('Overview');
         console.log("submit start", data);
 
         const response = await fetch('http://localhost:5000/api/trackers/add', {
@@ -45,12 +50,13 @@ export const NewTrackerForm: React.FC = () => {
         console.log("submit finished", tracker.current?.tracker._id);
         history.push(`/${tracker.current?.tracker._id}`);
         setPageElement('Portfolio');
+        setOpen(!open);
     };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="field">
-                <label htmlFor="trackerName">Enter a name for your tracker</label>
+                <label htmlFor="trackerName">Tracker name</label>
                 <input
                  type="text"
                  name="trackerName"

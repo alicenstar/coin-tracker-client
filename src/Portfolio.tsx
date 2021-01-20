@@ -1,10 +1,12 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { NewTransactionForm } from "./NewTransactionForm";
 import { returnedTracker } from './NewTrackerForm';
 import { SymbolDropdown } from './Dashboard';
 import { HoldingsTable } from "./HoldingsTable";
 import { Typography } from "@material-ui/core";
+import Loading from "./Loading";
+import { usePageContext } from "./PageContext";
 
 
 interface IRouteParams {
@@ -27,7 +29,9 @@ export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
     });
     const { id } = useParams<IRouteParams>();
     const trackerId = React.useRef(id);
-    
+    const history = useHistory();
+    console.log('history', history);
+
     const findTracker = React.useCallback(async () => {
         const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`)
         const json = await response.json();
@@ -41,37 +45,32 @@ export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
 
     React.useEffect(() => {
         findTracker();
-    }, [findTracker]);
+    }, [findTracker, history.location.pathname]);
 
     return (
         <div className="portfolio-container">
-            {!state.loaded &&
-                <div>Loading...</div>
-            }
-            {state.tracker
-                ? (
-                    <React.Fragment>
-                        <Typography variant="h6">
-                            Tracker Name: {state.tracker.name}
-                        </Typography>
-                        <NewTransactionForm
-                            symbols={symbols}
-                            trackerId={trackerId.current}
-                            findTracker={findTracker}
-                        />
-                        <p>Tracker Name: {state.tracker.name}</p>
-                        <HoldingsTable
-                            data={state.tracker.holdings}
-                            headers={[
-                            "CoinId",
-                            "Quantity",
-                            ]}
-                            title="Market Overview"
-                        />
-                    </React.Fragment>
-                )
-                : 'Tracker not found'
-            }
+            {!state.loaded && (<Loading />)}
+            {state.loaded && state.tracker && (
+                <React.Fragment>
+                    <Typography variant="h6">
+                        Tracker Name: {state.tracker.name}
+                    </Typography>
+                    <NewTransactionForm
+                        symbols={symbols}
+                        trackerId={trackerId.current}
+                        findTracker={findTracker}
+                    />
+                    <HoldingsTable
+                        data={state.tracker.holdings}
+                        headers={[
+                        "CoinId",
+                        "Quantity",
+                        ]}
+                        title="Market Overview"
+                    />
+                </React.Fragment>
+            )}
+            {state.loaded && !state.tracker && ('Tracker Not Found')}
         </div>
     );
 };
