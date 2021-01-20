@@ -34,7 +34,6 @@ export const NewTrackerForm: React.FC<Props> = ({ open, setOpen }: Props) => {
     const history = useHistory();
 
     const onSubmit = async (data: FormData) => {
-        // setPageElement('Overview');
         console.log("submit start", data);
 
         const response = await fetch('http://localhost:5000/api/trackers/add', {
@@ -46,11 +45,11 @@ export const NewTrackerForm: React.FC<Props> = ({ open, setOpen }: Props) => {
         });
         const json = await response.json();
         tracker.current = json;
-
-        console.log("submit finished", tracker.current?.tracker._id);
         history.push(`/${tracker.current?.tracker._id}`);
         setPageElement('Portfolio');
         setOpen(!open);
+
+        console.log("submit finished", tracker.current?.tracker._id);
     };
 
     return (

@@ -1,12 +1,11 @@
 import React from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { NewTransactionForm } from "./NewTransactionForm";
 import { returnedTracker } from './NewTrackerForm';
 import { SymbolDropdown } from './Dashboard';
 import { HoldingsTable } from "./HoldingsTable";
 import { Typography } from "@material-ui/core";
 import Loading from "./Loading";
-import { usePageContext } from "./PageContext";
 
 
 interface IRouteParams {
@@ -20,32 +19,32 @@ interface IState {
 
 type Props = {
     symbols: SymbolDropdown[];
+    setHeader: (header: any) => void;
 }
 
-export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
+export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
     const [ state, setState ] = React.useState<IState>({
         loaded: false,
         tracker: undefined
     });
     const { id } = useParams<IRouteParams>();
     const trackerId = React.useRef(id);
-    const history = useHistory();
-    console.log('history', history);
 
     const findTracker = React.useCallback(async () => {
-        const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`)
+        const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`);
         const json = await response.json();
         if (json.tracker) {
-            trackerId.current = json.tracker._id;
+            setHeader(json.tracker._id);
         } else {
             trackerId.current = '';
+            setHeader(undefined);
         }
         setState({ loaded: true, tracker: json.tracker });
     }, []);
 
     React.useEffect(() => {
         findTracker();
-    }, [findTracker, history.location.pathname]);
+    }, [findTracker]);
 
     return (
         <div className="portfolio-container">

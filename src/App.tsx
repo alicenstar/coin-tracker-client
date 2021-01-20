@@ -15,7 +15,6 @@ function App(): JSX.Element {
 			<PageProvider>
 				<CssBaseline />
 				<Route path="/:id?"component={(props: any) => <MiniDrawer {...props} />} />
-
 			</PageProvider>
 		</Router>
 	);

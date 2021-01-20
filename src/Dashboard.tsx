@@ -16,7 +16,11 @@ interface IResult {
     symbols: SymbolDropdown[];
 }
 
-const Dashboard: React.FC = () => {
+type Props = {
+    setHeader: (header: any) => void;
+}
+
+const Dashboard: React.FC<Props> = ({ setHeader }: Props) => {
     const { pageElement } = usePageContext()!;
     const [state, setState] = React.useState<IResult>({
         loaded: false,
@@ -50,7 +54,7 @@ const Dashboard: React.FC = () => {
                 <Overview data={state.data} />
             )}
             {pageElement === 'Portfolio' && (
-                <Portfolio symbols={state.symbols} key={window.location.pathname} />
+                <Portfolio setHeader={(header: any) => { setHeader(header); }} symbols={state.symbols} key={window.location.pathname} />
             )}
         </div>
     );

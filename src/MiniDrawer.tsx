@@ -30,9 +30,9 @@ import { lightTheme, darkTheme } from './Themes';
 import { usePageContext } from './PageContext';
 import { useMiniDrawerStyles } from './MiniDrawerStyles';
 import { Header } from './Header';
-import { useParams } from 'react-router-dom';
 import { NewTracker } from './NewTracker';
 import Dashboard from './Dashboard';
+import { useParams } from 'react-router-dom';
 
 
 type Props = {
@@ -41,17 +41,20 @@ type Props = {
 
 export default function MiniDrawer({ children }: Props) {
     const { setPageElement } = usePageContext()!;
-    const params = useParams<any>();
     const classes = useMiniDrawerStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
         darkModeOn: false,
-	});
+    });
+    const [ open, setOpen ] = React.useState(false);
+    const [ header, setHeader ] = React.useState(undefined);
+    const { id } = useParams<{id: string}>();
+    const trackerId = React.useRef(id);
     const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
     let drawerLinks;
-    params.id === undefined
-        ? drawerLinks = ['Overview']
-        : drawerLinks = ['Overview', 'Portfolio'];
+    header
+        ? drawerLinks = ['Overview', 'Portfolio']
+        : drawerLinks = ['Overview'];
 
 	const toggleTheme = () => {
 		setState({
@@ -78,7 +81,19 @@ export default function MiniDrawer({ children }: Props) {
         var element = event.currentTarget.id;
         setPageElement(element);
     };
-    const [ open, setOpen ] = React.useState(false);
+
+    React.useEffect(() => {
+        const fetchTracker = async () => {
+            const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`);
+            const json = await response.json();
+            if (json.tracker) {
+                setHeader(json.tracker._id);
+            } else {
+                setHeader(undefined);
+            }
+        };
+        fetchTracker();
+    }, []);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
@@ -100,7 +115,7 @@ export default function MiniDrawer({ children }: Props) {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Header />
+                        <Header header={header} />
                         <section className={classes.rightToolbar}>
                             <FormGroup row>
                                 <FormControlLabel
@@ -162,7 +177,7 @@ export default function MiniDrawer({ children }: Props) {
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
                     <NewTracker open={open} setOpen={x => setOpen(x)} />
-                    <Dashboard />
+                    <Dashboard setHeader={(header: any) => {setHeader(header);}} />
 					{children}
 				</main>
 			</div>

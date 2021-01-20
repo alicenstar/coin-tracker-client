@@ -2,7 +2,12 @@ import { IconButton, SvgIcon, Tooltip, Typography } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router-dom";
 
-export const Header: React.FC = () => {
+
+type Props = {
+    header: string | undefined;
+}
+
+export const Header: React.FC<Props> = ({ header }: Props) => {
     const params = useParams<any>();
 
     const handleCopyUrl = () => {
@@ -12,8 +17,8 @@ export const Header: React.FC = () => {
     return (
         <React.Fragment>
             <Typography variant="h6">
-                {params.id
-                    ? '# ' + params.id
+                {header
+                    ? '# ' + header
                     : '< Create a tracker'
                 }
             </Typography>
