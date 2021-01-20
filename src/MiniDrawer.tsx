@@ -92,7 +92,9 @@ export default function MiniDrawer({ children }: Props) {
                 setHeader(undefined);
             }
         };
-        fetchTracker();
+        if (trackerId.current) {
+            fetchTracker();
+        }
     }, []);
 
 	return (

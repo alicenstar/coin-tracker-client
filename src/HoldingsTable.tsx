@@ -25,6 +25,24 @@ const useStyles = makeStyles({
     },
   });
 
+export const useInterval = (callback: any, delay: any) => {
+    const savedCallback = React.useRef<any>();
+  
+    React.useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
+  
+    React.useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (delay !== null) {
+            let id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
+};
+
 export const HoldingsTable: React.FC<ITableProps> = ({
     data,
     headers,
@@ -35,26 +53,31 @@ export const HoldingsTable: React.FC<ITableProps> = ({
         tableData: []
     });
     const classes = useStyles();
+    const coinIds = data.map((coin: any) => coin.coinId);
+    const queryString = coinIds.join();
     
+    const fetchHoldingsData = React.useCallback(async () => {
+        const response = await fetch(`http://localhost:5000/api/cmc/quotes/${queryString}`, {
+            headers: {
+                'Content-type': 'application/json'
+            },
+        });
+        const json = await response.json();
+        // Combine holdings data and CMC quote data
+        const newData = data.map((chunk: any) => ({ holding: chunk, quote: json.json.data[chunk.coinId] }));
+        setState({
+            loaded: true,
+            tableData: newData
+        });
+    }, [data, queryString]);
+
     React.useEffect(() => {
-        const fetchHoldingsData = async () => {
-            const coinIds = data.map((coin: any) => coin.coinId);
-            const queryString = coinIds.join();
-            const response = await fetch(`http://localhost:5000/api/cmc/quotes/${queryString}`, {
-                headers: {
-                    'Content-type': 'application/json'
-                },
-            });
-            const json = await response.json();
-            // Combine holdings data and CMC quote data
-            const newData = data.map((chunk: any) => ({ holding: chunk, quote: json.json.data[chunk.coinId] }));
-            setState({
-                loaded: true,
-                tableData: newData
-            });
-        };
         fetchHoldingsData();
-    }, []);
+    }, [fetchHoldingsData]);
+
+    useInterval(() => {
+        fetchHoldingsData();
+    }, 30000);
 
     return (
         <TableContainer component={Paper}>
@@ -82,8 +105,8 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                             </TableCell>
                             <TableCell>
                                 {row.quote.quote.USD.percent_change_1h > 0
-                                    ? percentFormatter.format(row.quote.quote.USD.percent_change_1h)
-                                    : percentFormatter.format(row.quote.quote.USD.percent_change_1h)
+                                    ? percentFormatter.format(row.quote.quote.USD.percent_change_1h / 100)
+                                    : percentFormatter.format(row.quote.quote.USD.percent_change_1h / 100)
                                 }
                             </TableCell>
                             <TableCell>

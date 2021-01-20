@@ -26,7 +26,6 @@ export const NewTransactionForm: React.FC<Props> = ({
 
         console.log("submit start", data);
         data['trackerId'] = trackerId;
-        console.log('data appended', data);
         const response = await fetch('http://localhost:5000/api/holdings/add', {
             method: 'POST',
             headers: {
@@ -82,10 +81,15 @@ export const NewTransactionForm: React.FC<Props> = ({
                         <div className="field">
                             <label htmlFor="quantity">Quantity to buy/sell</label>
                             <input
-                             type="text"
+                             type="number"
                              name="quantity"
                              placeholder="Transaction Amount"
-                             ref={register({ required: true })}
+                             ref={register({
+                                required: true,
+                                min: 0,
+                                valueAsNumber: true,
+                                pattern: /^\d*?\.?\d*$/
+                             })}
                              disabled={formState.isSubmitting}
                             />
                             {errors.quantity && errors.quantity.type === "required" && (

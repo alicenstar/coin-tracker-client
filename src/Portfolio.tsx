@@ -28,7 +28,7 @@ export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
         tracker: undefined
     });
     const { id } = useParams<IRouteParams>();
-    const trackerId = React.useRef(id);
+    const trackerId = React.useRef<string | undefined>(id);
 
     const findTracker = React.useCallback(async () => {
         const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`);
@@ -36,11 +36,14 @@ export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
         if (json.tracker) {
             setHeader(json.tracker._id);
         } else {
-            trackerId.current = '';
+            trackerId.current = undefined;
             setHeader(undefined);
         }
-        setState({ loaded: true, tracker: json.tracker });
-    }, []);
+        setState({
+            loaded: true,
+            tracker: json.tracker
+        });
+    }, [setHeader, trackerId]);
 
     React.useEffect(() => {
         findTracker();
@@ -56,10 +59,11 @@ export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
                     </Typography>
                     <NewTransactionForm
                         symbols={symbols}
-                        trackerId={trackerId.current}
+                        trackerId={trackerId.current!}
                         findTracker={findTracker}
                     />
                     <HoldingsTable
+                        key={state.tracker.holdings}
                         data={state.tracker.holdings}
                         headers={[
                         "Coin Name",

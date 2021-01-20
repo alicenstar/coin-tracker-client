@@ -3,7 +3,7 @@ import { usePageContext } from './PageContext';
 import { Overview } from './Overview';
 import { Portfolio } from './Portfolio';
 import Loading from './Loading';
-
+import { useInterval } from './HoldingsTable';
 
 export type SymbolDropdown = {
     symbol: string;
@@ -27,7 +27,8 @@ const Dashboard: React.FC<Props> = ({ setHeader }: Props) => {
         data: [],
         symbols: []
     });
-    const fetchData = async () => {
+
+    const fetchData = React.useCallback(async () => {
         const response = await fetch('http://localhost:5000/api/cmc/latest', {
             headers: {
                 'Content-type': 'application/json'
@@ -40,21 +41,33 @@ const Dashboard: React.FC<Props> = ({ setHeader }: Props) => {
                 id: object.id
             }
         ));
-        setState({ loaded: true, data: json.json.data, symbols: symbols });
-    };
+        setState({
+            loaded: true,
+            data: json.json.data,
+            symbols: symbols
+        });
+    }, []);
 
     React.useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
+
+    useInterval(() => {
+        fetchData();
+    }, 30000);
 
     return (
         <div className="dashboard-container">
             {!state.loaded && (<Loading />)}
             {pageElement === 'Overview' && (
-                <Overview data={state.data} />
+                <Overview key={state.data} data={state.data} />
             )}
             {pageElement === 'Portfolio' && (
-                <Portfolio setHeader={(header: any) => { setHeader(header); }} symbols={state.symbols} key={window.location.pathname} />
+                <Portfolio
+                    setHeader={(header: any) => { setHeader(header); }}
+                    symbols={state.symbols}
+                    key={window.location.pathname}
+                />
             )}
         </div>
     );
