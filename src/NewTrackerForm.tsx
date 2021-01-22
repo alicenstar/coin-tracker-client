@@ -8,11 +8,22 @@ type NewTracker = {
     trackerName: string;
 };
 
+export interface IHolding {
+    _id: string;
+    coinId: string;
+    quantity: number;
+    initialInvestment: number;
+    tracker: returnedTracker;
+    createdAt: Date;
+    updatedAt: Date;
+    __v: any;
+}
+
 export type returnedTracker = {
     _id: string;
     name: string;
     owner?: string;
-    holdings?: any;
+    holdings: IHolding[];
     createdAt: Date;
     updatedAt: Date;
     __v: any;

@@ -45,6 +45,7 @@ export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
         });
     }, [setHeader, trackerId]);
 
+
     React.useEffect(() => {
         findTracker();
     }, [findTracker]);
@@ -59,11 +60,11 @@ export const Portfolio: React.FC<Props> = ({ symbols, setHeader }: Props) => {
                     </Typography>
                     <NewTransactionForm
                         symbols={symbols}
-                        trackerId={trackerId.current!}
+                        tracker={state.tracker}
                         findTracker={findTracker}
                     />
                     <HoldingsTable
-                        key={state.tracker.holdings}
+                        // key={holdings.current}
                         data={state.tracker.holdings}
                         headers={[
                         "Coin Name",
