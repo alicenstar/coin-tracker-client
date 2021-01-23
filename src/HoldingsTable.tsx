@@ -57,18 +57,23 @@ export const HoldingsTable: React.FC<ITableProps> = ({
     const queryString = coinIds.join();
     
     const fetchHoldingsData = React.useCallback(async () => {
-        const response = await fetch(`http://localhost:5000/api/cmc/quotes/${queryString}`, {
-            headers: {
-                'Content-type': 'application/json'
-            },
-        });
-        const json = await response.json();
-        // Combine holdings data and CMC quote data
-        const newData = data.map((chunk: any) => ({ holding: chunk, quote: json.json.data[chunk.coinId] }));
-        setState({
-            loaded: true,
-            tableData: newData
-        });
+        if (queryString) {
+            const response = await fetch(`http://localhost:5000/api/cmc/quotes/${queryString}`, {
+                headers: {
+                    'Content-type': 'application/json'
+                },
+            });
+            const json = await response.json();
+            // Combine holdings data and CMC quote data
+            const newData = data.map((chunk: any) => ({
+                holding: chunk,
+                quote: json.json.data[chunk.coinId]
+            }));
+            setState({
+                loaded: true,
+                tableData: newData
+            });
+        }
     }, [data, queryString]);
 
     React.useEffect(() => {

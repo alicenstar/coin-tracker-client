@@ -5,7 +5,8 @@ import { Portfolio } from './Portfolio';
 import Loading from './Loading';
 import { useInterval } from './HoldingsTable';
 
-export type SymbolDropdown = {
+
+export type SymbolsDropdown = {
     symbol: string;
     id: number;
 }
@@ -13,14 +14,10 @@ export type SymbolDropdown = {
 interface IResult {
     loaded: boolean;
     data: any;
-    symbols: SymbolDropdown[];
+    symbols: SymbolsDropdown[];
 }
 
-type Props = {
-    setHeader: (header: any) => void;
-}
-
-const Dashboard: React.FC<Props> = ({ setHeader }: Props) => {
+const Dashboard: React.FC = () => {
     const { pageElement } = usePageContext()!;
     const [state, setState] = React.useState<IResult>({
         loaded: false,
@@ -64,7 +61,6 @@ const Dashboard: React.FC<Props> = ({ setHeader }: Props) => {
             )}
             {pageElement === 'Portfolio' && (
                 <Portfolio
-                    setHeader={(header: any) => { setHeader(header); }}
                     symbols={state.symbols}
                     key={window.location.pathname}
                 />

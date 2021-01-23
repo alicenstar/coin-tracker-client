@@ -33,6 +33,7 @@ import { Header } from './Header';
 import { NewTracker } from './NewTracker';
 import Dashboard from './Dashboard';
 import { useParams } from 'react-router-dom';
+import { useTrackerContext } from './TrackerContext';
 
 
 type Props = {
@@ -41,18 +42,18 @@ type Props = {
 
 export default function MiniDrawer({ children }: Props) {
     const { setPageElement } = usePageContext()!;
+    const { tracker, setTracker } = useTrackerContext()!;
     const classes = useMiniDrawerStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
         darkModeOn: false,
     });
     const [ open, setOpen ] = React.useState(false);
-    const [ header, setHeader ] = React.useState(undefined);
     const { id } = useParams<{id: string}>();
     const trackerId = React.useRef(id);
     const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
     let drawerLinks;
-    header
+    tracker
         ? drawerLinks = ['Overview', 'Portfolio']
         : drawerLinks = ['Overview'];
 
@@ -87,15 +88,15 @@ export default function MiniDrawer({ children }: Props) {
             const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`);
             const json = await response.json();
             if (json.tracker) {
-                setHeader(json.tracker._id);
+                setTracker(json.tracker);
             } else {
-                setHeader(undefined);
+                setTracker(undefined);
             }
         };
         if (trackerId.current) {
             fetchTracker();
         }
-    }, []);
+    }, [setTracker]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
@@ -117,7 +118,7 @@ export default function MiniDrawer({ children }: Props) {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Header header={header} />
+                        <Header header={tracker?._id} />
                         <section className={classes.rightToolbar}>
                             <FormGroup row>
                                 <FormControlLabel
@@ -179,7 +180,7 @@ export default function MiniDrawer({ children }: Props) {
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
                     <NewTracker open={open} setOpen={x => setOpen(x)} />
-                    <Dashboard setHeader={(header: any) => {setHeader(header);}} />
+                    <Dashboard />
 					{children}
 				</main>
 			</div>

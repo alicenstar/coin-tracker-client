@@ -6,17 +6,22 @@ import {
 import CssBaseline from '@material-ui/core/CssBaseline';
 import MiniDrawer from './MiniDrawer';
 import { PageProvider } from './PageContext';
+import { TrackerProvider } from './TrackerContext';
 
 
 function App(): JSX.Element {
 
 	return (
-		<Router>
-			<PageProvider>
-				<CssBaseline />
-				<Route path="/:id?"component={(props: any) => <MiniDrawer {...props} />} />
-			</PageProvider>
-		</Router>
+		
+		<PageProvider>
+			<TrackerProvider>
+				<Router>
+					<CssBaseline />
+					<Route path="/:id?"component={(props: any) => <MiniDrawer {...props} />} />
+				</Router>
+			</TrackerProvider>
+		</PageProvider>
+		
 	);
 }
 

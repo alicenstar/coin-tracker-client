@@ -2,45 +2,25 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { usePageContext } from './PageContext';
+import { IHolding, ITracker } from './types/types';
 
 
-type NewTracker = {
+type TrackerFormData = {
     trackerName: string;
 };
 
-export interface IHolding {
-    _id: string;
-    coinId: string;
-    quantity: number;
-    initialInvestment: number;
-    tracker: returnedTracker;
-    createdAt: Date;
-    updatedAt: Date;
-    __v: any;
-}
-
-export type returnedTracker = {
-    _id: string;
-    name: string;
-    owner?: string;
-    holdings: IHolding[];
-    createdAt: Date;
-    updatedAt: Date;
-    __v: any;
-}
-
 interface IState {
-    tracker: returnedTracker;
+    tracker: ITracker;
 }
 
-type Props = {
+interface Props {
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
 export const NewTrackerForm: React.FC<Props> = ({ open, setOpen }: Props) => {
     const tracker = React.useRef<IState | null>(null);
-    const { register, handleSubmit, errors, formState } = useForm<NewTracker>();
+    const { register, handleSubmit, errors, formState } = useForm<TrackerFormData>();
     const { setPageElement } = usePageContext()!;
     const history = useHistory();
 

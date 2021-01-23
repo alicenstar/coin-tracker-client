@@ -1,6 +1,6 @@
 import { IconButton, SvgIcon, Tooltip, Typography } from "@material-ui/core";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useTrackerContext } from "./TrackerContext";
 
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 }
 
 export const Header: React.FC<Props> = ({ header }: Props) => {
-    const params = useParams<any>();
+    const { tracker } = useTrackerContext()!;
 
     const handleCopyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
@@ -22,7 +22,7 @@ export const Header: React.FC<Props> = ({ header }: Props) => {
                     : '< Create a tracker'
                 }
             </Typography>
-            {params.id && (
+            {tracker && (
                 <Tooltip title="Copy URL">
                     <IconButton onClick={handleCopyUrl}>
                         <SvgIcon children={

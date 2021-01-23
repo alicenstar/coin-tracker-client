@@ -1,46 +1,29 @@
 import { Box, FormGroup } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { SymbolDropdown } from './Dashboard';
-import { returnedTracker } from './NewTrackerForm';
-import { IHolding } from './NewTrackerForm';
+import { SymbolsDropdown } from './Dashboard';
+import { useTrackerContext } from './TrackerContext';
+import { IHolding } from './types/types';
+
 
 type TransactionFormData = {
     type: "Buy" | "Sell";
     coinId: string;
     quantity: number;
-    priceAtPurchase: number;
+    priceAtTransaction: number;
     trackerId: string;
 };
 
 type Props = {
-    symbols: SymbolDropdown[];
-    tracker: returnedTracker;
+    symbols: SymbolsDropdown[];
     findTracker: () => void;
-}
-
-type Json = {
-    holding: IHolding;
-    transaction: Transaction;
-}
-
-export type Transaction = {
-    _id: string;
-    coinId: string;
-    quantity: number;
-    priceAtPurchase: number;
-    type: 'Buy' | 'Sell' | 'Adjustment';
-    tracker: string;
-    createdAt: Date;
-    updatedAt: Date;
-    __v: any;
 }
 
 export const NewTransactionForm: React.FC<Props> = ({
     symbols,
-    tracker,
     findTracker
 }: Props) => {
+    const { tracker, setTracker } = useTrackerContext()!;
     const {
         register,
         handleSubmit,
@@ -51,103 +34,88 @@ export const NewTransactionForm: React.FC<Props> = ({
     } = useForm<TransactionFormData>();
 
     const onSubmit = async (data: TransactionFormData) => {
-        console.log("submit start", data);
-
-        let submitSuccess = false;
-        let json: Json;
-        data.trackerId = tracker._id;
-        const holdingMatch: IHolding | undefined = tracker.holdings.find((holding: IHolding) => {
-            return holding.coinId === data.coinId;
+        data.trackerId = tracker!._id;
+        // Check if user currently owns the submitted coin
+        let holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: IHolding) => {
+            return Number(holding.coinId) === Number(data.coinId);
         });
 
-        if (!data.priceAtPurchase) {
-            // set priceAtPurchase to current market price
+        // set priceAtTransaction to current market price if no user input provided
+        if (data.priceAtTransaction === 0) {
             const response = await fetch(`http://localhost:5000/api/cmc/quotes/${data.coinId}`, {
                 headers: {
                     'Content-type': 'application/json'
                 },
             });
             const json = await response.json();
-            data.priceAtPurchase = json[0].quote.USD.price;
+            data.priceAtTransaction = json.json.data[data.coinId].quote.USD.price;
         }
-
-        if (data.type === 'Buy') {
-            if (holdingMatch) {
-                // update holding
-                const response = await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
-                });
-                json!.holding = await response.json();
-            } else {
-                // create holding
-                const response = await fetch(`http://localhost:5000/api/holdings/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
-                });
-                json!.holding = await response.json();
-            }
-            // create transaction
-            const response = await fetch(`http://localhost:5000/api/transactions/`, {
+        
+        if (holdingMatch && data.type === 'Buy') {
+            // If user already own the coin, update their shares
+            await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            });
+        } else if (holdingMatch === undefined && data.type === 'Buy') {
+            // If user does not own the coin, create a new holding
+            await fetch(`http://localhost:5000/api/holdings/`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify(data),
             });
-            json!.transaction = await response.json();
-        }
-
-        if (data.type === 'Sell') {
-            if (holdingMatch) {
-                if (data.quantity > holdingMatch.quantity) {
-                    setError('quantity', {
-                        type: 'manual',
-                        message: 'Cannot sell more than you own'
-                    });
-                } else if (data.quantity === holdingMatch.quantity) {
-                    // send to delete endpoint
-                    // create transaction
-                } else {
-                    // send to update endpoint
-                    // create transaction
-                }
-            } else {
-                setError('coinId', {
+        } else if (holdingMatch && data.type === 'Sell') {
+            if (data.quantity > holdingMatch.quantity) {
+                setError('quantity', {
                     type: 'manual',
-                    message: 'Cannot sell a coin you do not own'
+                    message: 'Cannot sell more than you own'
+                });
+            } else if (data.quantity === holdingMatch.quantity) {
+                // delete holding
+                await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                });
+            } else {
+                // update holding
+                await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
                 });
             }
+        } else if (!holdingMatch && data.type === 'Sell') {
+            setError('coinId', {
+                type: 'manual',
+                message: 'Cannot sell a coin you do not own'
+            });
         }
 
-        // const response = await fetch('http://localhost:5000/api/holdings/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify(data),
-        // });
-        // const json = await response.json();
-        // if (!response.ok) {
-        //     if (json.message === 'Cannot sell more than you own') {
-        //         setError('quantity', {
-        //             type: 'server',
-        //             message: 'Cannot sell more than you own'
-        //         });
-        //     }
-        // } 
-        if (submitSuccess) {
-            reset();
-            findTracker();
+        // Check to see if a transaction should be created
+        if (data.type === 'Buy' || (
+            holdingMatch && data.type === 'Sell' && data.quantity >= holdingMatch.quantity
+        )) {
+            // create transaction
+            await fetch(`http://localhost:5000/api/transactions/`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(data),
+            });
         }
-
-        console.log("submit finished", json);
+        reset();
+        findTracker();
     };
 
     return (
@@ -208,10 +176,10 @@ export const NewTransactionForm: React.FC<Props> = ({
                             {errors.quantity && (<div className="error">{errors.quantity.message}</div>)}
                         </div>
                         <div className="field">
-                            <label htmlFor="priceAtPurchase">Price at purchase</label>
+                            <label htmlFor="priceAtTransaction">Price at time of transaction</label>
                             <input
                              type="text"
-                             name="priceAtPurchase"
+                             name="priceAtTransaction"
                              ref={register({
                                 min: 0,
                                 valueAsNumber: true,
@@ -219,8 +187,8 @@ export const NewTransactionForm: React.FC<Props> = ({
                              })}
                              disabled={formState.isSubmitting}
                             />
-                            {errors.priceAtPurchase && (
-                                <div className="error">{errors.priceAtPurchase.message}</div>
+                            {errors.priceAtTransaction && (
+                                <div className="error">{errors.priceAtTransaction.message}</div>
                             )}
                         </div>
                         <button type="submit">Add Transaction</button>
