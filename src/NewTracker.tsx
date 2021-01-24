@@ -1,4 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import {
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle
+} from "@material-ui/core";
 import React from "react";
 import { NewTrackerForm } from './NewTrackerForm';
 
@@ -18,12 +23,9 @@ export const NewTracker: React.FC<Props> = ({ open, setOpen }: Props) => {
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Create A Tracker</DialogTitle>
                 <DialogContent>
-                    <DialogContent>
-                        <NewTrackerForm open={open} setOpen={x => setOpen(x)} />
-                    </DialogContent>
-                    <DialogActions>
+                    <NewTrackerForm open={open} setOpen={x => setOpen(x)}>
                         <Button onClick={handleClose}>Close</Button>
-                    </DialogActions>
+                    </NewTrackerForm>
                 </DialogContent>
             </Dialog>
         </React.Fragment>

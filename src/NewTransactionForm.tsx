@@ -2,10 +2,11 @@ import {
     Box,
     Button,
     FormGroup,
-    MenuItem
+    MenuItem,
+    Typography
 } from '@material-ui/core';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { SymbolsDropdown } from './Dashboard';
 import { useTrackerContext } from './TrackerContext';
 import { IHolding } from './types/types';
@@ -27,6 +28,41 @@ interface IProps {
     findTracker: () => void;
 }
 
+type ErrorSummaryProps<T> = {
+    errors: FieldErrors<T>;
+};
+
+function ErrorSummary<T>({ errors }: ErrorSummaryProps<T>) {
+    if (Object.keys(errors).length === 0) {
+        return null;
+    }
+    return (
+        <div className="error-summary">
+            {Object.keys(errors).map((fieldName) => (
+                <ErrorMessage
+                 errors={errors}
+                 name={fieldName as any}
+                 render={({ messages }) =>
+                    messages &&
+                    Object.entries(messages).map(([type, message]) => (
+                        <p key={type}>{message}</p>
+                    ))
+                 }
+                 key={fieldName}
+                />
+            ))}
+        </div>
+    );
+};
+
+// type ErrorMessageContainerProps = {
+//     children?: React.ReactNode;
+// };
+
+// const ErrorMessageContainer = ({ children }: ErrorMessageContainerProps) => (
+//     <span className="error">{children}</span>
+// );
+
 export const NewTransactionForm: React.FC<IProps> = ({
     symbols,
     findTracker
@@ -38,13 +74,15 @@ export const NewTransactionForm: React.FC<IProps> = ({
         errors,
         setError,
         formState,
-        reset
+        reset,
+        trigger
     } = useForm<TransactionFormData>({
         criteriaMode: 'all',
-        mode: 'onChange'
+        mode: 'onBlur'
     });
 
     const onSubmit = async (data: TransactionFormData) => {
+        reset();
         data.trackerId = tracker!._id;
         // Check if user currently owns the submitted coin
         let holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: IHolding) => {
@@ -71,7 +109,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 },
                 body: JSON.stringify(data),
             });
-        } else if (holdingMatch === undefined && data.type === 'Buy') {
+        } else if (!holdingMatch && data.type === 'Buy') {
             // If user does not own the coin, create a new holding
             await fetch(`http://localhost:5000/api/holdings/`, {
                 method: 'POST',
@@ -125,70 +163,77 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         }
-        reset();
         findTracker();
     };
 
     return (
         <Box bgcolor="info.main">
-            <h3 id="new-transaction-form-header">New Transaction</h3>
-            <div id="new-transaction-container">
-                <FormGroup>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                        <MuiSelect 
-                         name="type"
-                         label="Transaction type"
-                         control={control}
-                         defaultValue='Buy'
-                         rules={{ required: true }}
-                        >
-                            <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
-                            <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
-                        </MuiSelect>
-                        <MuiSelect 
-                         name="coinId"
-                         label="Coin to Buy/Sell"
-                         control={control}
-                         defaultValue={symbols[0].id}
-                         rules={{ required: true }}
-                        >
-                            {symbols.map((coin) => (
-                                <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
-                            ))}
-                        </MuiSelect>
-                        <MuiTextField
-                         name="quantity"
-                         label="Quantity to Buy/Sell"
-                         control={control}
-                         defaultValue=''
-                         rules={{
-                            required: true,
-                            min: 0,
-                            valueAsNumber: true,
-                            pattern: /^\d*?\.?\d*$/
-                         }}
-                        />
-                        <MuiTextField
-                         name="priceAtTransaction"
-                         label="Price at time of transaction"
-                         control={control}
-                         defaultValue=''
-                         rules={{
-                            min: 0,
-                            valueAsNumber: true,
-                            pattern: /^\d*?\.?\d*$/
-                         }}
-                        />
-                        <Button type="submit">Add Transaction</Button>
-                        <ErrorMessage
-                         errors={errors}
-                         name='quantity'
-                         render={({ message }) => <p>{message}</p>}
-                        />
-                        {formState.isSubmitted && 'Form is submitted'}
-                    </form>
-                </FormGroup>
-            </div>
+            <Typography variant='h5'>New Transaction</Typography>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <MuiSelect 
+                 name="type"
+                 label="Transaction type"
+                 control={control}
+                 defaultValue='Buy'
+                 rules={{ required: true }}
+                >
+                    <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
+                    <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
+                </MuiSelect>
+                <MuiSelect 
+                 name="coinId"
+                 label="Coin to Buy/Sell"
+                 control={control}
+                 defaultValue={symbols[0].id}
+                 rules={{ required: true }}
+                >
+                    {symbols.map((coin) => (
+                        <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
+                    ))}
+                </MuiSelect>
+                <MuiTextField
+                 helperText=""
+                 name="quantity"
+                 label="Quantity to Buy/Sell"
+                 control={control}
+                 defaultValue=''
+                 rules={{
+                    pattern: {
+                        value: /^\d*?\.?\d*$/,
+                        message: 'Wrong number format'
+                    },
+                    required: 'This field is required',
+                    min: {
+                        value: 0,
+                        message: 'You must enter a value greater than 0'
+                    },
+                    valueAsNumber: true,
+                    
+                 }}
+                 errors={errors}
+                />
+                <MuiTextField
+                 helperText="If no value is provided, current market price will be used"
+                 name="priceAtTransaction"
+                 label="Price at time of transaction"
+                 control={control}
+                 defaultValue=''
+                 rules={{
+                    min: {
+                        value: 0,
+                        message: 'You must enter a value greater than 0'
+                    },
+                    valueAsNumber: true,
+                    pattern: {
+                        value: /^\d*?\.?\d*$/,
+                        message: 'Wrong number format'
+                    }
+                 }}
+                 errors={errors}
+                />
+                <Button type="submit">Add Transaction</Button>
+                {formState.isSubmitSuccessful && 'Form submitted successfully'}
+            </form>
         </Box>
     );
 };

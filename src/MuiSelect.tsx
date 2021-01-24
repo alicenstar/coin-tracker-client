@@ -20,16 +20,19 @@ export const MuiSelect: React.FC<ISelectProps> = ({
     rules,
     children
 }: ISelectProps) => {
-    const labelId = `${name}-label`
+    const labelId = `${name}-label`;
+
     return (
         <FormControl>
             <InputLabel id={labelId} htmlFor={name}>{label}</InputLabel>
             <Controller
-             render={(
-                { onChange, onBlur, value, name, ref },
-                { invalid, isTouched, isDirty }
-             ) => (
-                <Select onBlur={onBlur} onChange={onChange} id={name} label={label}>
+             render={(props) => (
+                <Select
+                 {...props}
+                 id={labelId}
+                 name={name}
+                 label={label}
+                >
                     {children}
                 </Select>
              )}
