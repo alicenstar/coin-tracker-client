@@ -1,8 +1,9 @@
+import { Button, InputLabel, TextField } from '@material-ui/core';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { usePageContext } from './PageContext';
-import { IHolding, ITracker } from './types/types';
+import { ITracker } from './types/types';
 
 
 type TrackerFormData = {
@@ -20,7 +21,11 @@ interface Props {
 
 export const NewTrackerForm: React.FC<Props> = ({ open, setOpen }: Props) => {
     const tracker = React.useRef<IState | null>(null);
-    const { register, handleSubmit, errors, formState } = useForm<TrackerFormData>();
+    const {
+        control,
+        handleSubmit,
+        errors,
+    } = useForm<TrackerFormData>();
     const { setPageElement } = usePageContext()!;
     const history = useHistory();
 
@@ -45,19 +50,28 @@ export const NewTrackerForm: React.FC<Props> = ({ open, setOpen }: Props) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="field">
-                <label htmlFor="trackerName">Tracker name</label>
-                <input
-                 type="text"
-                 name="trackerName"
-                 ref={register({ required: true })}
-                 disabled={formState.isSubmitting}
-                />
-                {errors.trackerName && errors.trackerName.type === "required" && (
-                    <div className="error">You must enter a name for your tracker</div>
-                )}
-            </div>
-            <button type="submit">Create Tracker</button>
+            <InputLabel htmlFor="trackerName">Tracker name</InputLabel>
+            <Controller
+                control={control}
+                name="trackerName"
+                defaultValue=''
+                as={
+                <TextField />
+                }
+                rules={{
+                required: true,
+                }}
+            />
+            {/* <input
+            type="text"
+            
+            ref={register({ required: true })}
+            disabled={formState.isSubmitting}
+            /> */}
+            {errors.trackerName && errors.trackerName.type === "required" && (
+                <div className="error">You must enter a name for your tracker</div>
+            )}
+            <Button type="submit">Create Tracker</Button>
         </form>
     );
 };

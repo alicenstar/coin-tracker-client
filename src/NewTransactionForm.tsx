@@ -1,43 +1,54 @@
-import { Box, FormGroup } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    FormGroup,
+    MenuItem
+} from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { SymbolsDropdown } from './Dashboard';
 import { useTrackerContext } from './TrackerContext';
 import { IHolding } from './types/types';
+import { MuiSelect } from './MuiSelect';
+import { MuiTextField } from './MuiTextField';
+import { ErrorMessage } from '@hookform/error-message';
 
 
 type TransactionFormData = {
     type: "Buy" | "Sell";
-    coinId: string;
+    coinId: number;
     quantity: number;
     priceAtTransaction: number;
     trackerId: string;
 };
 
-type Props = {
+interface IProps {
     symbols: SymbolsDropdown[];
     findTracker: () => void;
 }
 
-export const NewTransactionForm: React.FC<Props> = ({
+export const NewTransactionForm: React.FC<IProps> = ({
     symbols,
     findTracker
-}: Props) => {
-    const { tracker, setTracker } = useTrackerContext()!;
+}: IProps) => {
+    const { tracker } = useTrackerContext()!;
     const {
-        register,
+        control,
         handleSubmit,
         errors,
         setError,
         formState,
         reset
-    } = useForm<TransactionFormData>();
+    } = useForm<TransactionFormData>({
+        criteriaMode: 'all',
+        mode: 'onChange'
+    });
 
     const onSubmit = async (data: TransactionFormData) => {
         data.trackerId = tracker!._id;
         // Check if user currently owns the submitted coin
         let holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: IHolding) => {
-            return Number(holding.coinId) === Number(data.coinId);
+            return holding.coinId === data.coinId;
         });
 
         // set priceAtTransaction to current market price if no user input provided
@@ -122,76 +133,58 @@ export const NewTransactionForm: React.FC<Props> = ({
         <Box bgcolor="info.main">
             <h3 id="new-transaction-form-header">New Transaction</h3>
             <div id="new-transaction-container">
-                <FormGroup row>
+                <FormGroup>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="field">
-                            <label htmlFor="type">Transaction type</label>
-                            <select
-                             name="type"
-                             ref={register({ required: true })}
-                             disabled={formState.isSubmitting}
-                            >
-                                <option value="Buy">Buy</option>
-                                <option value="Sell">Sell</option>
-                            </select>
-                            {errors.type && errors.type.type === "required" && (
-                                <div className="error">You must choose a transaction type</div>
-                            )}
-                        </div>
-                        <div className="field">
-                            <label htmlFor="coinId">Coin to buy/sell</label>
-                            <select
-                             name="coinId"
-                             placeholder="Select Coin"
-                             ref={register({
-                                 required: {
-                                     value: true,
-                                     message: 'You must choose a coin'
-                                 }
-                                })}
-                             disabled={formState.isSubmitting}
-                            >
-                                {symbols.map((coin) => (
-                                    <option key={coin.id} value={coin.id}>{coin.symbol}</option>
-                                ))}
-                            </select>
-                            {errors.coinId && errors.coinId.type === "required" && (
-                                <div className="error">You must choose a coin for your transaction</div>
-                            )}
-                        </div>
-                        <div className="field">
-                            <label htmlFor="quantity">Quantity to buy/sell</label>
-                            <input
-                             type="text"
-                             name="quantity"
-                             placeholder="Transaction Amount"
-                             ref={register({
-                                required: true,
-                                min: 0,
-                                valueAsNumber: true,
-                                pattern: /^\d*?\.?\d*$/
-                             })}
-                             disabled={formState.isSubmitting}
-                            />
-                            {errors.quantity && (<div className="error">{errors.quantity.message}</div>)}
-                        </div>
-                        <div className="field">
-                            <label htmlFor="priceAtTransaction">Price at time of transaction</label>
-                            <input
-                             type="text"
-                             name="priceAtTransaction"
-                             ref={register({
-                                min: 0,
-                                valueAsNumber: true,
-                                pattern: /^\d*?\.?\d*$/
-                             })}
-                             disabled={formState.isSubmitting}
-                            />
-                            {errors.priceAtTransaction && (
-                                <div className="error">{errors.priceAtTransaction.message}</div>
-                            )}
-                        </div>
-                        <button type="submit">Add Transaction</button>
+                        <MuiSelect 
+                         name="type"
+                         label="Transaction type"
+                         control={control}
+                         defaultValue='Buy'
+                         rules={{ required: true }}
+                        >
+                            <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
+                            <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
+                        </MuiSelect>
+                        <MuiSelect 
+                         name="coinId"
+                         label="Coin to Buy/Sell"
+                         control={control}
+                         defaultValue={symbols[0].id}
+                         rules={{ required: true }}
+                        >
+                            {symbols.map((coin) => (
+                                <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
+                            ))}
+                        </MuiSelect>
+                        <MuiTextField
+                         name="quantity"
+                         label="Quantity to Buy/Sell"
+                         control={control}
+                         defaultValue=''
+                         rules={{
+                            required: true,
+                            min: 0,
+                            valueAsNumber: true,
+                            pattern: /^\d*?\.?\d*$/
+                         }}
+                        />
+                        <MuiTextField
+                         name="priceAtTransaction"
+                         label="Price at time of transaction"
+                         control={control}
+                         defaultValue=''
+                         rules={{
+                            min: 0,
+                            valueAsNumber: true,
+                            pattern: /^\d*?\.?\d*$/
+                         }}
+                        />
+                        <Button type="submit">Add Transaction</Button>
+                        <ErrorMessage
+                         errors={errors}
+                         name='quantity'
+                         render={({ message }) => <p>{message}</p>}
+                        />
                         {formState.isSubmitted && 'Form is submitted'}
                     </form>
                 </FormGroup>

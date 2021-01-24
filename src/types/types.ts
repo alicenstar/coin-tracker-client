@@ -10,7 +10,7 @@ export interface ITracker {
 
 export interface IHolding {
     _id: string;
-    coinId: string;
+    coinId: number;
     quantity: number;
     initialInvestment: number;
     tracker: ITracker;
@@ -21,7 +21,7 @@ export interface IHolding {
 
 export interface ITransaction {
     _id: string;
-    coinId: string;
+    coinId: number;
     quantity: number;
     priceAtTransaction: number;
     type: 'Buy' | 'Sell' | 'Adjustment';
