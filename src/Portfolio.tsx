@@ -57,7 +57,6 @@ export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
                         findTracker={findTracker}
                     />
                     <HoldingsTable
-                        // key={holdings.current}
                         data={tracker.holdings}
                         headers={[
                         "Coin Name",
@@ -66,7 +65,6 @@ export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
                         "Quantity",
                         "Total Value"
                         ]}
-                        title="Market Overview"
                     />
                 </React.Fragment>
             )}

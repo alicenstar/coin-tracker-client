@@ -98,13 +98,12 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
                 {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
             </IconButton>
         </div>
-    )
-}
+    );
+};
 
 interface ITableProps {
     data: any;
     headers?: string[];
-    title?: string;
 }
 
 const useStyles2 = makeStyles({
@@ -116,7 +115,6 @@ const useStyles2 = makeStyles({
 export const OverviewTable: React.FC<ITableProps> = ({
     data,
     headers,
-    title
 }: ITableProps) => {
     const classes = useStyles2();
     const [ page, setPage ] = React.useState(0);

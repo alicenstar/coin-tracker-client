@@ -17,38 +17,19 @@ import { MuiTextField } from "./MuiTextField";
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
 import { IHolding, IQuoteData } from "./types/types";
+import { useInterval } from './utils/index';
 
 
 interface ITableProps {
     data: any;
     headers?: string[];
-    title?: string;
 }
-
 
 const useStyles = makeStyles({
     table: {
-      minWidth: 650,
+        minWidth: 650,
     },
-  });
-
-export const useInterval = (callback: any, delay: any) => {
-    const savedCallback = React.useRef<any>();
-  
-    React.useEffect(() => {
-        savedCallback.current = callback;
-    }, [callback]);
-  
-    React.useEffect(() => {
-        function tick() {
-            savedCallback.current();
-        }
-        if (delay !== null) {
-            let id = setInterval(tick, delay);
-            return () => clearInterval(id);
-        }
-    }, [delay]);
-};
+});
 
 interface TableFormData {
     quantity: number;
@@ -79,7 +60,6 @@ interface ITransactionData extends IHoldingUpdate {
 export const HoldingsTable: React.FC<ITableProps> = ({
     data,
     headers,
-    title
 }: ITableProps) => {
     const {
         control,

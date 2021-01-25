@@ -3,7 +3,7 @@ import { usePageContext } from './PageContext';
 import { Overview } from './Overview';
 import { Portfolio } from './Portfolio';
 import Loading from './Loading';
-import { useInterval } from './HoldingsTable';
+import { useInterval } from './utils/index';
 
 
 export type SymbolsDropdown = {

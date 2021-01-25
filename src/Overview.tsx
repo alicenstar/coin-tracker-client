@@ -13,7 +13,6 @@ export const Overview = ({ data }: any) => {
                     "USD Price",
                     "Percent Change 1HR"
                 ]}
-                title="Market Overview"
             />
         </div>
     );
