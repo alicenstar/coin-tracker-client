@@ -1,6 +1,7 @@
 import React from "react";
 import {
     Button,
+    ClickAwayListener,
     IconButton,
     makeStyles,
     Paper,
@@ -179,6 +180,12 @@ export const HoldingsTable: React.FC<ITableProps> = ({
         setActiveHolding(holdingId);
     };
 
+    const handleClickAway = () => {
+        setEditActive(false);
+        setQuantity(undefined);
+        setActiveHolding(undefined);
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table className={classes.table} size="small" aria-label="a dense table">
@@ -209,47 +216,49 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     : percentFormatter.format(row.quote.quote.USD.percent_change_1h / 100)
                                 }
                             </TableCell>
-                            <TableCell>
-                                {editActive && activeHolding === row.holding._id
-                                    ? (
-                                        <form onSubmit={handleSubmit(onSubmit)}>
-                                            <MuiTextField
-                                                helperText=""
-                                                name="newQuantity"
-                                                label="Edit quantity"
-                                                control={control}
-                                                defaultValue={row.holding.quantity}
-                                                rules={{
-                                                    pattern: {
-                                                        value: /^\d*?\.?\d*$/,
-                                                        message: 'Wrong number format'
-                                                    },
-                                                    required: 'This field is required',
-                                                    min: {
-                                                        value: 0,
-                                                        message: 'You must enter a value greater than 0'
-                                                    },
-                                                    valueAsNumber: true,
-                                                }}
-                                                errors={errors}
-                                            />
-                                            <Button type='submit'>Save</Button>
-                                        </form>
-                                    )
-                                    : (
-                                        <React.Fragment>
-                                            {row.holding.quantity}
-                                            <IconButton
-                                                data-quantity={row.holding.quantity}
-                                                data-holding={row.holding._id}
-                                                onClick={handleEditClick}
-                                            >
-                                                <EditIcon />
-                                            </IconButton>
-                                        </React.Fragment>
-                                    )
-                                }
-                            </TableCell>
+                            <ClickAwayListener onClickAway={handleClickAway}>
+                                <TableCell>
+                                    {editActive && activeHolding === row.holding._id
+                                        ? (
+                                            <form onSubmit={handleSubmit(onSubmit)}>
+                                                <MuiTextField
+                                                    helperText=""
+                                                    name="newQuantity"
+                                                    label="Edit quantity"
+                                                    control={control}
+                                                    defaultValue={row.holding.quantity}
+                                                    rules={{
+                                                        pattern: {
+                                                            value: /^\d*?\.?\d*$/,
+                                                            message: 'Wrong number format'
+                                                        },
+                                                        required: 'This field is required',
+                                                        min: {
+                                                            value: 0,
+                                                            message: 'You must enter a value greater than 0'
+                                                        },
+                                                        valueAsNumber: true,
+                                                    }}
+                                                    errors={errors}
+                                                />
+                                                <Button type='submit'>Save</Button>
+                                            </form>
+                                        )
+                                        : (
+                                            <React.Fragment>
+                                                {row.holding.quantity}
+                                                <IconButton
+                                                    data-quantity={row.holding.quantity}
+                                                    data-holding={row.holding._id}
+                                                    onClick={handleEditClick}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </React.Fragment>
+                                        )
+                                    }
+                                </TableCell>
+                            </ClickAwayListener>
                             <TableCell>
                                 {currencyFormatter.format(row.holding.quantity * row.quote.quote.USD.price)}
                             </TableCell>
