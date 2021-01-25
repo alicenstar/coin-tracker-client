@@ -30,3 +30,36 @@ export interface ITransaction {
     updatedAt: Date;
     __v: any;
 }
+
+type Quote = {
+    price: number;
+    volume_24h: number;
+    percent_change_1h: number;
+    percent_change_24h: number;
+    percent_change_7d: number;
+    market_cap: number;
+    last_updated: Date;
+}
+
+type USDQuote = {
+    USD: Quote;
+}
+
+export interface IQuoteData {
+    id: number;
+    name: string;
+    symbol: string;
+    slug: string;
+    is_active: number;
+    is_fiat: number;
+    circulating_supply: number;
+    total_supply: number;
+    max_supply: number;
+    date_added: Date;
+    num_market_pairs: number;
+    cmc_rank: number;
+    last_updated: Date;
+    tags: string[];
+    platform: any;
+    quote: USDQuote;
+}

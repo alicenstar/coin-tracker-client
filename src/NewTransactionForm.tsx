@@ -1,18 +1,16 @@
 import {
     Box,
     Button,
-    FormGroup,
     MenuItem,
     Typography
 } from '@material-ui/core';
 import React from 'react';
-import { FieldErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SymbolsDropdown } from './Dashboard';
 import { useTrackerContext } from './TrackerContext';
 import { IHolding } from './types/types';
 import { MuiSelect } from './MuiSelect';
 import { MuiTextField } from './MuiTextField';
-import { ErrorMessage } from '@hookform/error-message';
 
 
 type TransactionFormData = {
@@ -28,32 +26,32 @@ interface IProps {
     findTracker: () => void;
 }
 
-type ErrorSummaryProps<T> = {
-    errors: FieldErrors<T>;
-};
+// type ErrorSummaryProps<T> = {
+//     errors: FieldErrors<T>;
+// };
 
-function ErrorSummary<T>({ errors }: ErrorSummaryProps<T>) {
-    if (Object.keys(errors).length === 0) {
-        return null;
-    }
-    return (
-        <div className="error-summary">
-            {Object.keys(errors).map((fieldName) => (
-                <ErrorMessage
-                 errors={errors}
-                 name={fieldName as any}
-                 render={({ messages }) =>
-                    messages &&
-                    Object.entries(messages).map(([type, message]) => (
-                        <p key={type}>{message}</p>
-                    ))
-                 }
-                 key={fieldName}
-                />
-            ))}
-        </div>
-    );
-};
+// function ErrorSummary<T>({ errors }: ErrorSummaryProps<T>) {
+//     if (Object.keys(errors).length === 0) {
+//         return null;
+//     }
+//     return (
+//         <div className="error-summary">
+//             {Object.keys(errors).map((fieldName) => (
+//                 <ErrorMessage
+//                  errors={errors}
+//                  name={fieldName as any}
+//                  render={({ messages }) =>
+//                     messages &&
+//                     Object.entries(messages).map(([type, message]) => (
+//                         <p key={type}>{message}</p>
+//                     ))
+//                  }
+//                  key={fieldName}
+//                 />
+//             ))}
+//         </div>
+//     );
+// };
 
 // type ErrorMessageContainerProps = {
 //     children?: React.ReactNode;
@@ -75,14 +73,23 @@ export const NewTransactionForm: React.FC<IProps> = ({
         setError,
         formState,
         reset,
-        trigger
     } = useForm<TransactionFormData>({
         criteriaMode: 'all',
-        mode: 'onBlur'
     });
 
+    React.useEffect(() => {
+        if (formState.isSubmitSuccessful) {
+            console.log('reset');
+            reset({
+                type: 'Buy',
+                coinId: symbols[0].id,
+                quantity: undefined,
+                priceAtTransaction: undefined
+            });
+        }
+    }, [formState.isSubmitSuccessful, reset, symbols]);
+
     const onSubmit = async (data: TransactionFormData) => {
-        reset();
         data.trackerId = tracker!._id;
         // Check if user currently owns the submitted coin
         let holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: IHolding) => {
@@ -101,6 +108,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
         }
         
         if (holdingMatch && data.type === 'Buy') {
+            console.log('holdingMatch buy', data);
             // If user already own the coin, update their shares
             await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
                 method: 'PUT',
@@ -110,6 +118,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         } else if (!holdingMatch && data.type === 'Buy') {
+            console.log('no match, buy', data);
             // If user does not own the coin, create a new holding
             await fetch(`http://localhost:5000/api/holdings/`, {
                 method: 'POST',
@@ -119,6 +128,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         } else if (holdingMatch && data.type === 'Sell') {
+            console.log('holding match, sell', data);
             if (data.quantity > holdingMatch.quantity) {
                 setError('quantity', {
                     type: 'manual',
@@ -135,6 +145,8 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 });
             } else {
                 // update holding
+                // change quantity to negative number
+                data.quantity *= -1;
                 await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
                     method: 'PUT',
                     headers: {
@@ -144,15 +156,15 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 });
             }
         } else if (!holdingMatch && data.type === 'Sell') {
+            console.log('check')
             setError('coinId', {
                 type: 'manual',
                 message: 'Cannot sell a coin you do not own'
             });
         }
-
         // Check to see if a transaction should be created
         if (data.type === 'Buy' || (
-            holdingMatch && data.type === 'Sell' && data.quantity >= holdingMatch.quantity
+            holdingMatch && data.type === 'Sell' && data.quantity <= holdingMatch.quantity
         )) {
             // create transaction
             await fetch(`http://localhost:5000/api/transactions/`, {
@@ -163,6 +175,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         }
+
         findTracker();
     };
 
@@ -208,7 +221,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
                         message: 'You must enter a value greater than 0'
                     },
                     valueAsNumber: true,
-                    
                  }}
                  errors={errors}
                 />
@@ -232,7 +244,11 @@ export const NewTransactionForm: React.FC<IProps> = ({
                  errors={errors}
                 />
                 <Button type="submit">Add Transaction</Button>
-                {formState.isSubmitSuccessful && 'Form submitted successfully'}
+                {formState.isSubmitted &&
+                    (formState.isSubmitSuccessful
+                        ? 'Form submitted successfully'
+                        : 'Submit failed')
+                }
             </form>
         </Box>
     );

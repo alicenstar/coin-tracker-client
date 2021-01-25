@@ -1,16 +1,16 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { FormControl, InputLabel, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import { Control, Controller, DeepMap, FieldError } from 'react-hook-form';
 
 
 interface ITextProps {
     label: string;
     name: string;
-    control: any;
-    defaultValue: any;
+    control: Control;
+    defaultValue: string;
     rules?: any;
-    errors: any;
+    errors: DeepMap<any, FieldError>;
     helperText: string;
 }
 
@@ -25,8 +25,7 @@ export const MuiTextField: React.FC<ITextProps> = ({
 }: ITextProps) => {
     const labelId = `${name}-label`
     return (
-        <FormControl>
-            {/* <InputLabel id={labelId} htmlFor={name}>{label}</InputLabel> */}
+        <>
             <Controller
              render={(props) => (
                 <TextField
@@ -50,8 +49,8 @@ export const MuiTextField: React.FC<ITextProps> = ({
                     <p key={type}>{message}</p>
                 ))
              }
-            key={name}
+             key={name}
             />
-        </FormControl>
+        </>
     );
-}
+};
