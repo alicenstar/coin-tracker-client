@@ -19,7 +19,8 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
-import { currencyFormatter, percentFormatter } from "./Formatters";
+import { currencyFormatter, percentFormatter } from "./utils/Formatters";
+import { useListingsContext } from './LatestListingsContext';
 
 
 const useStyles1 = makeStyles((theme: Theme) =>
@@ -102,7 +103,6 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 };
 
 interface ITableProps {
-    data: any;
     headers?: string[];
 }
 
@@ -113,14 +113,14 @@ const useStyles2 = makeStyles({
 });
 
 export const OverviewTable: React.FC<ITableProps> = ({
-    data,
     headers,
 }: ITableProps) => {
+    const { listings } = useListingsContext()!;
     const classes = useStyles2();
     const [ page, setPage ] = React.useState(0);
     const [ rowsPerPage, setRowsPerPage ] = React.useState(10);
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, listings.length - page * rowsPerPage);
     
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -153,8 +153,8 @@ export const OverviewTable: React.FC<ITableProps> = ({
                 
                 <TableBody>
                     {(rowsPerPage > 0
-                        ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : data
+                        ? listings.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : listings
                     ).map((row: any) => (
                         <TableRow key={row.id}>
                             <TableCell>
@@ -182,7 +182,7 @@ export const OverviewTable: React.FC<ITableProps> = ({
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                             colSpan={4}
-                            count={data.length}
+                            count={listings.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{
@@ -198,4 +198,4 @@ export const OverviewTable: React.FC<ITableProps> = ({
             </Table>
         </TableContainer>
     );
-}
+};

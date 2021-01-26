@@ -6,7 +6,6 @@ export const Overview = ({ data }: any) => {
     return (
         <div className="overview-container">
             <OverviewTable
-                data={data}
                 headers={[
                     "Name",
                     "Symbol",

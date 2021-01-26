@@ -3,6 +3,7 @@ export interface ITracker {
     name: string;
     owner?: string;
     holdings: IHolding[];
+    initialInvestment: number;
     createdAt: Date;
     updatedAt: Date;
     __v: any;
@@ -41,8 +42,8 @@ type Quote = {
     last_updated: Date;
 }
 
-type USDQuote = {
-    USD: Quote;
+type Quotes = {
+    [key: string]: Quote;
 }
 
 export interface IQuoteData {
@@ -61,5 +62,22 @@ export interface IQuoteData {
     last_updated: Date;
     tags: string[];
     platform: any;
-    quote: USDQuote;
+    quote: Quotes;
+}
+
+export interface IListing {
+    id: number;
+    name: string;
+    symbol: string;
+    slug: string;
+    cmc_rank: number;
+    num_market_pairs: number;
+    circulating_supply: number;
+    total_supply: number;
+    max_supply: number;
+    last_updated: Date;
+    date_added: Date;
+    tags: string[];
+    platform: any;
+    quote: Quotes;
 }

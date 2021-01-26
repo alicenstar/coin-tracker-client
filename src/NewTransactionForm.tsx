@@ -6,11 +6,11 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { SymbolsDropdown } from './Dashboard';
 import { useTrackerContext } from './TrackerContext';
-import { IHolding } from './types/types';
+import { IHolding, IListing } from './types/types';
 import { MuiSelect } from './MuiSelect';
 import { MuiTextField } from './MuiTextField';
+import { useListingsContext } from './LatestListingsContext';
 
 
 type TransactionFormData = {
@@ -22,50 +22,16 @@ type TransactionFormData = {
 };
 
 interface IProps {
-    symbols: SymbolsDropdown[];
     findTracker: () => void;
 }
 
-// type ErrorSummaryProps<T> = {
-//     errors: FieldErrors<T>;
-// };
 
-// function ErrorSummary<T>({ errors }: ErrorSummaryProps<T>) {
-//     if (Object.keys(errors).length === 0) {
-//         return null;
-//     }
-//     return (
-//         <div className="error-summary">
-//             {Object.keys(errors).map((fieldName) => (
-//                 <ErrorMessage
-//                  errors={errors}
-//                  name={fieldName as any}
-//                  render={({ messages }) =>
-//                     messages &&
-//                     Object.entries(messages).map(([type, message]) => (
-//                         <p key={type}>{message}</p>
-//                     ))
-//                  }
-//                  key={fieldName}
-//                 />
-//             ))}
-//         </div>
-//     );
-// };
-
-// type ErrorMessageContainerProps = {
-//     children?: React.ReactNode;
-// };
-
-// const ErrorMessageContainer = ({ children }: ErrorMessageContainerProps) => (
-//     <span className="error">{children}</span>
-// );
 
 export const NewTransactionForm: React.FC<IProps> = ({
-    symbols,
     findTracker
 }: IProps) => {
     const { tracker } = useTrackerContext()!;
+    const { listings } = useListingsContext()!;
     const {
         control,
         handleSubmit,
@@ -77,9 +43,15 @@ export const NewTransactionForm: React.FC<IProps> = ({
         criteriaMode: 'all',
     });
 
+    const symbols = listings.map((listing: IListing) => (
+        {
+            symbol: listing.symbol,
+            id: listing.id
+        }
+    ));
+
     React.useEffect(() => {
         if (formState.isSubmitSuccessful) {
-            console.log('reset');
             reset({
                 type: 'Buy',
                 coinId: symbols[0].id,
@@ -108,7 +80,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
         }
         
         if (holdingMatch && data.type === 'Buy') {
-            console.log('holdingMatch buy', data);
             // If user already own the coin, update their shares
             await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
                 method: 'PUT',
@@ -118,7 +89,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         } else if (!holdingMatch && data.type === 'Buy') {
-            console.log('no match, buy', data);
             // If user does not own the coin, create a new holding
             await fetch(`http://localhost:5000/api/holdings/`, {
                 method: 'POST',
@@ -128,7 +98,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         } else if (holdingMatch && data.type === 'Sell') {
-            console.log('holding match, sell', data);
             if (data.quantity > holdingMatch.quantity) {
                 setError('quantity', {
                     type: 'manual',
@@ -175,13 +144,12 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         }
-
         findTracker();
     };
 
     return (
         <Box bgcolor="info.main">
-            <Typography variant='h5'>New Transaction</Typography>
+            <Typography variant='h6'>New Transaction</Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <MuiSelect 
                  name="type"

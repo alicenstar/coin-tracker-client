@@ -1,22 +1,18 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { NewTransactionForm } from "./NewTransactionForm";
-import { SymbolsDropdown } from './Dashboard';
 import { HoldingsTable } from "./HoldingsTable";
 import { Typography } from "@material-ui/core";
 import Loading from "./Loading";
 import { useTrackerContext } from "./TrackerContext";
+import { PortfolioValue } from "./PortfolioValue";
 
 
 interface IState {
     loaded: boolean;
 }
 
-type Props = {
-    symbols: SymbolsDropdown[];
-}
-
-export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
+export const Portfolio: React.FC = () => {
     const [ state, setState ] = React.useState<IState>({
         loaded: false,
     });
@@ -49,22 +45,21 @@ export const Portfolio: React.FC<Props> = ({ symbols }: Props) => {
             {!state.loaded && (<Loading />)}
             {state.loaded && tracker && (
                 <React.Fragment>
-                    <Typography variant="h6">
+                    <Typography variant="h4">
                         Tracker Name: {tracker.name}
                     </Typography>
+                    <PortfolioValue />
                     <NewTransactionForm
-                        symbols={symbols}
-                        findTracker={findTracker}
+                     findTracker={findTracker}
                     />
                     <HoldingsTable
-                        data={tracker.holdings}
-                        headers={[
+                     headers={[
                         "Coin Name",
                         "Market Price",
                         "% Change 1HR",
                         "Quantity",
                         "Total Value"
-                        ]}
+                     ]}
                     />
                 </React.Fragment>
             )}
