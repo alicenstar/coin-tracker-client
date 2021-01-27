@@ -22,13 +22,9 @@ export const LatestListingsProvider = ({
     const [ listings, setListings ] = React.useState<IListing[]>([]);
 
     const fetchListings = React.useCallback(async () => {
-        const response = await fetch('http://localhost:5000/api/cmc/latest', {
-            headers: {
-                'Content-type': 'application/json'
-            }
-        });
+        const response = await fetch('http://localhost:5000/api/listings/');
         const json = await response.json();
-        setListings(json.json.data);
+        setListings(json.listings);
     }, []);
 
     React.useEffect(() => {
@@ -37,7 +33,7 @@ export const LatestListingsProvider = ({
 
     useInterval(() => {
         fetchListings();
-    }, 60000);
+    }, 90000);
 
     return (
         <LatestListingsContext.Provider value={{ listings, setListings }}>

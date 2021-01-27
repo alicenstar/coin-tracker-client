@@ -19,7 +19,6 @@ export const Portfolio: React.FC = () => {
     const { id } = useParams<{ id: string}>();
     const trackerId = React.useRef<string | undefined>(id);
     const { tracker, setTracker } = useTrackerContext()!;
-
     const findTracker = React.useCallback(async () => {
         const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`);
         const json = await response.json();

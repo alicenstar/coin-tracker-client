@@ -25,8 +25,6 @@ interface IProps {
     findTracker: () => void;
 }
 
-
-
 export const NewTransactionForm: React.FC<IProps> = ({
     findTracker
 }: IProps) => {
@@ -39,9 +37,27 @@ export const NewTransactionForm: React.FC<IProps> = ({
         setError,
         formState,
         reset,
+        getValues
     } = useForm<TransactionFormData>({
         criteriaMode: 'all',
     });
+
+    const validateForm = React.useCallback(async () => {
+        if (getValues('type') === 'Sell') {
+            const match = tracker!.holdings.find(holding => holding.coinId === getValues('coinId'));
+            if (!match) {
+                setError('quantity', { type: 'wrongCoin', message: 'Cannot sell a coin you do not own'});
+            } else {
+                if (getValues('quantity') > match.quantity) {
+                    setError('quantity', { type: 'wrongQuantity', message: 'Cannot sell more than you own' });
+                }
+            }
+        }
+    }, [getValues, setError, tracker]);
+
+    React.useEffect(() => {
+        validateForm();
+    }, [formState.isValidating, validateForm]);
 
     const symbols = listings.map((listing: IListing) => (
         {
@@ -70,13 +86,8 @@ export const NewTransactionForm: React.FC<IProps> = ({
 
         // set priceAtTransaction to current market price if no user input provided
         if (data.priceAtTransaction === 0) {
-            const response = await fetch(`http://localhost:5000/api/cmc/quotes/${data.coinId}`, {
-                headers: {
-                    'Content-type': 'application/json'
-                },
-            });
-            const json = await response.json();
-            data.priceAtTransaction = json.json.data[data.coinId].quote.USD.price;
+            const listingMatch = listings.find(listing => listing.id === data.coinId);
+            data.priceAtTransaction = listingMatch!.quote.USD.price;
         }
         
         if (holdingMatch && data.type === 'Buy') {
@@ -125,7 +136,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 });
             }
         } else if (!holdingMatch && data.type === 'Sell') {
-            console.log('check')
             setError('coinId', {
                 type: 'manual',
                 message: 'Cannot sell a coin you do not own'

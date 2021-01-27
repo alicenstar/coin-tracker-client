@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { MuiTextField } from './MuiTextField';
 import { usePageContext } from './PageContext';
 import { useTrackerContext } from './TrackerContext';
-import { ITracker } from './types/types';
 
 
 type TrackerFormData = {
@@ -45,7 +44,6 @@ export const NewTrackerForm: React.FC<Props> = ({
             body: JSON.stringify(data),
         });
         const json = await response.json();
-        console.log(json);
         setTracker(json.tracker);
         setPageElement('Portfolio');
         setOpen(!open);

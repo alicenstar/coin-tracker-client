@@ -8,10 +8,19 @@ import { useListingsContext } from './LatestListingsContext';
 export const PortfolioValue: React.FC = () => {
     const { listings } = useListingsContext()!;
     const { tracker } = useTrackerContext()!;
-    const portfolioTotal = tracker!.holdings.map((holding: any) => {
+    const total = tracker!.holdings.map((holding: any) => {
         const listingMatch = listings.find(listing => listing.id === holding.coinId);
         return holding.quantity * listingMatch!.quote.USD.price;
-    }).reduce((a: number, b: number) => a + b);
+    });
+    let portfolioTotal;
+    let returnOnInvestment;
+    if (total.length > 0) {
+        portfolioTotal = total.reduce((a: number, b: number) => a + b);
+        returnOnInvestment = (portfolioTotal / tracker!.initialInvestment) - 1;
+    } else {
+        portfolioTotal = 0;
+        returnOnInvestment = 0;
+    }
 
     return (
         <Box>
@@ -24,12 +33,12 @@ export const PortfolioValue: React.FC = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Typography variant="subtitle1">
-                        Initial Investment: {currencyFormatter.format(tracker!.initialInvestment)}
+                        Initial Investment: {currencyFormatter.format(Number(tracker!.initialInvestment))}
                     </Typography>
                 </Grid>
                 <Grid item xs={4}>
                     <Typography variant="subtitle1">
-                        Return on Investment: {percentFormatter.format((portfolioTotal / tracker!.initialInvestment) - 1)}
+                        Return on Investment: {percentFormatter.format(Number(returnOnInvestment))}
                     </Typography>
                 </Grid>
             </Grid>

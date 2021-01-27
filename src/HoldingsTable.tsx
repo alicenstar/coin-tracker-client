@@ -1,7 +1,6 @@
 import React from "react";
 import {
     Button,
-    ClickAwayListener,
     IconButton,
     makeStyles,
     Paper,
@@ -12,6 +11,7 @@ import {
     TableHead,
     TableRow
 } from "@material-ui/core";
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { currencyFormatter, percentFormatter } from "./utils/Formatters";
 import { MuiTextField } from "./MuiTextField";
 import { useForm } from "react-hook-form";
@@ -81,6 +81,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 quantity: quantityEditDiff,
                 priceAtTransaction: transactionBody.priceAtTransaction
             };
+            // add new adjustment transaction
             await fetch(`http://localhost:5000/api/transactions/`, {
                 method: 'POST',
                 headers: {
@@ -89,36 +90,38 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 body: JSON.stringify(transactionBody),
             });
             // update holding value
-            await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
+            const holdingResponse = await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify(holdingBody),
             });
-            let updatedTracker = tracker;
-            const holding: IHolding | undefined = updatedTracker!.holdings.find(holding => holding._id === activeHolding);
-            holding!.quantity = data.newQuantity;
-            setTracker(updatedTracker);
+            const holdingJson = await holdingResponse.json();
+            console.log('json', holdingJson.holding);
+            // update tracker
+            const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
+            const trackerJson = await trackerResponse.json();
+            setTracker(trackerJson.tracker);
         }
         setQuantity(undefined);
         setActiveHolding(undefined);
     };
 
     const handleEditClick = (e: any) => {
-        setEditActive(true);
         const targetElement = e.target.closest('button[data-quantity]');
         const quantityValue = targetElement.getAttribute('data-quantity');
-        const holdingId = targetElement.getAttribute('data-holding')
+        const holdingId = targetElement.getAttribute('data-holding');
         setQuantity(quantityValue);
         setActiveHolding(holdingId);
+        setEditActive(true);
     };
 
     const handleClickAway = () => {
         setEditActive(false);
         setQuantity(undefined);
         setActiveHolding(undefined);
-    }
+    };
 
     return (
         <TableContainer component={Paper}>
@@ -139,67 +142,68 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                     {tracker!.holdings.map((holding: IHolding) => {
                         const listingMatch: IListing | undefined = listings.find(listing => listing.id === holding.coinId);
                         return (
-                        <TableRow key={holding.coinId}>
-                            <TableCell>
-                                {listingMatch!.name}
-                            </TableCell>
-                            <TableCell>
-                                {currencyFormatter.format(listingMatch!.quote.USD.price)}
-                            </TableCell>
-                            <TableCell>
-                                {listingMatch!.quote.USD.percent_change_1h > 0
-                                    ? percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100)
-                                    : percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100)
-                                }
-                            </TableCell>
-                            <ClickAwayListener onClickAway={handleClickAway}>
+                            <TableRow key={holding.coinId}>
                                 <TableCell>
-                                    {editActive && activeHolding === holding._id
-                                        ? (
-                                            <form onSubmit={handleSubmit(onSubmit)}>
-                                                <MuiTextField
-                                                    helperText=""
-                                                    name="newQuantity"
-                                                    label="Edit quantity"
-                                                    control={control}
-                                                    defaultValue={holding.quantity.toString()}
-                                                    rules={{
-                                                        pattern: {
-                                                            value: /^\d*?\.?\d*$/,
-                                                            message: 'Wrong number format'
-                                                        },
-                                                        required: 'This field is required',
-                                                        min: {
-                                                            value: 0,
-                                                            message: 'You must enter a value greater than 0'
-                                                        },
-                                                        valueAsNumber: true,
-                                                    }}
-                                                    errors={errors}
-                                                />
-                                                <Button type='submit'>Save</Button>
-                                            </form>
-                                        )
-                                        : (
-                                            <React.Fragment>
-                                                {holding.quantity}
-                                                <IconButton
-                                                    data-quantity={holding.quantity}
-                                                    data-holding={holding._id}
-                                                    onClick={handleEditClick}
-                                                >
-                                                    <EditIcon />
-                                                </IconButton>
-                                            </React.Fragment>
-                                        )
+                                    {listingMatch!.name}
+                                </TableCell>
+                                <TableCell>
+                                    {currencyFormatter.format(listingMatch!.quote.USD.price)}
+                                </TableCell>
+                                <TableCell>
+                                    {listingMatch!.quote.USD.percent_change_1h > 0
+                                        ? percentFormatter.format(Number(listingMatch!.quote.USD.percent_change_1h) / 100)
+                                        : percentFormatter.format(Number(listingMatch!.quote.USD.percent_change_1h) / 100)
                                     }
                                 </TableCell>
-                            </ClickAwayListener>
-                            <TableCell>
-                                {currencyFormatter.format(holding.quantity * listingMatch!.quote.USD.price)}
-                            </TableCell>
-                        </TableRow>
-                    );})}
+                                
+                                    <TableCell>
+                                        {editActive && activeHolding === holding._id
+                                            ? (
+                                                <ClickAwayListener onClickAway={handleClickAway}>
+                                                    <form onSubmit={handleSubmit(onSubmit)}>
+                                                        <MuiTextField
+                                                            helperText=""
+                                                            name="newQuantity"
+                                                            label="Edit quantity"
+                                                            control={control}
+                                                            defaultValue={holding.quantity.toString()}
+                                                            rules={{
+                                                                pattern: {
+                                                                    value: /^\d*?\.?\d*$/,
+                                                                    message: 'Wrong number format'
+                                                                },
+                                                                required: 'This field is required',
+                                                                min: {
+                                                                    value: 0,
+                                                                    message: 'You must enter a value greater than 0'
+                                                                },
+                                                                valueAsNumber: true,
+                                                            }}
+                                                            errors={errors}
+                                                        />
+                                                        <Button type='submit'>Save</Button>
+                                                    </form>
+                                                </ClickAwayListener>
+                                            ) : (
+                                                    <>
+                                                        {holding.quantity}
+                                                        <IconButton
+                                                            data-quantity={holding.quantity}
+                                                            data-holding={holding._id}
+                                                            onClick={handleEditClick}
+                                                        >
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                    </>
+                                            )
+                                        }
+                                    </TableCell>
+                                <TableCell>
+                                    {currencyFormatter.format(holding.quantity * listingMatch!.quote.USD.price)}
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

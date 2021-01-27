@@ -23,13 +23,15 @@ export const MuiTextField: React.FC<ITextProps> = ({
     errors,
     helperText
 }: ITextProps) => {
-    const labelId = `${name}-label`
+    const labelId = `${name}-label`;
+    console.log('errors', errors);
     return (
         <>
             <Controller
              render={(props) => (
                 <TextField
                  {...props}
+                 name={name}
                  helperText={helperText}
                  id={labelId}
                  label={label}
@@ -40,17 +42,19 @@ export const MuiTextField: React.FC<ITextProps> = ({
              defaultValue={defaultValue}
              rules={rules}
             />
-            <ErrorMessage
-             errors={errors}
-             name={name}
-             render={({ messages }) =>
-                messages &&
-                Object.entries(messages).map(([type, message]) => (
-                    <p key={type}>{message}</p>
-                ))
-             }
-             key={name}
-            />
+            {errors.length > 0 && (
+                <ErrorMessage
+                 errors={errors}
+                 name={name}
+                 render={({ messages }) =>
+                    messages &&
+                        Object.entries(messages).map(([type, message]) => (
+                            <p key={type}>{message}</p>
+                        ))
+                 }
+                 key={name}
+               />
+            )}
         </>
     );
 };
