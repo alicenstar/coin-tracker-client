@@ -1,8 +1,6 @@
 import React from 'react';
 import {
-	FormControlLabel,
-	FormGroup,
-	Switch as MuiSwitch,
+	Switch,
     Typography
 } from '@material-ui/core';
 import {
@@ -34,6 +32,8 @@ import { NewTracker } from './NewTracker';
 import Dashboard from './Dashboard';
 import { useParams } from 'react-router-dom';
 import { useTrackerContext } from './TrackerContext';
+import Brightness5Icon from '@material-ui/icons/Brightness5';
+import Brightness3Icon from '@material-ui/icons/Brightness3';
 
 
 type Props = {
@@ -110,16 +110,13 @@ export default function MiniDrawer({ children }: Props) {
                         </IconButton>
                         <Header />
                         <section className={classes.rightToolbar}>
-                            <FormGroup row>
-                                <FormControlLabel
-                                 label="Dark Mode"
-                                 control={<MuiSwitch
-                                    onChange={toggleTheme}
-                                    checked={state.darkModeOn}
-                                    name="darkSwitch"
-                                    />}
-                                />
-                            </FormGroup>
+                            <Switch
+                             onChange={toggleTheme}
+                             checked={state.darkModeOn}
+                             name="darkSwitch"
+                             icon={<Brightness5Icon />}
+                             checkedIcon={<Brightness3Icon />}
+                            />
                         </section>
                     </Toolbar>
                 </AppBar>
