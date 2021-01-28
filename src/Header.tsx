@@ -3,11 +3,7 @@ import React from "react";
 import { useTrackerContext } from "./TrackerContext";
 
 
-type Props = {
-    header: string | undefined;
-}
-
-export const Header: React.FC<Props> = ({ header }: Props) => {
+export const Header: React.FC = () => {
     const { tracker } = useTrackerContext()!;
 
     const handleCopyUrl = () => {
@@ -17,8 +13,8 @@ export const Header: React.FC<Props> = ({ header }: Props) => {
     return (
         <React.Fragment>
             <Typography variant="h6">
-                {header
-                    ? '# ' + header
+                {tracker
+                    ? '# ' + tracker!._id
                     : '< Create a tracker'
                 }
             </Typography>

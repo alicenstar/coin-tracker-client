@@ -16,19 +16,21 @@ import { useListingsContext } from './LatestListingsContext';
 type TransactionFormData = {
     type: "Buy" | "Sell";
     coinId: number;
-    quantity: number;
-    priceAtTransaction: number;
+    quantity: string;
+    priceAtTransaction: string;
     trackerId: string;
 };
 
-interface IProps {
-    findTracker: () => void;
-}
+// interface IProps {
+//     findTracker: () => void;
+// }
 
-export const NewTransactionForm: React.FC<IProps> = ({
-    findTracker
-}: IProps) => {
-    const { tracker } = useTrackerContext()!;
+export const NewTransactionForm: React.FC = (
+//     {
+//     findTracker
+// }: IProps
+) => {
+    const { tracker, findTracker } = useTrackerContext()!;
     const { listings } = useListingsContext()!;
     const {
         control,
@@ -46,7 +48,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
         if (getValues('type') === 'Sell') {
             if (!match) {
                 return 'Cannot sell a coin you do not own';
-            } else if (getValues('quantity') > match.quantity) {
+            } else if (Number(getValues('quantity')) > Number(match.quantity)) {
                 return 'Cannot sell more than you own';
             }
         }
@@ -79,9 +81,9 @@ export const NewTransactionForm: React.FC<IProps> = ({
         });
 
         // set priceAtTransaction to current market price if no user input provided
-        if (data.priceAtTransaction === 0) {
+        if (data.priceAtTransaction === '') {
             const listingMatch = listings.find(listing => listing.id === data.coinId);
-            data.priceAtTransaction = listingMatch!.quote.USD.price;
+            data.priceAtTransaction = listingMatch!.quote.USD.price.toString();
         }
         
         if (holdingMatch && data.type === 'Buy') {
@@ -94,6 +96,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         } else if (!holdingMatch && data.type === 'Buy') {
+            console.log('data new holding', data)
             // If user does not own the coin, create a new holding
             await fetch(`http://localhost:5000/api/holdings/`, {
                 method: 'POST',
@@ -103,9 +106,9 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 body: JSON.stringify(data),
             });
         } else if (holdingMatch && data.type === 'Sell') {
-            if (data.quantity > holdingMatch.quantity) {
+            if (Number(data.quantity) > Number(holdingMatch.quantity)) {
                 return;
-            } else if (data.quantity === holdingMatch.quantity) {
+            } else if (Number(data.quantity) === Number(holdingMatch.quantity)) {
                 // delete holding
                 await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
                     method: 'DELETE',
@@ -117,7 +120,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
             } else {
                 // update holding
                 // change quantity to negative number
-                data.quantity *= -1;
+                data.quantity = '-' + data.quantity;
                 await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
                     method: 'PUT',
                     headers: {
@@ -133,6 +136,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
         if (data.type === 'Buy' || (
             holdingMatch && data.type === 'Sell' && data.quantity <= holdingMatch.quantity
         )) {
+            console.log('data', data)
             // create transaction
             await fetch(`http://localhost:5000/api/transactions/`, {
                 method: 'POST',
@@ -186,7 +190,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
                         value: 0,
                         message: 'You must enter a value greater than 0'
                     },
-                    valueAsNumber: true,
                     validate: validateForm
                  }}
                  errors={errors}
@@ -202,7 +205,6 @@ export const NewTransactionForm: React.FC<IProps> = ({
                         value: 0,
                         message: 'You must enter a value greater than 0'
                     },
-                    valueAsNumber: true,
                     pattern: {
                         value: /^\d*?\.?\d*$/,
                         message: 'Wrong number format'

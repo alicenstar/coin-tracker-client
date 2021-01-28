@@ -12,8 +12,8 @@ export interface ITracker {
 export interface IHolding {
     _id: string;
     coinId: number;
-    quantity: number;
-    initialInvestment: number;
+    quantity: string;
+    initialInvestment: string;
     tracker: ITracker;
     createdAt: Date;
     updatedAt: Date;
@@ -23,8 +23,8 @@ export interface IHolding {
 export interface ITransaction {
     _id: string;
     coinId: number;
-    quantity: number;
-    priceAtTransaction: number;
+    quantity: string;
+    priceAtTransaction: string;
     type: 'Buy' | 'Sell' | 'Adjustment';
     tracker: string;
     createdAt: Date;

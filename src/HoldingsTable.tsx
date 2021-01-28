@@ -28,12 +28,12 @@ const useStyles = makeStyles({
 });
 
 interface TableFormData {
-    quantity: number;
+    newQuantity: string;
 }
 
 interface IHoldingUpdate {
-    quantity: number;
-    priceAtTransaction: number;
+    quantity: string;
+    priceAtTransaction: string;
 }
 
 interface ITransactionData extends IHoldingUpdate {
@@ -58,12 +58,14 @@ export const HoldingsTable: React.FC<ITableProps> = ({
     } = useForm<TableFormData>({ criteriaMode: 'all' });
     const [ editActive, setEditActive ] = React.useState<boolean>(false);
     const [ activeHolding, setActiveHolding ] = React.useState<string | undefined>(undefined);
-    const [ quantity, setQuantity ] = React.useState<number | undefined>(undefined);
+    const [ quantity, setQuantity ] = React.useState<string | undefined>(undefined);
     const classes = useStyles();
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: TableFormData) => {
         setEditActive(false);
-        const quantityEditDiff = data.newQuantity - quantity!;
+        console.log('new quantity', (parseFloat(data.newQuantity) * 100000000) / 100000000);
+        console.log('old quantity', (parseFloat(quantity!) * 100000000) / 100000000);
+        const quantityEditDiff = (parseFloat(data.newQuantity) * 100000000 - parseFloat(quantity!) * 100000000) / 100000000;
         // Check if entered quantity is different than previous quantity
         if (quantityEditDiff !== 0) {
             const holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: any) =>
@@ -71,14 +73,14 @@ export const HoldingsTable: React.FC<ITableProps> = ({
             );
             const listingMatch: IListing | undefined = listings.find(listing => listing.id === holdingMatch!.coinId);
             const transactionBody: ITransactionData = {
-                quantity: quantityEditDiff,
-                priceAtTransaction: listingMatch!.quote.USD.price,
+                quantity: quantityEditDiff.toString(),
+                priceAtTransaction: listingMatch!.quote.USD.price.toString(),
                 coinId: holdingMatch!.coinId,
                 type: 'Adjustment',
                 trackerId: tracker!._id
             };
             const holdingBody: IHoldingUpdate = {
-                quantity: quantityEditDiff,
+                quantity: quantityEditDiff.toString(),
                 priceAtTransaction: transactionBody.priceAtTransaction
             };
             // add new adjustment transaction
@@ -90,15 +92,13 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 body: JSON.stringify(transactionBody),
             });
             // update holding value
-            const holdingResponse = await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
+            await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify(holdingBody),
             });
-            const holdingJson = await holdingResponse.json();
-            console.log('json', holdingJson.holding);
             // update tracker
             const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
             const trackerJson = await trackerResponse.json();
@@ -151,8 +151,8 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                 </TableCell>
                                 <TableCell>
                                     {listingMatch!.quote.USD.percent_change_1h > 0
-                                        ? percentFormatter.format(Number(listingMatch!.quote.USD.percent_change_1h) / 100)
-                                        : percentFormatter.format(Number(listingMatch!.quote.USD.percent_change_1h) / 100)
+                                        ? percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100)
+                                        : percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100)
                                     }
                                 </TableCell>
                                 
@@ -177,7 +177,6 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                                     value: 0,
                                                                     message: 'You must enter a value greater than 0'
                                                                 },
-                                                                valueAsNumber: true,
                                                             }}
                                                             errors={errors}
                                                         />
@@ -186,7 +185,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                 </ClickAwayListener>
                                             ) : (
                                                     <>
-                                                        {holding.quantity}
+                                                        {parseFloat(holding.quantity)}
                                                         <IconButton
                                                             data-quantity={holding.quantity}
                                                             data-holding={holding._id}
@@ -199,7 +198,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                         }
                                     </TableCell>
                                 <TableCell>
-                                    {currencyFormatter.format(holding.quantity * listingMatch!.quote.USD.price)}
+                                    {currencyFormatter.format(parseFloat(holding.quantity) * listingMatch!.quote.USD.price)}
                                 </TableCell>
                             </TableRow>
                         );

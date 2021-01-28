@@ -42,7 +42,7 @@ type Props = {
 
 export default function MiniDrawer({ children }: Props) {
     const { setPageElement } = usePageContext()!;
-    const { tracker, setTracker } = useTrackerContext()!;
+    const { tracker, setId } = useTrackerContext()!;
     const classes = useMiniDrawerStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
@@ -50,7 +50,6 @@ export default function MiniDrawer({ children }: Props) {
     });
     const [ open, setOpen ] = React.useState(false);
     const { id } = useParams<{id: string}>();
-    const trackerId = React.useRef(id);
     const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
     let drawerLinks;
     tracker
@@ -84,19 +83,10 @@ export default function MiniDrawer({ children }: Props) {
     };
 
     React.useEffect(() => {
-        const fetchTracker = async () => {
-            const response = await fetch(`http://localhost:5000/api/trackers/${trackerId.current}`);
-            const json = await response.json();
-            if (json.tracker) {
-                setTracker(json.tracker);
-            } else {
-                setTracker(undefined);
-            }
-        };
-        if (trackerId.current) {
-            fetchTracker();
+        if (id) {
+            setId(id);
         }
-    }, [setTracker]);
+    }, [id, setId]);
 
 	return (
 		<ThemeProvider theme={currentTheme}>
@@ -118,7 +108,7 @@ export default function MiniDrawer({ children }: Props) {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Header header={tracker?._id} />
+                        <Header />
                         <section className={classes.rightToolbar}>
                             <FormGroup row>
                                 <FormControlLabel
