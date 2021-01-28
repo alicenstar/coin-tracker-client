@@ -42,7 +42,7 @@ export const MuiTextField: React.FC<ITextProps> = ({
              defaultValue={defaultValue}
              rules={rules}
             />
-            {errors.length > 0 && (
+            {errors && (
                 <ErrorMessage
                  errors={errors}
                  name={name}

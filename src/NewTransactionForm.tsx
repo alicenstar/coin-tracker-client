@@ -34,30 +34,24 @@ export const NewTransactionForm: React.FC<IProps> = ({
         control,
         handleSubmit,
         errors,
-        setError,
         formState,
         reset,
-        getValues
+        getValues,
     } = useForm<TransactionFormData>({
         criteriaMode: 'all',
     });
 
     const validateForm = React.useCallback(async () => {
+        const match = tracker!.holdings.find(holding => holding.coinId === getValues('coinId'));
         if (getValues('type') === 'Sell') {
-            const match = tracker!.holdings.find(holding => holding.coinId === getValues('coinId'));
             if (!match) {
-                setError('quantity', { type: 'wrongCoin', message: 'Cannot sell a coin you do not own'});
-            } else {
-                if (getValues('quantity') > match.quantity) {
-                    setError('quantity', { type: 'wrongQuantity', message: 'Cannot sell more than you own' });
-                }
+                return 'Cannot sell a coin you do not own';
+            } else if (getValues('quantity') > match.quantity) {
+                return 'Cannot sell more than you own';
             }
         }
-    }, [getValues, setError, tracker]);
-
-    React.useEffect(() => {
-        validateForm();
-    }, [formState.isValidating, validateForm]);
+        return true;
+    }, [getValues, tracker]);
 
     const symbols = listings.map((listing: IListing) => (
         {
@@ -110,10 +104,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
             });
         } else if (holdingMatch && data.type === 'Sell') {
             if (data.quantity > holdingMatch.quantity) {
-                setError('quantity', {
-                    type: 'manual',
-                    message: 'Cannot sell more than you own'
-                });
+                return;
             } else if (data.quantity === holdingMatch.quantity) {
                 // delete holding
                 await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
@@ -136,10 +127,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                 });
             }
         } else if (!holdingMatch && data.type === 'Sell') {
-            setError('coinId', {
-                type: 'manual',
-                message: 'Cannot sell a coin you do not own'
-            });
+            return;
         }
         // Check to see if a transaction should be created
         if (data.type === 'Buy' || (
@@ -161,22 +149,22 @@ export const NewTransactionForm: React.FC<IProps> = ({
         <Box bgcolor="info.main">
             <Typography variant='h6'>New Transaction</Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <MuiSelect 
+                <MuiSelect
                  name="type"
                  label="Transaction type"
                  control={control}
                  defaultValue='Buy'
-                 rules={{ required: true }}
+                 rules={{ required: true, validate: validateForm }}
                 >
                     <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
                     <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
                 </MuiSelect>
-                <MuiSelect 
+                <MuiSelect
                  name="coinId"
                  label="Coin to Buy/Sell"
                  control={control}
                  defaultValue={symbols[0].id}
-                 rules={{ required: true }}
+                 rules={{ required: true, validate: validateForm }}
                 >
                     {symbols.map((coin) => (
                         <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
@@ -199,6 +187,7 @@ export const NewTransactionForm: React.FC<IProps> = ({
                         message: 'You must enter a value greater than 0'
                     },
                     valueAsNumber: true,
+                    validate: validateForm
                  }}
                  errors={errors}
                 />
