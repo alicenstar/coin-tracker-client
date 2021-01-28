@@ -24,6 +24,7 @@ export const MuiTextField: React.FC<ITextProps> = ({
     helperText
 }: ITextProps) => {
     const labelId = `${name}-label`;
+    console.log('errors', errors);
     return (
         <>
             <Controller

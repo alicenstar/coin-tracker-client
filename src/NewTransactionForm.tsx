@@ -21,15 +21,7 @@ type TransactionFormData = {
     trackerId: string;
 };
 
-// interface IProps {
-//     findTracker: () => void;
-// }
-
-export const NewTransactionForm: React.FC = (
-//     {
-//     findTracker
-// }: IProps
-) => {
+export const NewTransactionForm: React.FC = () => {
     const { tracker, findTracker } = useTrackerContext()!;
     const { listings } = useListingsContext()!;
     const {
@@ -41,6 +33,7 @@ export const NewTransactionForm: React.FC = (
         getValues,
     } = useForm<TransactionFormData>({
         criteriaMode: 'all',
+        mode: 'onChange'
     });
 
     const validateForm = React.useCallback(async () => {
@@ -48,7 +41,7 @@ export const NewTransactionForm: React.FC = (
         if (getValues('type') === 'Sell') {
             if (!match) {
                 return 'Cannot sell a coin you do not own';
-            } else if (Number(getValues('quantity')) > Number(match.quantity)) {
+            } else if (parseFloat(getValues('quantity')) > parseFloat(match.quantity)) {
                 return 'Cannot sell more than you own';
             }
         }
@@ -67,8 +60,8 @@ export const NewTransactionForm: React.FC = (
             reset({
                 type: 'Buy',
                 coinId: symbols[0].id,
-                quantity: undefined,
-                priceAtTransaction: undefined
+                quantity: '',
+                priceAtTransaction: ''
             });
         }
     }, [formState.isSubmitSuccessful, reset, symbols]);
@@ -96,7 +89,6 @@ export const NewTransactionForm: React.FC = (
                 body: JSON.stringify(data),
             });
         } else if (!holdingMatch && data.type === 'Buy') {
-            console.log('data new holding', data)
             // If user does not own the coin, create a new holding
             await fetch(`http://localhost:5000/api/holdings/`, {
                 method: 'POST',
@@ -106,9 +98,9 @@ export const NewTransactionForm: React.FC = (
                 body: JSON.stringify(data),
             });
         } else if (holdingMatch && data.type === 'Sell') {
-            if (Number(data.quantity) > Number(holdingMatch.quantity)) {
+            if (parseFloat(data.quantity) > parseFloat(holdingMatch.quantity)) {
                 return;
-            } else if (Number(data.quantity) === Number(holdingMatch.quantity)) {
+            } else if (parseFloat(data.quantity) === parseFloat(holdingMatch.quantity)) {
                 // delete holding
                 await fetch(`http://localhost:5000/api/holdings/${holdingMatch._id}`, {
                     method: 'DELETE',
@@ -136,7 +128,6 @@ export const NewTransactionForm: React.FC = (
         if (data.type === 'Buy' || (
             holdingMatch && data.type === 'Sell' && data.quantity <= holdingMatch.quantity
         )) {
-            console.log('data', data)
             // create transaction
             await fetch(`http://localhost:5000/api/transactions/`, {
                 method: 'POST',

@@ -1,4 +1,5 @@
 import React from 'react';
+import Loading from './Loading';
 import { ITracker } from './types/types';
 
 
@@ -22,6 +23,7 @@ export const TrackerProvider = ({
 }: Props) => {
     const [ tracker, setTracker ] = React.useState<ITracker | undefined>(undefined);
     const [ id, setId ] = React.useState<string | undefined>(undefined);
+    const [ loaded, setLoaded ] = React.useState<boolean>(false);
 
     const findTracker = React.useCallback(async () => {
         const response = await fetch(`http://localhost:5000/api/trackers/${id}`);
@@ -31,16 +33,19 @@ export const TrackerProvider = ({
         } else {
             setTracker(undefined);
         }
+        setLoaded(true);
     }, [setTracker, id]);
 
     React.useEffect(() => {
         if (id) {
+            setLoaded(false);
             findTracker();
         }
     }, [findTracker, id]);
 
     return (
         <TrackerContext.Provider value={{ tracker, setTracker, findTracker, setId }}>
+            {!loaded && <Loading />}
             {children}
         </TrackerContext.Provider>
     )

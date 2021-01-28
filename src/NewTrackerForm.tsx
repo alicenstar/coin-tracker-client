@@ -31,7 +31,9 @@ export const NewTrackerForm: React.FC<Props> = ({
         handleSubmit,
         errors,
         formState
-    } = useForm<TrackerFormData>();
+    } = useForm<TrackerFormData>({
+        criteriaMode: 'all',
+    });
     const { setPageElement } = usePageContext()!;
     const history = useHistory();
 
