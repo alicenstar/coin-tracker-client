@@ -55,7 +55,11 @@ export default function MiniDrawer({ children }: Props) {
     const [ loginOpen, setLoginOpen ] = React.useState(false);
     const [ signupOpen, setSignupOpen ] = React.useState(false);
     const { id } = useParams<{id: string}>();
-    const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
+    let currentTheme = createMuiTheme({
+        palette: {
+            type: state.darkModeOn ? 'dark' : 'light'
+        }
+    });
     let drawerLinks;
     tracker
         ? drawerLinks = ['Overview', 'Portfolio']

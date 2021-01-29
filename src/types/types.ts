@@ -32,6 +32,11 @@ export interface ITransaction {
     __v: any;
 }
 
+export interface IUser {
+    id: string;
+    username: string;
+}
+
 type Quote = {
     price: number;
     volume_24h: number;

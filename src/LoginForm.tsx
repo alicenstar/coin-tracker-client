@@ -39,7 +39,7 @@ export const LoginForm: React.FC<Props> = ({
             body: JSON.stringify(data),
         });
         const json = await response.json();
-        console.log('login result', json);
+        // console.log('cookies', response.signedCookies);
         setOpen(!open);
     };
 

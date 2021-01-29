@@ -39,18 +39,22 @@ export const SignupForm: React.FC<Props> = ({
             body: JSON.stringify(data),
         });
         const json = await response.json();
-        console.log('json user response', json);
-        const loginResponse = await fetch('http://localhost:5000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: data.username,
-                password: data.password
-            }),
-        });
-        console.log('loginresponse signup', loginResponse);
+        if (json.user) {
+            const loginResponse = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: data.username,
+                    password: data.password
+                }),
+            });
+            console.log('loginresponse signup', loginResponse);
+        } else {
+            console.log('error creating user');
+        }
+        
         setOpen(!open);
     };
 
