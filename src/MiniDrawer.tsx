@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Button,
 	Switch,
     Typography
 } from '@material-ui/core';
@@ -34,6 +35,8 @@ import { useParams } from 'react-router-dom';
 import { useTrackerContext } from './TrackerContext';
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
+import { LoginDialog } from './LoginDialog';
+import { SignupDialog } from './SignupDialog';
 
 
 type Props = {
@@ -48,7 +51,9 @@ export default function MiniDrawer({ children }: Props) {
 		drawerOpen: false,
         darkModeOn: false,
     });
-    const [ open, setOpen ] = React.useState(false);
+    const [ newTrackerOpen, setNewTrackerOpen ] = React.useState(false);
+    const [ loginOpen, setLoginOpen ] = React.useState(false);
+    const [ signupOpen, setSignupOpen ] = React.useState(false);
     const { id } = useParams<{id: string}>();
     const currentTheme = createMuiTheme(state.darkModeOn ? darkTheme : lightTheme);
     let drawerLinks;
@@ -110,6 +115,12 @@ export default function MiniDrawer({ children }: Props) {
                         </IconButton>
                         <Header />
                         <section className={classes.rightToolbar}>
+                            <Button onClick={() => setLoginOpen(!loginOpen)}>
+                                Login
+                            </Button>
+                            <Button onClick={() => setSignupOpen(!signupOpen)}>
+                                Signup
+                            </Button>
                             <Switch
                              onChange={toggleTheme}
                              checked={state.darkModeOn}
@@ -156,7 +167,7 @@ export default function MiniDrawer({ children }: Props) {
                                 <ListItemText primary={text} />
                             </ListItem>
                         ))}
-                        <ListItem button id='New Tracker' onClick={() => {setOpen(!open);}}>
+                        <ListItem button id='New Tracker' onClick={() => setNewTrackerOpen(!newTrackerOpen)}>
                             <ListItemIcon>
                                 <AddIcon />
                             </ListItemIcon>
@@ -166,7 +177,9 @@ export default function MiniDrawer({ children }: Props) {
                 </Drawer>
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-                    <NewTracker open={open} setOpen={x => setOpen(x)} />
+                    <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />
+                    <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
+                    <SignupDialog open={signupOpen} setOpen={x => setSignupOpen(x)} />
                     <Dashboard />
 					{children}
 				</main>

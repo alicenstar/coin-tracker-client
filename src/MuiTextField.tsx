@@ -12,6 +12,7 @@ interface ITextProps {
     rules?: any;
     errors: DeepMap<any, FieldError>;
     helperText: string;
+    inputProps?: any;
 }
 
 export const MuiTextField: React.FC<ITextProps> = ({
@@ -21,7 +22,8 @@ export const MuiTextField: React.FC<ITextProps> = ({
     defaultValue,
     rules,
     errors,
-    helperText
+    helperText,
+    inputProps
 }: ITextProps) => {
     const labelId = `${name}-label`;
     console.log('errors', errors);
@@ -31,6 +33,7 @@ export const MuiTextField: React.FC<ITextProps> = ({
              render={(props) => (
                 <TextField
                  {...props}
+                 inputProps={inputProps}
                  name={name}
                  helperText={helperText}
                  id={labelId}

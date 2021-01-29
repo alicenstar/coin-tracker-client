@@ -26,6 +26,7 @@ export const TrackerProvider = ({
     const [ loaded, setLoaded ] = React.useState<boolean>(false);
 
     const findTracker = React.useCallback(async () => {
+        setLoaded(false);
         const response = await fetch(`http://localhost:5000/api/trackers/${id}`);
         const json = await response.json();
         if (json.tracker) {
@@ -37,10 +38,7 @@ export const TrackerProvider = ({
     }, [setTracker, id]);
 
     React.useEffect(() => {
-        if (id) {
-            setLoaded(false);
-            findTracker();
-        }
+        findTracker();
     }, [findTracker, id]);
 
     return (

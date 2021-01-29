@@ -1,77 +1,83 @@
-import {
-    Button,
-    DialogActions
-} from '@material-ui/core';
+import { Button, DialogActions } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import { MuiTextField } from './MuiTextField';
-import { usePageContext } from './PageContext';
-import { useTrackerContext } from './TrackerContext';
 
 
-type TrackerFormData = {
-    trackerName: string;
+type LoginFormData = {
+    username: string;
+    password: string;
 };
 
-interface Props {
+type Props = {
     children: React.ReactNode;
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
-export const NewTrackerForm: React.FC<Props> = ({
+export const LoginForm: React.FC<Props> = ({
     children,
     open,
     setOpen
 }: Props) => {
-    const { tracker, setTracker } = useTrackerContext()!;
     const {
         control,
         handleSubmit,
         errors,
         formState
-    } = useForm<TrackerFormData>({
+    } = useForm<LoginFormData>({
         criteriaMode: 'all',
     });
-    const { setPageElement } = usePageContext()!;
-    const history = useHistory();
 
-    const onSubmit = async (data: TrackerFormData) => {
-        const response = await fetch('http://localhost:5000/api/trackers/', {
+    const onSubmit = async (data: LoginFormData) => {
+        const response = await fetch('http://localhost:5000/api/auth/login', {
             method: 'POST',
+            // credentials: 'same-origin',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(data),
         });
         const json = await response.json();
-        setTracker(json.tracker);
-        setPageElement('Portfolio');
+        console.log('login result', json);
         setOpen(!open);
     };
 
     React.useEffect(() => {
-        if (formState.isSubmitSuccessful && tracker) {
-            history.push(`/${tracker._id}`);
+        if (formState.isSubmitSuccessful) {
+            // do something
         }
-    }, [history, formState.isSubmitSuccessful, tracker]);
+    }, [formState.isSubmitSuccessful]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <MuiTextField
              helperText=""
-             name="trackerName"
-             label="Tracker name"
+             name="username"
+             label="Username"
              control={control}
              defaultValue=''
              rules={{
                 required: 'This field is required',
+                minLength: 4
+             }}
+             errors={errors}
+            />
+            <MuiTextField
+             inputProps={{ type: 'password' }}
+             helperText=""
+             name="password"
+             label="Password"
+             control={control}
+             defaultValue=''
+             rules={{
+                required: 'This field is required',
+                minLength: 8
              }}
              errors={errors}
             />
             <DialogActions>
-                <Button type="submit">Create Tracker</Button>
+                <Button type="submit">Login</Button>
                 {children}
             </DialogActions>
         </form>
