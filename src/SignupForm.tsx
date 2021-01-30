@@ -62,12 +62,6 @@ export const SignupForm: React.FC<Props> = ({
         setOpen(!open);
     };
 
-    // React.useEffect(() => {
-    //     if (formState.isSubmitSuccessful) {
-    //         // do something
-    //     }
-    // }, [formState.isSubmitSuccessful]);
-
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <MuiTextField
@@ -78,7 +72,10 @@ export const SignupForm: React.FC<Props> = ({
              defaultValue=''
              rules={{
                 required: 'This field is required',
-                minLength: 4
+                minLength: {
+                    value: 4,
+                    message: 'Username must be at least 4 characters'
+                }
              }}
              errors={errors}
             />
@@ -91,7 +88,10 @@ export const SignupForm: React.FC<Props> = ({
              defaultValue=''
              rules={{
                 required: 'This field is required',
-                minLength: 8
+                minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters'
+                }
              }}
              errors={errors}
             />
@@ -103,7 +103,10 @@ export const SignupForm: React.FC<Props> = ({
              defaultValue=''
              rules={{
                 required: 'This field is required',
-                pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+                pattern: {
+                    value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: 'Incorrect email format'
+                }
              }}
              errors={errors}
             />
