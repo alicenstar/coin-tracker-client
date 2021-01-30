@@ -61,7 +61,6 @@ export const LoginForm: React.FC<Props> = ({
              defaultValue=''
              rules={{
                 required: 'This field is required',
-                minLength: 4
              }}
              errors={errors}
             />
@@ -74,7 +73,6 @@ export const LoginForm: React.FC<Props> = ({
              defaultValue=''
              rules={{
                 required: 'This field is required',
-                minLength: 8
              }}
              errors={errors}
             />
