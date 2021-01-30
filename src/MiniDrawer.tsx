@@ -37,6 +37,7 @@ import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import { LoginDialog } from './LoginDialog';
 import { SignupDialog } from './SignupDialog';
+import { useUserContext } from './UserContext';
 
 
 type Props = {
@@ -54,6 +55,7 @@ export default function MiniDrawer({ children }: Props) {
     const [ newTrackerOpen, setNewTrackerOpen ] = React.useState(false);
     const [ loginOpen, setLoginOpen ] = React.useState(false);
     const [ signupOpen, setSignupOpen ] = React.useState(false);
+    const { user, setUser } = useUserContext()!;
     const { id } = useParams<{id: string}>();
     let currentTheme = createMuiTheme({
         palette: {
@@ -91,6 +93,11 @@ export default function MiniDrawer({ children }: Props) {
         setPageElement(element);
     };
 
+    const handleLogout = async () => {
+        await fetch('http://localhost:5000/api/auth/logout');
+        setUser(undefined);
+    };
+
     React.useEffect(() => {
         if (id) {
             setId(id);
@@ -119,12 +126,20 @@ export default function MiniDrawer({ children }: Props) {
                         </IconButton>
                         <Header />
                         <section className={classes.rightToolbar}>
-                            <Button onClick={() => setLoginOpen(!loginOpen)}>
-                                Login
-                            </Button>
-                            <Button onClick={() => setSignupOpen(!signupOpen)}>
-                                Signup
-                            </Button>
+                            {!user 
+                                ? (
+                                <>
+                                    <Button onClick={() => setLoginOpen(!loginOpen)}>
+                                        Login
+                                    </Button>
+                                    <Button onClick={() => setSignupOpen(!signupOpen)}>
+                                        Signup
+                                    </Button>
+                                </>
+                                ) : (
+                                    <Button onClick={handleLogout}>Logout</Button>
+                                )
+                            }
                             <Switch
                              onChange={toggleTheme}
                              checked={state.darkModeOn}

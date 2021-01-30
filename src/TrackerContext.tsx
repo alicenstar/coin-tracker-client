@@ -38,7 +38,11 @@ export const TrackerProvider = ({
     }, [setTracker, id]);
 
     React.useEffect(() => {
-        findTracker();
+        if (id) {
+            findTracker();
+        } else {
+            setLoaded(true);
+        }
     }, [findTracker, id]);
 
     return (

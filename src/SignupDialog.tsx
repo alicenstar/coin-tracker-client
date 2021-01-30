@@ -1,4 +1,10 @@
-import { Button, Dialog, DialogContent, DialogTitle } from '@material-ui/core';
+import {
+    Button,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from '@material-ui/core';
 import React from 'react';
 import { SignupForm } from './SignupForm';
 
@@ -18,6 +24,9 @@ export const SignupDialog: React.FC<Props> = ({ open, setOpen }: Props) => {
             <Dialog open={open} onClose={handleClose} aria-labelledby="dialog-title-signup-form">
                 <DialogTitle id="dialog-title-signup-form">Sign Up</DialogTitle>
                 <DialogContent>
+                    <DialogContentText>
+                        Signing up allows you to save multiple trackers to your account.
+                    </DialogContentText>
                     <SignupForm open={open} setOpen={x => setOpen(x)}>
                         <Button onClick={handleClose}>Close</Button>
                     </SignupForm>

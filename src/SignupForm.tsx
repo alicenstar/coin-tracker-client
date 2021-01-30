@@ -2,6 +2,7 @@ import { Button, DialogActions } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { MuiTextField } from './MuiTextField';
+import { useUserContext } from './UserContext';
 
 
 type LoginFormData = {
@@ -29,16 +30,18 @@ export const SignupForm: React.FC<Props> = ({
     } = useForm<LoginFormData>({
         criteriaMode: 'all',
     });
+    const { setUser } = useUserContext()!;
 
     const onSubmit = async (data: LoginFormData) => {
-        const response = await fetch('http://localhost:5000/api/users/', {
+        const userResponse = await fetch('http://localhost:5000/api/users/', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(data),
         });
-        const json = await response.json();
+        const json = await userResponse.json();
+        // if user is created successfully, log them in
         if (json.user) {
             const loginResponse = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
@@ -50,11 +53,12 @@ export const SignupForm: React.FC<Props> = ({
                     password: data.password
                 }),
             });
-            console.log('loginresponse signup', loginResponse);
+            const loginJson = await loginResponse.json();
+            console.log('loginresponse signup', loginJson);
+            setUser(loginJson.user);
         } else {
             console.log('error creating user');
         }
-        
         setOpen(!open);
     };
 
