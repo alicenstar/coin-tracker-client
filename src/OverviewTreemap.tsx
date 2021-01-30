@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
+import { largeCurrencyFormatter } from './utils/Formatters';
 
 
 interface IProps {
@@ -7,14 +8,13 @@ interface IProps {
     height: number;
     width: number;
 }
-    //   .sum((d) => d.market_cap)
 
 export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProps) => {
     const svgRef = React.useRef(null);
+    // const { width, height } = ref;
 
     const renderTreemap = React.useCallback(() => {
         const svg = d3.select(svgRef.current);
-        const fontSize = 12;
         svg.attr('width', width).attr('height', height);
         const root = d3
           .hierarchy(data)
@@ -30,15 +30,57 @@ export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProp
         const colorScale = d3.scaleOrdinal(d3.schemeCategory10.map(fader));
         nodes
           .append('rect')
-          .attr('width', (d) => d.x1 - d.x0)
-          .attr('height', (d) => d.y1 - d.y0)
+          .attr('width', d => d.x1 - d.x0)
+          .attr('height', d => d.y1 - d.y0)
           .attr('fill', (d: any) => colorScale(d.data.name));
         nodes
           .append('text')
-          .text((d: any) => `${d.data.name} ${d.data.value}`)
-          .attr('font-size', `${fontSize}px`)
-          .attr('x', 3)
-          .attr('y', fontSize);
+          .text((d: any) => `${d.data.name}`)
+          .attr('font-size', d => (d.x1 - d.x0) / 5)
+          .attr('x', d => (d.x1 - d.x0) / 2)
+          .attr('y', d => (d.y1 - d.y0) / 2)
+          .attr('dy', '.35em')
+          .style("text-anchor", "middle");
+
+        var tooltip = d3.select("body")
+          .append("div")
+          .style("position", "absolute")
+          .style("z-index", "10")
+          .style("visibility", "hidden")
+          .style("background", "#fff")
+          .style("padding", '10px')
+          .style("pointer-events", 'none')
+          .style("width", "170px")
+          .style("height", "100px");
+      
+        nodes
+            .on("mouseover", function(d) {
+                tooltip.html(`
+                    <div>
+                        <p>${d.target.__data__.data.name}</p>
+                        <p>Market Cap: ${largeCurrencyFormatter(d.target.__data__.value)}</p>
+                    </div>
+                `);
+                return tooltip.style("visibility", "visible");
+            })
+            .on("mousemove", function(e) {
+                if (e.pageX > (width - 70)) {
+                    tooltip
+                        .style("top", (e.pageY)+"px")
+                        .style("left", (e.pageX-170)+"px")
+                        .style("text-align", 'right');
+                } else {
+                    tooltip
+                        .style("top", (e.pageY)+"px")
+                        .style("left",(e.pageX)+"px")
+                        .style("text-align", 'left');
+                }
+                return tooltip
+            })
+            .on("mouseout", function() {
+                return tooltip
+                        .style("visibility", "hidden")
+            });
     }, [data, height, width]);
      
     React.useEffect(() => {
@@ -49,6 +91,6 @@ export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProp
         <div className="treemap">
             <svg ref={svgRef} />
         </div>
-    )
-}
+    );
+};
 
