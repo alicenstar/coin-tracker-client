@@ -12,7 +12,7 @@ import {
     TableRow
 } from "@material-ui/core";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { currencyFormatter, percentFormatter } from "./utils/Formatters";
+import { currencyFormatter } from "./utils/Formatters";
 import { MuiTextField } from "./MuiTextField";
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
@@ -44,10 +44,12 @@ interface ITransactionData extends IHoldingUpdate {
 
 interface ITableProps {
     headers?: string[];
+    data: any;
 }
 
 export const HoldingsTable: React.FC<ITableProps> = ({
     headers,
+    data
 }: ITableProps) => {
     const { listings } = useListingsContext()!;
     const { tracker, setTracker } = useTrackerContext()!;
@@ -63,8 +65,6 @@ export const HoldingsTable: React.FC<ITableProps> = ({
 
     const onSubmit = async (data: TableFormData) => {
         setEditActive(false);
-        console.log('new quantity', (parseFloat(data.newQuantity) * 100000000) / 100000000);
-        console.log('old quantity', (parseFloat(quantity!) * 100000000) / 100000000);
         const quantityEditDiff = (parseFloat(data.newQuantity) * 100000000 - parseFloat(quantity!) * 100000000) / 100000000;
         // Check if entered quantity is different than previous quantity
         if (quantityEditDiff !== 0) {
@@ -139,66 +139,61 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 )}
                 
                 <TableBody>
-                    {tracker!.holdings.map((holding: IHolding) => {
-                        const listingMatch: IListing | undefined = listings.find(listing => listing.id === holding.coinId);
+                    {data.map((row: any) => {
                         return (
-                            <TableRow key={holding.coinId}>
+                            <TableRow key={row.id}>
                                 <TableCell>
-                                    {listingMatch!.name}
+                                    {row.name}
                                 </TableCell>
                                 <TableCell>
-                                    {currencyFormatter.format(listingMatch!.quote.USD.price)}
+                                    {row.marketPrice}
                                 </TableCell>
                                 <TableCell>
-                                    {listingMatch!.quote.USD.percent_change_1h > 0
-                                        ? percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100)
-                                        : percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100)
+                                    {row.percentChange1H}
+                                </TableCell>
+                                <TableCell>
+                                    {editActive && activeHolding === row.id
+                                        ? (
+                                            <ClickAwayListener onClickAway={handleClickAway}>
+                                                <form onSubmit={handleSubmit(onSubmit)}>
+                                                    <MuiTextField
+                                                        helperText=""
+                                                        name="newQuantity"
+                                                        label="Edit quantity"
+                                                        control={control}
+                                                        defaultValue={row.quantity.toString()}
+                                                        rules={{
+                                                            pattern: {
+                                                                value: /^\d*?\.?\d*$/,
+                                                                message: 'Wrong number format'
+                                                            },
+                                                            required: 'This field is required',
+                                                            min: {
+                                                                value: 0,
+                                                                message: 'You must enter a value greater than 0'
+                                                            },
+                                                        }}
+                                                        errors={errors}
+                                                    />
+                                                    <Button type='submit'>Save</Button>
+                                                </form>
+                                            </ClickAwayListener>
+                                        ) : (
+                                                <>
+                                                    {row.quantity}
+                                                    <IconButton
+                                                        data-quantity={row.quantity}
+                                                        data-holding={row.id}
+                                                        onClick={handleEditClick}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </>
+                                        )
                                     }
                                 </TableCell>
-                                
-                                    <TableCell>
-                                        {editActive && activeHolding === holding._id
-                                            ? (
-                                                <ClickAwayListener onClickAway={handleClickAway}>
-                                                    <form onSubmit={handleSubmit(onSubmit)}>
-                                                        <MuiTextField
-                                                            helperText=""
-                                                            name="newQuantity"
-                                                            label="Edit quantity"
-                                                            control={control}
-                                                            defaultValue={holding.quantity.toString()}
-                                                            rules={{
-                                                                pattern: {
-                                                                    value: /^\d*?\.?\d*$/,
-                                                                    message: 'Wrong number format'
-                                                                },
-                                                                required: 'This field is required',
-                                                                min: {
-                                                                    value: 0,
-                                                                    message: 'You must enter a value greater than 0'
-                                                                },
-                                                            }}
-                                                            errors={errors}
-                                                        />
-                                                        <Button type='submit'>Save</Button>
-                                                    </form>
-                                                </ClickAwayListener>
-                                            ) : (
-                                                    <>
-                                                        {parseFloat(holding.quantity)}
-                                                        <IconButton
-                                                            data-quantity={holding.quantity}
-                                                            data-holding={holding._id}
-                                                            onClick={handleEditClick}
-                                                        >
-                                                            <EditIcon />
-                                                        </IconButton>
-                                                    </>
-                                            )
-                                        }
-                                    </TableCell>
                                 <TableCell>
-                                    {currencyFormatter.format(parseFloat(holding.quantity) * listingMatch!.quote.USD.price)}
+                                    {currencyFormatter.format(row.totalValue)}
                                 </TableCell>
                             </TableRow>
                         );

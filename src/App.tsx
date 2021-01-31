@@ -8,6 +8,7 @@ import MiniDrawer from './MiniDrawer';
 import { PageProvider } from './PageContext';
 import { TrackerProvider } from './TrackerContext';
 import { UserProvider } from './UserContext';
+import { LatestListingsProvider } from './LatestListingsContext';
 
 
 function App(): JSX.Element {
@@ -16,10 +17,12 @@ function App(): JSX.Element {
 		<UserProvider>
 			<TrackerProvider>
 				<PageProvider>
-					<Router>
-						<CssBaseline />
-						<Route path="/:id?" component={(props: any) => <MiniDrawer {...props} />} />
-					</Router>
+					<LatestListingsProvider>
+						<Router>
+							<CssBaseline />
+							<Route path="/:id?" component={(props: any) => <MiniDrawer {...props} />} />
+						</Router>
+					</LatestListingsProvider>
 				</PageProvider>
 			</TrackerProvider>
 		</UserProvider>

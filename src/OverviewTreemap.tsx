@@ -11,7 +11,6 @@ interface IProps {
 
 export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProps) => {
     const svgRef = React.useRef(null);
-    // const { width, height } = ref;
 
     const renderTreemap = React.useCallback(() => {
         const svg = d3.select(svgRef.current);

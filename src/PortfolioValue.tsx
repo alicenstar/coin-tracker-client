@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { currencyFormatter, percentFormatter } from './utils/Formatters';
 import { useTrackerContext } from './TrackerContext';
@@ -21,7 +21,7 @@ export const PortfolioValue: React.FC = () => {
     }
 ;
     return (
-        <Box>
+        <Container>
             <Typography variant="h6">Portfolio Value</Typography>
             <Grid container spacing={3}>
                 <Grid item xs={4}>
@@ -40,6 +40,6 @@ export const PortfolioValue: React.FC = () => {
                     </Typography>
                 </Grid>
             </Grid>
-        </Box>
+        </Container>
     );
 };

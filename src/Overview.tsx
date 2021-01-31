@@ -1,9 +1,11 @@
+import { Container } from "@material-ui/core";
 import React from "react";
 import { useListingsContext } from "./LatestListingsContext";
 import { OverviewTable } from "./OverviewTable";
 import { OverviewTreemap } from "./OverviewTreemap";
 
-export function useContainerDimensions(myRef: React.RefObject<any>) {
+
+function useContainerDimensions(myRef: React.RefObject<any>) {
     const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
   
     React.useEffect(() => {
@@ -15,13 +17,11 @@ export function useContainerDimensions(myRef: React.RefObject<any>) {
         const handleResize = () => {
             setDimensions(getDimensions());
         };
-    
+
         if (myRef.current) {
             setDimensions(getDimensions());
         }
-    
         window.addEventListener('resize', handleResize);
-    
         return () => {
             window.removeEventListener('resize', handleResize);
         };
@@ -58,7 +58,7 @@ export const Overview = () => {
     }, [listings, treemapData]);
 
     return (
-        <div className="overview-container">
+        <Container>
             <OverviewTable
                 headers={[
                     "Name",
@@ -68,16 +68,15 @@ export const Overview = () => {
                 ]}
             />
             <div style={{ height: '400px' }}ref={componentRef}>
-                <p>height: {height} width: {width}</p>
                 {loaded && 
-                        <OverviewTreemap
-                        data={data.current}
-                        height={height}
-                        width={width}
-                        key={listings[0].quote.USD.market_cap}
-                        />
+                    <OverviewTreemap
+                    data={data.current}
+                    height={height}
+                    width={width}
+                    key={listings[0].quote.USD.market_cap}
+                    />
                 }
             </div>
-        </div>
+        </Container>
     );
 };

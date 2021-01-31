@@ -38,6 +38,8 @@ import Brightness3Icon from '@material-ui/icons/Brightness3';
 import { LoginDialog } from './LoginDialog';
 import { SignupDialog } from './SignupDialog';
 import { useUserContext } from './UserContext';
+import { PortfolioValue } from './PortfolioValue';
+import { useListingsContext } from './LatestListingsContext';
 
 
 type Props = {
@@ -47,6 +49,7 @@ type Props = {
 export default function MiniDrawer({ children }: Props) {
     const { setPageElement } = usePageContext()!;
     const { tracker, setId } = useTrackerContext()!;
+    const { listings } = useListingsContext()!;
     const classes = useMiniDrawerStyles();
 	const [ state, setState ] = React.useState({
 		drawerOpen: false,
@@ -199,6 +202,7 @@ export default function MiniDrawer({ children }: Props) {
                     <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />
                     <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
                     <SignupDialog open={signupOpen} setOpen={x => setSignupOpen(x)} />
+                    {tracker && listings.length > 0 && (<PortfolioValue />)}
                     <Dashboard />
 					{children}
 				</main>
