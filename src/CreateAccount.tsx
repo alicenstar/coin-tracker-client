@@ -12,7 +12,7 @@ export const CreateAccount: React.FC = () => {
          spacing={1}
         >
             <Grid item xs={12}>
-                <Typography variant="h5" align="center">Create An Account</Typography>
+                <Typography color="primary" variant="h5" align="center">Create An Account</Typography>
             </Grid>
             <Grid item xs={10}>
                 <Typography variant="body2" align="center">
@@ -20,7 +20,7 @@ export const CreateAccount: React.FC = () => {
                 </Typography>
             </Grid>
             <Grid item xs={10}>
-                <Button>Create Account</Button>
+                <Button color="primary" variant="contained">Create Account</Button>
             </Grid>
         </Grid>
     );

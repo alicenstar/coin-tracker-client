@@ -108,105 +108,103 @@ export default function MiniDrawer({ children }: Props) {
     }, [id, setId]);
 
 	return (
-		<ThemeProvider theme={currentTheme}>
-			<div className={classes.root}>
-                <AppBar
-                 position="fixed"
-                 className={clsx(classes.appBar, {
-                    [classes.appBarShift]: state.drawerOpen,
-                 })}
-                >
-                    <Toolbar>
-                        <IconButton
-                         onClick={handleDrawerOpen}
-                         edge="start"
-                         aria-label="menu"
-                         className={clsx(classes.menuButton, {
-                            [classes.hide]: state.drawerOpen,
-                         })}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Header />
-                        <section className={classes.rightToolbar}>
-                            {!user 
-                                ? (
-                                <>
-                                    <Button onClick={() => setLoginOpen(!loginOpen)}>
-                                        Login
-                                    </Button>
-                                    <Button onClick={() => setSignupOpen(!signupOpen)}>
-                                        Signup
-                                    </Button>
-                                </>
-                                ) : (
-                                    <Button onClick={handleLogout}>Logout</Button>
-                                )
-                            }
-                            <Switch
-                             onChange={toggleTheme}
-                             checked={state.darkModeOn}
-                             name="darkSwitch"
-                             icon={<Brightness5Icon />}
-                             checkedIcon={<Brightness3Icon />}
-                            />
-                        </section>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                 variant="permanent"
-                 className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: state.drawerOpen,
-                    [classes.drawerClose]: !state.drawerOpen,
-                 })}
-                 classes={{
-                    paper: clsx({
-                    [classes.drawerOpen]: state.drawerOpen,
-                    [classes.drawerClose]: !state.drawerOpen,
-                    }),
-                 }}
-                >
-                    <div className={classes.toolbar}>
-                        <Typography variant="h5">
-                            Coin Tracker
-                        </Typography>
-                        <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <List>
-                        {drawerLinks.map((text, index) => (
-                            <ListItem button id={text} key={index} onClick={handleNav}>
-                                <ListItemIcon>
-                                    {text === 'Overview' && (
-                                        <AssessmentSharpIcon />
-                                    )}
-                                    {text === 'Portfolio' && (
-                                        <WorkSharpIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                        <ListItem button id='New Tracker' onClick={() => setNewTrackerOpen(!newTrackerOpen)}>
+        <div className={classes.root}>
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                [classes.appBarShift]: state.drawerOpen,
+                })}
+            >
+                <Toolbar>
+                    <IconButton
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        aria-label="menu"
+                        className={clsx(classes.menuButton, {
+                        [classes.hide]: state.drawerOpen,
+                        })}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Header />
+                    <section className={classes.rightToolbar}>
+                        {!user 
+                            ? (
+                            <>
+                                <Button onClick={() => setLoginOpen(!loginOpen)}>
+                                    Login
+                                </Button>
+                                <Button onClick={() => setSignupOpen(!signupOpen)}>
+                                    Signup
+                                </Button>
+                            </>
+                            ) : (
+                                <Button onClick={handleLogout}>Logout</Button>
+                            )
+                        }
+                        <Switch
+                            onChange={toggleTheme}
+                            checked={state.darkModeOn}
+                            name="darkSwitch"
+                            icon={<Brightness5Icon />}
+                            checkedIcon={<Brightness3Icon />}
+                        />
+                    </section>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                variant="permanent"
+                className={clsx(classes.drawer, {
+                [classes.drawerOpen]: state.drawerOpen,
+                [classes.drawerClose]: !state.drawerOpen,
+                })}
+                classes={{
+                paper: clsx({
+                [classes.drawerOpen]: state.drawerOpen,
+                [classes.drawerClose]: !state.drawerOpen,
+                }),
+                }}
+            >
+                <div className={classes.toolbar}>
+                    <Typography variant="h5">
+                        Coin Tracker
+                    </Typography>
+                    <IconButton onClick={handleDrawerClose}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>
+                    {drawerLinks.map((text, index) => (
+                        <ListItem button id={text} key={index} onClick={handleNav}>
                             <ListItemIcon>
-                                <AddIcon />
+                                {text === 'Overview' && (
+                                    <AssessmentSharpIcon />
+                                )}
+                                {text === 'Portfolio' && (
+                                    <WorkSharpIcon />
+                                )}
                             </ListItemIcon>
-                            <ListItemText primary='New Tracker' />
+                            <ListItemText primary={text} />
                         </ListItem>
-                    </List>
-                </Drawer>
-				<main className={classes.content}>
-					<div className={classes.toolbar} />
-                    <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />
-                    <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
-                    <SignupDialog open={signupOpen} setOpen={x => setSignupOpen(x)} />
-                    {tracker && listings.length > 0 && (<PortfolioValue />)}
-                    <Dashboard />
-					{children}
-				</main>
-			</div>
-		</ThemeProvider>
+                    ))}
+                    <ListItem button id='New Tracker' onClick={() => setNewTrackerOpen(!newTrackerOpen)}>
+                        <ListItemIcon>
+                            <AddIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='New Tracker' />
+                    </ListItem>
+                </List>
+            </Drawer>
+            <main className={classes.content}>
+                <div className={classes.toolbar} />
+                <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />
+                <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
+                <SignupDialog open={signupOpen} setOpen={x => setSignupOpen(x)} />
+                {tracker && listings.length > 0 && (<PortfolioValue />)}
+                <Dashboard />
+                {children}
+            </main>
+        </div>
 	);
 };

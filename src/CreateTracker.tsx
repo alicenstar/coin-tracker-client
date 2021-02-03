@@ -12,7 +12,7 @@ export const CreateTracker: React.FC = () => {
          spacing={1}
         >
             <Grid item xs={12}>
-                <Typography variant="h5" align="center">Create A Tracker</Typography>
+                <Typography color="secondary" variant="h5" align="center">Create A Tracker</Typography>
             </Grid>
             <Grid item xs={11}>
                 <Typography variant="body2" align="center">
@@ -20,7 +20,7 @@ export const CreateTracker: React.FC = () => {
                 </Typography>
             </Grid>
             <Grid item xs={10}>
-                <Button>Create Tracker</Button>
+                <Button color="secondary" variant="contained">Create Tracker</Button>
             </Grid>
         </Grid>
     );
