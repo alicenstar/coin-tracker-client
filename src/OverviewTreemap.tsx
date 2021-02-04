@@ -50,7 +50,8 @@ export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProp
           .style("padding", '10px')
           .style("pointer-events", 'none')
           .style("width", "170px")
-          .style("height", "100px");
+          .style("height", "100px")
+          .style("color", "#000000");
       
         nodes
             .on("mouseover", function(d) {
