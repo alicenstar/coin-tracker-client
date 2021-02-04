@@ -11,36 +11,45 @@ import { TrackerProvider } from './TrackerContext';
 import { UserProvider } from './UserContext';
 import { LatestListingsProvider } from './LatestListingsContext';
 import { LandingPage } from './LandingPage';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+// import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 
 function App(): JSX.Element {
-	const theme = createMuiTheme({
-		palette: {
-			primary: {
-				main: '#5ce1e6'
-			},
-			secondary: {
-				main: '#ff66c4'
-			},
-			background: {
-				default: '#171717'
-			},
-			text: {
-				primary: '#ffffff'
-			},
-			action: {
-				hover: '#ff66c4'
-			}
-		}
-	});
+	// const theme = createMuiTheme({
+	// 	palette: {
+	// 		primary: {
+	// 			main: '#5ce1e6'
+	// 		},
+	// 		secondary: {
+	// 			main: '#ff66c4'
+	// 		},
+	// 		background: {
+	// 			default: '#171717'
+	// 		},
+	// 		text: {
+	// 			primary: '#ffffff',
+	// 			secondary: '#ffffff'
+	// 		},
+	// 	},
+	// 	overrides: {
+	// 		MuiSelect: {
+	// 			'icon': {
+	// 				color: '#ffffff'
+	// 			}
+	// 		},
+	// 		MuiTablePagination: {
+	// 			'menuItem': {
+	// 				color: "#000000"
+	// 			}
+	// 		}
+	// 	}
+	// });
 
 	return (
 		<UserProvider>
 			<TrackerProvider>
 				<PageProvider>
 					<LatestListingsProvider>
-						<ThemeProvider theme={theme}>
 							<Router>
 								<CssBaseline />
 								<Switch>
@@ -48,7 +57,6 @@ function App(): JSX.Element {
 									<Route path="/:id?" component={(props: any) => <MiniDrawer {...props} />} />
 								</Switch>
 							</Router>
-						</ThemeProvider>
 					</LatestListingsProvider>
 				</PageProvider>
 			</TrackerProvider>
