@@ -6,21 +6,31 @@ export const CreateTracker: React.FC = () => {
     return (
         <Grid
          container
+         item
          direction="column"
          justify="center"
          alignItems="center"
-         spacing={1}
+         spacing={2}
+         style={{ width: '300px' }}
         >
-            <Grid item xs={12}>
-                <Typography color="secondary" variant="h5" align="center">Create A Tracker</Typography>
+            <Grid item>
+                <Typography
+                 color="secondary"
+                 variant="h5"
+                 align="center"
+                >
+                    Create A Tracker
+                </Typography>
             </Grid>
-            <Grid item xs={11}>
+            <Grid item>
                 <Typography variant="body2" align="center">
                     Create a tracker without an account (Strangers may be able to edit your holdings if they get your URL)
                 </Typography>
             </Grid>
-            <Grid item xs={10}>
-                <Button color="secondary" variant="contained">Create Tracker</Button>
+            <Grid item>
+                <Button color="secondary" variant="contained">
+                    Create Tracker
+                </Button>
             </Grid>
         </Grid>
     );

@@ -5,22 +5,32 @@ import React from 'react';
 export const CreateAccount: React.FC = () => {
     return (
         <Grid
-         container
+         container 
+         item
          direction="column"
          justify="center"
          alignItems="center"
-         spacing={1}
+         spacing={2}
+         style={{ width: '300px' }}
         >
-            <Grid item xs={12}>
-                <Typography color="primary" variant="h5" align="center">Create An Account</Typography>
+            <Grid item>
+                <Typography
+                 color="primary"
+                 variant="h5"
+                 align="center"
+                >
+                    Create An Account
+                </Typography>
             </Grid>
-            <Grid item xs={10}>
+            <Grid item>
                 <Typography variant="body2" align="center">
                     Keep track of multiple trackers without worrying about your holdings being editted
                 </Typography>
             </Grid>
-            <Grid item xs={10}>
-                <Button color="primary" variant="contained">Create Account</Button>
+            <Grid item>
+                <Button color="primary" variant="contained">
+                    Create Account
+                </Button>
             </Grid>
         </Grid>
     );
