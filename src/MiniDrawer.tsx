@@ -15,17 +15,12 @@ import {
 	ListItemText,
 	Toolbar,
 } from '@material-ui/core';
-import {
-    createMuiTheme,
-    ThemeProvider
-} from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AssessmentSharpIcon from '@material-ui/icons/AssessmentSharp';
 import WorkSharpIcon from '@material-ui/icons/WorkSharp';
 import AddIcon from '@material-ui/icons/Add';
 import clsx from 'clsx';
-import { lightTheme, darkTheme } from './Themes';
 import { usePageContext } from './PageContext';
 import { useMiniDrawerStyles } from './MiniDrawerStyles';
 import { Header } from './Header';
@@ -60,11 +55,7 @@ export default function MiniDrawer({ children }: Props) {
     const [ signupOpen, setSignupOpen ] = React.useState(false);
     const { user, setUser } = useUserContext()!;
     const { id } = useParams<{id: string}>();
-    let currentTheme = createMuiTheme({
-        palette: {
-            type: state.darkModeOn ? 'dark' : 'light'
-        }
-    });
+
     let drawerLinks;
     tracker
         ? drawerLinks = ['Overview', 'Portfolio']
