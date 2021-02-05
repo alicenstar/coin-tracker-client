@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from '@material-ui/core';
+import { Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { currencyFormatter, percentFormatter } from './utils/Formatters';
 import { useTrackerContext } from './TrackerContext';
