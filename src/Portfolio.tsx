@@ -39,7 +39,7 @@ export const Portfolio: React.FC = () => {
                 ? (
                     <Container>
                         <Typography variant="h4">
-                            Tracker Name: {tracker.name}
+                            {tracker.name}
                         </Typography>
                         <NewTransactionForm />
                         {tableData.length > 0 &&
