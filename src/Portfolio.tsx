@@ -3,7 +3,7 @@ import { NewTransactionForm } from "./NewTransactionForm";
 import { HoldingsTable } from "./HoldingsTable";
 import { Container, Typography } from "@material-ui/core";
 import { useTrackerContext } from "./TrackerContext";
-import { useListingsContext } from "./LatestListingsContext";
+import { useListingsContext } from "./ListingsContext";
 import { IHolding, IListing } from "./types/types";
 import { currencyFormatter, percentFormatter } from "./utils/Formatters";
 

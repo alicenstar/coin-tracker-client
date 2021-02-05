@@ -17,7 +17,7 @@ import { MuiTextField } from "./MuiTextField";
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
 import { IHolding, IListing } from "./types/types";
-import { useListingsContext } from "./LatestListingsContext";
+import { useListingsContext } from "./ListingsContext";
 import { useTrackerContext } from "./TrackerContext";
 
 
