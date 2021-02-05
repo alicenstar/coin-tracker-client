@@ -21,9 +21,15 @@ interface ITableProps {
 }
 
 const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
+    container: {
+        maxWidth: 1000,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        maxHeight: 250,
     },
+    footer: {
+        float: 'right'
+    }
 });
 
 export const OverviewTable: React.FC<ITableProps> = ({
@@ -52,8 +58,9 @@ export const OverviewTable: React.FC<ITableProps> = ({
     };
 
     return (
-        <TableContainer>
-            <Table className={classes.table} size="small" aria-label="a dense table">
+        <>
+        <TableContainer className={classes.container}>
+            <Table stickyHeader size="small" aria-label="a dense table">
                 {headers && (
                     <TableHead>
                         <TableRow>
@@ -92,30 +99,33 @@ export const OverviewTable: React.FC<ITableProps> = ({
                         </TableRow>
                     )}
                 </TableBody>
-                <TableFooter>
+                {/* <TableFooter>
                     <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[
-                                5,
-                                10,
-                                25,
-                                { label: 'All', value: -1 }
-                            ]}
-                            colSpan={4}
-                            count={listings.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: { 'aria-label': 'rows per page' },
-                                native: true,
-                            }}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
+                        
                     </TableRow>
-                </TableFooter>
+                </TableFooter> */}
             </Table>
         </TableContainer>
+        <TablePagination
+         className={classes.footer}
+         rowsPerPageOptions={[
+            5,
+            10,
+            25,
+            { label: 'All', value: -1 }
+         ]}
+         colSpan={4}
+         count={listings.length}
+         rowsPerPage={rowsPerPage}
+         page={page}
+         SelectProps={{
+            inputProps: { 'aria-label': 'rows per page' },
+            native: true,
+         }}
+         onChangePage={handleChangePage}
+         onChangeRowsPerPage={handleChangeRowsPerPage}
+         ActionsComponent={TablePaginationActions}
+        />
+        </>
     );
 };
