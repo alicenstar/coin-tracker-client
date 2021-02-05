@@ -13,6 +13,8 @@ export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProp
     const svgRef = React.useRef(null);
 
     const renderTreemap = React.useCallback(() => {
+        d3.selectAll('g').remove();
+
         const svg = d3.select(svgRef.current);
         svg.attr('width', width).attr('height', height);
         const root = d3
@@ -88,7 +90,7 @@ export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProp
     }, [data, renderTreemap]);
 
     return (
-        <div className="treemap">
+        <div className="treemap" style={{ width: '100%' }}>
             <svg ref={svgRef} />
         </div>
     );
