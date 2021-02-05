@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { TablePaginationActions } from './TablePaginationActions';
 import { currencyFormatter, percentFormatter } from "./utils/Formatters";
-import { useListingsContext } from './LatestListingsContext';
+import { useListingsContext } from './ListingsContext';
 
 
 interface ITableProps {

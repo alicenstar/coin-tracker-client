@@ -34,7 +34,7 @@ import { LoginDialog } from './LoginDialog';
 import { SignupDialog } from './SignupDialog';
 import { useUserContext } from './UserContext';
 import { PortfolioValue } from './PortfolioValue';
-import { useListingsContext } from './LatestListingsContext';
+import { useListingsContext } from './ListingsContext';
 
 
 type Props = {

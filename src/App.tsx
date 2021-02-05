@@ -9,7 +9,7 @@ import MiniDrawer from './MiniDrawer';
 import { PageProvider } from './PageContext';
 import { TrackerProvider } from './TrackerContext';
 import { UserProvider } from './UserContext';
-import { LatestListingsProvider } from './LatestListingsContext';
+import { ListingsProvider } from './ListingsContext';
 import { LandingPage } from './LandingPage';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
@@ -49,7 +49,7 @@ function App(): JSX.Element {
 		<UserProvider>
 			<TrackerProvider>
 				<PageProvider>
-					<LatestListingsProvider>
+					<ListingsProvider>
 							<Router>
 								<CssBaseline />
 								<Switch>
@@ -57,7 +57,7 @@ function App(): JSX.Element {
 									<Route path="/:id?" component={(props: any) => <MiniDrawer {...props} />} />
 								</Switch>
 							</Router>
-					</LatestListingsProvider>
+					</ListingsProvider>
 				</PageProvider>
 			</TrackerProvider>
 		</UserProvider>

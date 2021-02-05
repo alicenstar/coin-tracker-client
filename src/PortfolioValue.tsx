@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from '@material-ui/core';
 import React from 'react';
 import { currencyFormatter, percentFormatter } from './utils/Formatters';
 import { useTrackerContext } from './TrackerContext';
-import { useListingsContext } from './LatestListingsContext';
+import { useListingsContext } from './ListingsContext';
 import { IHolding } from './types/types';
 
 

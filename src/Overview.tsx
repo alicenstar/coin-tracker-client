@@ -1,6 +1,6 @@
 import { Container } from "@material-ui/core";
 import React from "react";
-import { useListingsContext } from "./LatestListingsContext";
+import { useListingsContext } from "./ListingsContext";
 import { OverviewTable } from "./OverviewTable";
 import { OverviewTreemap } from "./OverviewTreemap";
 
@@ -28,7 +28,7 @@ function useContainerDimensions(myRef: React.RefObject<any>) {
     }, [myRef]);
   
     return dimensions;
-}
+};
 
 export const Overview = () => {
     const [ loaded, setLoaded ] = React.useState(false);
