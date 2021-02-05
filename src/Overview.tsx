@@ -26,7 +26,6 @@ function useContainerDimensions(myRef: React.RefObject<any>) {
             window.removeEventListener('resize', handleResize);
         };
     }, [myRef]);
-  
     return dimensions;
 };
 
@@ -67,7 +66,7 @@ export const Overview = () => {
                     "Percent Change 1HR"
                 ]}
             />
-            <div style={{ height: '400px' }}ref={componentRef}>
+            <div style={{ height: '400px', width: '100%' }} ref={componentRef}>
                 {loaded && 
                     <OverviewTreemap
                     data={data.current}

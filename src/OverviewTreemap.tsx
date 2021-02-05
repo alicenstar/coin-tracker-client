@@ -9,7 +9,11 @@ interface IProps {
     width: number;
 }
 
-export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProps) => {
+export const OverviewTreemap: React.FC<IProps> = ({
+    data,
+    height,
+    width
+}: IProps) => {
     const svgRef = React.useRef(null);
 
     const renderTreemap = React.useCallback(() => {
@@ -91,7 +95,7 @@ export const OverviewTreemap: React.FC<IProps> = ({ data, height, width }: IProp
 
     return (
         <div className="treemap" style={{ width: '100%' }}>
-            <svg ref={svgRef} />
+            <svg style={{ height: '100%', width: '100%' }} ref={svgRef} />
         </div>
     );
 };
