@@ -22,9 +22,15 @@ import { useTrackerContext } from "./TrackerContext";
 
 
 const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
+    container: {
+        maxWidth: 1000,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        maxHeight: 250,
     },
+    footer: {
+        float: 'right'
+    }
 });
 
 interface TableFormData {
@@ -124,8 +130,8 @@ export const HoldingsTable: React.FC<ITableProps> = ({
     };
 
     return (
-        <TableContainer component={Paper}>
-            <Table className={classes.table} size="small" aria-label="a dense table">
+        <TableContainer className={classes.container}>
+            <Table stickyHeader size="small" aria-label="a dense table">
                 {headers && (
                     <TableHead>
                         <TableRow>
@@ -179,16 +185,16 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                 </form>
                                             </ClickAwayListener>
                                         ) : (
-                                                <>
-                                                    {row.quantity}
-                                                    <IconButton
-                                                        data-quantity={row.quantity}
-                                                        data-holding={row.id}
-                                                        onClick={handleEditClick}
-                                                    >
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                </>
+                                            <>
+                                                {row.quantity}
+                                                <IconButton
+                                                    data-quantity={row.quantity}
+                                                    data-holding={row.id}
+                                                    onClick={handleEditClick}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </>
                                         )
                                     }
                                 </TableCell>
@@ -202,4 +208,4 @@ export const HoldingsTable: React.FC<ITableProps> = ({
             </Table>
         </TableContainer>
     );
-}
+};
