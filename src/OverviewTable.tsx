@@ -25,11 +25,11 @@ const useStyles = makeStyles({
         maxWidth: 1000,
         marginLeft: 'auto',
         marginRight: 'auto',
-        maxHeight: 250,
+        maxHeight: 380,
     },
     footer: {
         float: 'right'
-    }
+    },
 });
 
 export const OverviewTable: React.FC<ITableProps> = ({

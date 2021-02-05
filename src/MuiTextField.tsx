@@ -5,7 +5,7 @@ import { Control, Controller, DeepMap, FieldError } from 'react-hook-form';
 
 
 interface ITextProps {
-    label: string;
+    label?: string;
     name: string;
     control: Control;
     defaultValue: string;

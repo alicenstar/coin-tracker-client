@@ -30,7 +30,8 @@ const useStyles = makeStyles({
     },
     footer: {
         float: 'right'
-    }
+    },
+    root: { padding: 10 }
 });
 
 interface TableFormData {
@@ -165,7 +166,6 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                     <MuiTextField
                                                         helperText=""
                                                         name="newQuantity"
-                                                        label="Edit quantity"
                                                         control={control}
                                                         defaultValue={row.quantity.toString()}
                                                         rules={{
@@ -188,6 +188,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                             <>
                                                 {row.quantity}
                                                 <IconButton
+                                                    className={classes.root}
                                                     data-quantity={row.quantity}
                                                     data-holding={row.id}
                                                     onClick={handleEditClick}
