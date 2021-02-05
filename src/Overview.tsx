@@ -59,20 +59,20 @@ export const Overview = () => {
     return (
         <Container>
             <OverviewTable
-                headers={[
-                    "Name",
-                    "Symbol",
-                    "USD Price",
-                    "Percent Change 1HR"
-                ]}
+             headers={[
+                "Name",
+                "Symbol",
+                "USD Price",
+                "Percent Change 1HR"
+             ]}
             />
             <div style={{ height: '400px', width: '100%' }} ref={componentRef}>
                 {loaded && 
                     <OverviewTreemap
-                    data={data.current}
-                    height={height}
-                    width={width}
-                    key={listings[0].quote.USD.market_cap}
+                     data={data.current}
+                     height={height}
+                     width={width}
+                     key={listings[0].quote.USD.market_cap}
                     />
                 }
             </div>
