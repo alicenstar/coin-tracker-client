@@ -1,4 +1,10 @@
-import { Container, Grid, Typography } from '@material-ui/core';
+import {
+    Grid,
+    Theme,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from '@material-ui/core';
 import React from 'react';
 import { currencyFormatter, percentFormatter } from './utils/Formatters';
 import { useTrackerContext } from './TrackerContext';
@@ -19,30 +25,39 @@ export const PortfolioValue: React.FC = () => {
         portfolioTotal = total.reduce((a: number, b: number) => a + b);
         returnOnInvestment = (portfolioTotal / tracker!.initialInvestment) - 1;
     }
-;
+    const theme = useTheme();
+    const smallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+
     return (
             <Grid container spacing={3}>
                 <Grid
                  item
                  container
-                 direction="column"
+                 direction={smallScreen ? "row-reverse" : "column"}
                  alignItems="center"
+                 justify={smallScreen ? "space-between" : "center"}
                  xs={12}
                  sm={4}
                  md={4}
                 >
-                    <Typography variant="subtitle1">
-                        {currencyFormatter.format(portfolioTotal)}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                        Portfolio Value
-                    </Typography>
+                    <Grid item>
+                        <Typography variant="subtitle1">
+                            {currencyFormatter.format(portfolioTotal)}
+                        </Typography>
+                    </Grid>
+                    
+                    <Grid item>
+                        <Typography variant="subtitle1">
+                            Portfolio Value
+                        </Typography>
+                    </Grid>
                 </Grid>
                 <Grid
                  item
                  container
-                 direction="column"
+                 direction={smallScreen ? "row-reverse" : "column"}
                  alignItems="center"
+                 justify={smallScreen ? "space-between" : "center"}
                  xs={12}
                  sm={4}
                  md={4}
@@ -57,8 +72,9 @@ export const PortfolioValue: React.FC = () => {
                 <Grid
                  item
                  container
-                 direction="column"
+                 direction={smallScreen ? "row-reverse" : "column"}
                  alignItems="center"
+                 justify={smallScreen ? "space-between" : "center"}
                  xs={12}
                  sm={4}
                  md={4}
