@@ -60,10 +60,13 @@ export const Overview = () => {
         <Container maxWidth="lg">
             <OverviewTable
              headers={[
+                "Rank",
                 "Name",
-                "Symbol",
-                "USD Price",
-                "Percent Change 1HR"
+                "Price (USD)",
+                "Market Cap",
+                "Volume 24hr",
+                "1hr",
+                "24hr"
              ]}
             />
             <div style={{ height: '400px', width: '100%' }} ref={componentRef}>

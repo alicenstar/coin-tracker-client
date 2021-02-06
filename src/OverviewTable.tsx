@@ -8,9 +8,10 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    Typography,
 } from "@material-ui/core";
 import { TablePaginationActions } from './TablePaginationActions';
-import { currencyFormatter, percentFormatter } from "./utils/Formatters";
+import { currencyFormatter, percentFormatter, largeCurrencyFormatter } from "./utils/Formatters";
 import { useListingsContext } from './ListingsContext';
 
 
@@ -78,16 +79,26 @@ export const OverviewTable: React.FC<ITableProps> = ({
                     ).map((row: any) => (
                         <TableRow key={row.id}>
                             <TableCell>
-                                {row.name}
+                                {row.cmc_rank}
                             </TableCell>
                             <TableCell>
-                                {row.symbol}
+                                <Typography variant="subtitle2">{row.symbol}</Typography>
+                                <Typography variant="caption">{row.name}</Typography>
                             </TableCell>
                             <TableCell>
                                 {currencyFormatter.format(row.quote.USD.price)}
                             </TableCell>
                             <TableCell>
+                                {largeCurrencyFormatter(row.quote.USD.market_cap)}
+                            </TableCell>
+                            <TableCell>
+                                {largeCurrencyFormatter(row.quote.USD.volume_24h)}
+                            </TableCell>
+                            <TableCell>
                                 {percentFormatter.format(row.quote.USD.percent_change_1h)}
+                            </TableCell>
+                            <TableCell>
+                                {percentFormatter.format(row.quote.USD.percent_change_24h)}
                             </TableCell>
                         </TableRow>
                     ))}
