@@ -57,7 +57,7 @@ export const Overview = () => {
     }, [listings, treemapData]);
 
     return (
-        <>
+        <Container maxWidth="lg">
             <OverviewTable
              headers={[
                 "Name",
@@ -76,6 +76,6 @@ export const Overview = () => {
                     />
                 }
             </div>
-        </>
+        </Container>
     );
 };

@@ -5,7 +5,6 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableFooter,
     TableHead,
     TablePagination,
     TableRow,
@@ -22,7 +21,7 @@ interface ITableProps {
 
 const useStyles = makeStyles({
     container: {
-        maxWidth: 1000,
+        width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
         maxHeight: 380,
@@ -72,7 +71,6 @@ export const OverviewTable: React.FC<ITableProps> = ({
                         </TableRow>
                     </TableHead>
                 )}
-                
                 <TableBody>
                     {(rowsPerPage > 0
                         ? listings.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -99,33 +97,30 @@ export const OverviewTable: React.FC<ITableProps> = ({
                         </TableRow>
                     )}
                 </TableBody>
-                {/* <TableFooter>
-                    <TableRow>
-                        
-                    </TableRow>
-                </TableFooter> */}
             </Table>
         </TableContainer>
-        <TablePagination
-         className={classes.footer}
-         rowsPerPageOptions={[
-            5,
-            10,
-            25,
-            { label: 'All', value: -1 }
-         ]}
-         colSpan={4}
-         count={listings.length}
-         rowsPerPage={rowsPerPage}
-         page={page}
-         SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' },
-            native: true,
-         }}
-         onChangePage={handleChangePage}
-         onChangeRowsPerPage={handleChangeRowsPerPage}
-         ActionsComponent={TablePaginationActions}
-        />
+        <div className={classes.container}>
+            <TablePagination
+             className={classes.footer}
+             rowsPerPageOptions={[
+                5,
+                10,
+                25,
+                { label: 'All', value: -1 }
+             ]}
+             colSpan={4}
+             count={listings.length}
+             rowsPerPage={rowsPerPage}
+             page={page}
+             SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+             }}
+             onChangePage={handleChangePage}
+             onChangeRowsPerPage={handleChangeRowsPerPage}
+             ActionsComponent={TablePaginationActions}
+            />
+        </div>
         </>
     );
 };
