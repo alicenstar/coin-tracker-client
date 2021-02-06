@@ -22,21 +22,53 @@ export const PortfolioValue: React.FC = () => {
 ;
     return (
         <Container>
-            <Typography variant="h6">Portfolio Value</Typography>
             <Grid container spacing={3}>
-                <Grid item xs={4}>
+                <Grid
+                 item
+                 container
+                 direction="column"
+                 alignItems="center"
+                 xs={12}
+                 sm={4}
+                 md={4}
+                >
                     <Typography variant="subtitle1">
-                        Total: {currencyFormatter.format(portfolioTotal)}
+                        {currencyFormatter.format(portfolioTotal)}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                        Portfolio Value
                     </Typography>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid
+                 item
+                 container
+                 direction="column"
+                 alignItems="center"
+                 xs={12}
+                 sm={4}
+                 md={4}
+                >
                     <Typography variant="subtitle1">
-                        Initial Investment: {currencyFormatter.format(tracker!.initialInvestment)}
+                        {currencyFormatter.format(tracker!.initialInvestment)}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                        Initial Investment
                     </Typography>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid
+                 item
+                 container
+                 direction="column"
+                 alignItems="center"
+                 xs={12}
+                 sm={4}
+                 md={4}
+                >
                     <Typography variant="subtitle1">
-                        Return on Investment: {percentFormatter.format(returnOnInvestment)}
+                        {percentFormatter.format(returnOnInvestment)}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                        Return on Investment
                     </Typography>
                 </Grid>
             </Grid>
