@@ -1,9 +1,7 @@
 import React from 'react';
 import {
-    Button,
     Hidden,
 	Switch,
-    Typography
 } from '@material-ui/core';
 import {
 	AppBar,
@@ -174,13 +172,15 @@ export default function MiniDrawer({ children }: Props) {
                     </IconButton>
                     <Header />
                     <section className={classes.rightToolbar}>
-                        <Switch
-                         onChange={toggleTheme}
-                         checked={darkModeOn}
-                         name="darkSwitch"
-                         icon={<Brightness5Icon />}
-                         checkedIcon={<Brightness3Icon />}
-                        />
+                        <Hidden xsDown implementation="css">
+                                <Switch
+                                onChange={toggleTheme}
+                                checked={darkModeOn}
+                                name="darkSwitch"
+                                icon={<Brightness5Icon />}
+                                checkedIcon={<Brightness3Icon />}
+                                />
+                        </Hidden>
                     </section>
                 </Toolbar>
             </AppBar>
