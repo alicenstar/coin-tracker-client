@@ -5,6 +5,7 @@ import { Portfolio } from './Portfolio';
 import { useTrackerContext } from './TrackerContext';
 import { useListingsContext } from './ListingsContext';
 import { PortfolioValue } from './PortfolioValue';
+import { Container } from '@material-ui/core';
 
 
 const Dashboard: React.FC = () => {
@@ -13,7 +14,7 @@ const Dashboard: React.FC = () => {
     const { listings } = useListingsContext()!;
 
     return (
-        <div className="dashboard-container">
+        <Container disableGutters>
             {tracker && listings.length > 0 && (
                 <PortfolioValue />
             )}
@@ -25,7 +26,7 @@ const Dashboard: React.FC = () => {
                     key={window.location.pathname}
                 />
             )}
-        </div>
+        </Container>
     );
 }
 

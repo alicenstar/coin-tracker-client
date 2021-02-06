@@ -94,9 +94,7 @@ export const OverviewTreemap: React.FC<IProps> = ({
     }, [data, renderTreemap]);
 
     return (
-        <div className="treemap" style={{ width: '100%' }}>
-            <svg style={{ height: '100%', width: '100%' }} ref={svgRef} />
-        </div>
+        <svg style={{ height: '100%', width: '100%' }} ref={svgRef} />
     );
 };
 

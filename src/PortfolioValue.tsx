@@ -21,7 +21,6 @@ export const PortfolioValue: React.FC = () => {
     }
 ;
     return (
-        <Container>
             <Grid container spacing={3}>
                 <Grid
                  item
@@ -72,6 +71,5 @@ export const PortfolioValue: React.FC = () => {
                     </Typography>
                 </Grid>
             </Grid>
-        </Container>
     );
 };

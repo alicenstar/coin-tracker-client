@@ -37,7 +37,7 @@ export const Portfolio: React.FC = () => {
         <div className="portfolio-container">
             {tracker
                 ? (
-                    <Container>
+                    <Container disableGutters>
                         <Typography variant="h4">
                             {tracker.name}
                         </Typography>
