@@ -69,7 +69,7 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 	  flexGrow: 1,
 	  padding: theme.spacing(3),
 	},
-	icon: {
+	drawerIcon: {
 		minWidth: 0,
 		paddingRight: 16
 	},

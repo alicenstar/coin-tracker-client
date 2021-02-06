@@ -96,7 +96,7 @@ export default function MiniDrawer({ children }: Props) {
                  key={index}
                  onClick={handleNav}
                 >
-                    <ListItemIcon className={classes.icon}>
+                    <ListItemIcon className={classes.drawerIcon}>
                         {text === 'Overview' && (
                             <AssessmentSharpIcon />
                         )}
@@ -112,11 +112,44 @@ export default function MiniDrawer({ children }: Props) {
              id='New Tracker'
              onClick={() => setNewTrackerOpen(!newTrackerOpen)}
             >
-                <ListItemIcon className={classes.icon}>
+                <ListItemIcon className={classes.drawerIcon}>
                     <AddIcon />
                 </ListItemIcon>
                 <ListItemText primary='New Tracker' />
             </ListItem>
+        </List>
+        <Divider />
+        <List className={clsx({
+            [classes.hide]: !drawerOpen,
+        })}>
+            {!user 
+                ? (
+                <>
+                    <ListItem
+                     button
+                     id="login-button"
+                     onClick={() => setLoginOpen(!loginOpen)}
+                    >
+                        <ListItemText secondary="Login" />
+                    </ListItem>
+                    <ListItem
+                     button
+                     id="signup-button"
+                     onClick={() => setLoginOpen(!signupOpen)}
+                    >
+                        <ListItemText secondary="Signup" />
+                    </ListItem>
+                </>
+                ) : (
+                    <ListItem
+                     button
+                     id="logout-button"
+                     onClick={handleLogout}
+                    >
+                        <ListItemText secondary="Logout" />
+                    </ListItem>
+                )
+            }
         </List>
     </>);
 
@@ -141,20 +174,6 @@ export default function MiniDrawer({ children }: Props) {
                     </IconButton>
                     <Header />
                     <section className={classes.rightToolbar}>
-                        {!user 
-                            ? (
-                            <>
-                                <Button onClick={() => setLoginOpen(!loginOpen)}>
-                                    Login
-                                </Button>
-                                <Button onClick={() => setSignupOpen(!signupOpen)}>
-                                    Signup
-                                </Button>
-                            </>
-                            ) : (
-                                <Button onClick={handleLogout}>Logout</Button>
-                            )
-                        }
                         <Switch
                          onChange={toggleTheme}
                          checked={darkModeOn}
