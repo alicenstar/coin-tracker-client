@@ -22,7 +22,7 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 	  }),
 	},
 	menuButton: {
-	  marginRight: 36,
+	  marginRight: 16,
 	  marginLeft: '-8px',
 	  padding: 0
 	},
@@ -49,7 +49,9 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 		duration: theme.transitions.duration.leavingScreen,
 	  }),
 	  overflowX: 'hidden',
-	  width: 56,
+	  [theme.breakpoints.up('sm')]: {
+		width: theme.spacing(7) + 1,
+	  },
 	},
 	toolbar: {
 	  display: 'flex',
@@ -69,6 +71,6 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 	},
 	icon: {
 		minWidth: 0,
-		paddingRight: 20
-	}
+		paddingRight: 16
+	},
 }));

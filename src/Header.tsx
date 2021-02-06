@@ -1,7 +1,8 @@
 import {
-    Button,
     IconButton,
+    makeStyles,
     SvgIcon,
+    Theme,
     Tooltip,
     Typography
 } from "@material-ui/core";
@@ -10,9 +11,18 @@ import { useTrackerContext } from "./TrackerContext";
 import GetAppIcon from '@material-ui/icons/GetApp';
 
 
+const useStyles = makeStyles((theme: Theme) => ({
+    buttons: {
+        padding: 8
+    },
+    title: {
+        paddingRight: 8
+    }
+}))
 
 export const Header: React.FC = () => {
     const { tracker } = useTrackerContext()!;
+    const classes = useStyles();
 
     const handleCopyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
@@ -48,7 +58,7 @@ export const Header: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Typography variant="h6">
+            <Typography className={classes.title} variant="h6">
                 {tracker
                     ? '# ' + tracker!._id
                     : '< Create a tracker'
@@ -57,7 +67,7 @@ export const Header: React.FC = () => {
             {tracker && (
                 <>
                     <Tooltip title="Copy URL">
-                        <IconButton onClick={handleCopyUrl}>
+                        <IconButton className={classes.buttons} onClick={handleCopyUrl}>
                             <SvgIcon children={
                                 <svg style={{width: '24px', height: '24px'}} viewBox="0 0 24 24">
                                     <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
@@ -66,7 +76,7 @@ export const Header: React.FC = () => {
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Download .csv">
-                        <IconButton onClick={handleDownloadClick}>
+                        <IconButton className={classes.buttons} onClick={handleDownloadClick}>
                             <GetAppIcon />
                         </IconButton>
                     </Tooltip>

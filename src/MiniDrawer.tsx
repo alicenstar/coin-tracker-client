@@ -86,9 +86,6 @@ export default function MiniDrawer({ children }: Props) {
 
     const drawer = (<>
         <div className={classes.toolbar}>
-            <Typography variant="h5">
-                Coin Tracker
-            </Typography>
             <IconButton onClick={handleDrawerToggle}>
                 <ChevronLeftIcon />
             </IconButton>
@@ -96,7 +93,12 @@ export default function MiniDrawer({ children }: Props) {
         <Divider />
         <List>
             {drawerLinks.map((text, index) => (
-                <ListItem button id={text} key={index} onClick={handleNav}>
+                <ListItem
+                 button
+                 id={text}
+                 key={index}
+                 onClick={handleNav}
+                >
                     <ListItemIcon className={classes.icon}>
                         {text === 'Overview' && (
                             <AssessmentSharpIcon />
@@ -108,8 +110,12 @@ export default function MiniDrawer({ children }: Props) {
                     <ListItemText primary={text} />
                 </ListItem>
             ))}
-            <ListItem button id='New Tracker' onClick={() => setNewTrackerOpen(!newTrackerOpen)}>
-                <ListItemIcon>
+            <ListItem
+             button
+             id='New Tracker'
+             onClick={() => setNewTrackerOpen(!newTrackerOpen)}
+            >
+                <ListItemIcon className={classes.icon}>
                     <AddIcon />
                 </ListItemIcon>
                 <ListItemText primary='New Tracker' />
@@ -120,19 +126,19 @@ export default function MiniDrawer({ children }: Props) {
 	return (
         <div className={classes.root}>
             <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
+             position="fixed"
+             className={clsx(classes.appBar, {
                 [classes.appBarShift]: drawerOpen,
-                })}
+             })}
             >
                 <Toolbar>
-                    <IconButton
-                        onClick={handleDrawerToggle}
-                        edge="start"
-                        aria-label="menu"
-                        className={clsx(classes.menuButton, {
+                <IconButton
+                     onClick={handleDrawerToggle}
+                     edge="start"
+                     aria-label="menu"
+                     className={clsx(classes.menuButton, {
                         [classes.hide]: drawerOpen,
-                        })}
+                     })}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -153,11 +159,11 @@ export default function MiniDrawer({ children }: Props) {
                             )
                         }
                         <Switch
-                            onChange={toggleTheme}
-                            checked={darkModeOn}
-                            name="darkSwitch"
-                            icon={<Brightness5Icon />}
-                            checkedIcon={<Brightness3Icon />}
+                         onChange={toggleTheme}
+                         checked={darkModeOn}
+                         name="darkSwitch"
+                         icon={<Brightness5Icon />}
+                         checkedIcon={<Brightness3Icon />}
                         />
                     </section>
                 </Toolbar>
