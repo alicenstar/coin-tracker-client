@@ -16,7 +16,7 @@ export const CreateAccount: React.FC = () => {
             <Grid item>
                 <Typography
                  color="primary"
-                 variant="h5"
+                 variant="overline"
                  align="center"
                 >
                     Create An Account

@@ -58,7 +58,7 @@ export const Header: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Typography className={classes.title} variant="h6">
+            <Typography className={classes.title} variant="h6" color="primary">
                 {tracker
                     ? '# ' + tracker!._id
                     : '< Create a tracker'

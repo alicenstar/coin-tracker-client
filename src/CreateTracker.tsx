@@ -16,7 +16,7 @@ export const CreateTracker: React.FC = () => {
             <Grid item>
                 <Typography
                  color="secondary"
-                 variant="h5"
+                 variant="overline"
                  align="center"
                 >
                     Create A Tracker

@@ -132,7 +132,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
 
     return (
         <TableContainer className={classes.container}>
-            <Table stickyHeader size="small" aria-label="a dense table">
+            <Table size="small" aria-label="a dense table">
                 {headers && (
                     <TableHead>
                         <TableRow>

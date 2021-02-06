@@ -1,6 +1,6 @@
 import {
-    Box,
     Button,
+    Container,
     MenuItem,
     Typography
 } from '@material-ui/core';
@@ -141,7 +141,7 @@ export const NewTransactionForm: React.FC = () => {
     };
 
     return (
-        <Box bgcolor="info.main">
+        <Container maxWidth={false} disableGutters>
             <Typography variant='h6'>New Transaction</Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <MuiSelect
@@ -210,6 +210,6 @@ export const NewTransactionForm: React.FC = () => {
                         : 'Submit failed')
                 }
             </form>
-        </Box>
+        </Container>
     );
 };

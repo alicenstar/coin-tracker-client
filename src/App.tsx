@@ -11,6 +11,8 @@ import { TrackerProvider } from './TrackerContext';
 import { UserProvider } from './UserContext';
 import { ListingsProvider } from './ListingsContext';
 import { LandingPage } from './LandingPage';
+import { ThemeProvider } from '@material-ui/core';
+import { defaultTheme } from './Themes';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 
@@ -50,6 +52,7 @@ function App(): JSX.Element {
 			<TrackerProvider>
 				<PageProvider>
 					<ListingsProvider>
+						<ThemeProvider theme={defaultTheme}>
 							<Router>
 								<CssBaseline />
 								<Switch>
@@ -57,6 +60,7 @@ function App(): JSX.Element {
 									<Route path="/:id?" component={(props: any) => <MiniDrawer {...props} />} />
 								</Switch>
 							</Router>
+						</ThemeProvider>
 					</ListingsProvider>
 				</PageProvider>
 			</TrackerProvider>

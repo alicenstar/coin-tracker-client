@@ -154,6 +154,7 @@ export default function MiniDrawer({ children }: Props) {
 	return (
         <div className={classes.root}>
             <AppBar
+            color="default"
              position="fixed"
              className={clsx(classes.appBar, {
                 [classes.appBarShift]: drawerOpen,
@@ -173,13 +174,13 @@ export default function MiniDrawer({ children }: Props) {
                     <Header />
                     <section className={classes.rightToolbar}>
                         <Hidden xsDown implementation="css">
-                                <Switch
-                                onChange={toggleTheme}
-                                checked={darkModeOn}
-                                name="darkSwitch"
-                                icon={<Brightness5Icon />}
-                                checkedIcon={<Brightness3Icon />}
-                                />
+                            <Switch
+                             onChange={toggleTheme}
+                             checked={darkModeOn}
+                             name="darkSwitch"
+                             icon={<Brightness5Icon />}
+                             checkedIcon={<Brightness3Icon />}
+                            />
                         </Hidden>
                     </section>
                 </Toolbar>
