@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     Button,
+    Hidden,
 	Switch,
     Typography
 } from '@material-ui/core';
@@ -46,10 +47,8 @@ export default function MiniDrawer({ children }: Props) {
     const { tracker, setId } = useTrackerContext()!;
     const { listings } = useListingsContext()!;
     const classes = useMiniDrawerStyles();
-	const [ state, setState ] = React.useState({
-		drawerOpen: false,
-        darkModeOn: false,
-    });
+    const [ drawerOpen, setDrawerOpen ] = React.useState(false);
+	const [ darkModeOn, setDarkModeOn ] = React.useState(false);
     const [ newTrackerOpen, setNewTrackerOpen ] = React.useState(false);
     const [ loginOpen, setLoginOpen ] = React.useState(false);
     const [ signupOpen, setSignupOpen ] = React.useState(false);
@@ -62,26 +61,13 @@ export default function MiniDrawer({ children }: Props) {
         : drawerLinks = ['Overview'];
 
 	const toggleTheme = () => {
-		setState({
-			...state,
-			darkModeOn: !state.darkModeOn
-		})
+		setDarkModeOn(!darkModeOn);
 	};
 
-	const handleDrawerOpen = () => {
-		setState({
-			...state,
-			drawerOpen: true
-		});
+	const handleDrawerToggle = () => {
+        setDrawerOpen(!drawerOpen);
 	};
   
-	const handleDrawerClose = () => {
-		setState({
-			...state,
-			drawerOpen: false
-		});
-    };
-    
     const handleNav = (event: React.MouseEvent) => {
         var element = event.currentTarget.id;
         setPageElement(element);
@@ -98,21 +84,54 @@ export default function MiniDrawer({ children }: Props) {
         }
     }, [id, setId]);
 
+    const drawer = (<>
+        <div className={classes.toolbar}>
+            <Typography variant="h5">
+                Coin Tracker
+            </Typography>
+            <IconButton onClick={handleDrawerToggle}>
+                <ChevronLeftIcon />
+            </IconButton>
+        </div>
+        <Divider />
+        <List>
+            {drawerLinks.map((text, index) => (
+                <ListItem button id={text} key={index} onClick={handleNav}>
+                    <ListItemIcon className={classes.icon}>
+                        {text === 'Overview' && (
+                            <AssessmentSharpIcon />
+                        )}
+                        {text === 'Portfolio' && (
+                            <WorkSharpIcon />
+                        )}
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                </ListItem>
+            ))}
+            <ListItem button id='New Tracker' onClick={() => setNewTrackerOpen(!newTrackerOpen)}>
+                <ListItemIcon>
+                    <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary='New Tracker' />
+            </ListItem>
+        </List>
+    </>);
+
 	return (
         <div className={classes.root}>
             <AppBar
                 position="fixed"
                 className={clsx(classes.appBar, {
-                [classes.appBarShift]: state.drawerOpen,
+                [classes.appBarShift]: drawerOpen,
                 })}
             >
                 <Toolbar>
                     <IconButton
-                        onClick={handleDrawerOpen}
+                        onClick={handleDrawerToggle}
                         edge="start"
                         aria-label="menu"
                         className={clsx(classes.menuButton, {
-                        [classes.hide]: state.drawerOpen,
+                        [classes.hide]: drawerOpen,
                         })}
                     >
                         <MenuIcon />
@@ -135,7 +154,7 @@ export default function MiniDrawer({ children }: Props) {
                         }
                         <Switch
                             onChange={toggleTheme}
-                            checked={state.darkModeOn}
+                            checked={darkModeOn}
                             name="darkSwitch"
                             icon={<Brightness5Icon />}
                             checkedIcon={<Brightness3Icon />}
@@ -143,50 +162,48 @@ export default function MiniDrawer({ children }: Props) {
                     </section>
                 </Toolbar>
             </AppBar>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                [classes.drawerOpen]: state.drawerOpen,
-                [classes.drawerClose]: !state.drawerOpen,
-                })}
-                classes={{
-                paper: clsx({
-                [classes.drawerOpen]: state.drawerOpen,
-                [classes.drawerClose]: !state.drawerOpen,
-                }),
-                }}
-            >
-                <div className={classes.toolbar}>
-                    <Typography variant="h5">
-                        Coin Tracker
-                    </Typography>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {drawerLinks.map((text, index) => (
-                        <ListItem button id={text} key={index} onClick={handleNav}>
-                            <ListItemIcon>
-                                {text === 'Overview' && (
-                                    <AssessmentSharpIcon />
-                                )}
-                                {text === 'Portfolio' && (
-                                    <WorkSharpIcon />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                    <ListItem button id='New Tracker' onClick={() => setNewTrackerOpen(!newTrackerOpen)}>
-                        <ListItemIcon>
-                            <AddIcon />
-                        </ListItemIcon>
-                        <ListItemText primary='New Tracker' />
-                    </ListItem>
-                </List>
-            </Drawer>
+            {/* Large screens */}
+            <Hidden xsDown implementation="css">
+                <Drawer
+                 variant="permanent"
+                 className={clsx(classes.drawer, {
+                    [classes.drawerOpen]: drawerOpen,
+                    [classes.drawerClose]: !drawerOpen,
+                    // [classes.hide]: drawerOpen,
+                 })}
+                 classes={{
+                    paper: clsx({
+                        [classes.drawerOpen]: drawerOpen,
+                        [classes.drawerClose]: !drawerOpen,
+                        // [classes.hide]: drawerOpen,
+                    }),
+                 }}
+                 open={drawerOpen}
+                 ModalProps={{ keepMounted: true }}
+                >
+                    {drawer}
+                </Drawer>
+            </Hidden>
+            {/* Mobile */}
+            <Hidden smUp implementation="css">
+                <Drawer
+                 variant="temporary"
+                 className={clsx(classes.drawer, {
+                    [classes.drawerOpen]: drawerOpen,
+                    [classes.drawerClose]: !drawerOpen,
+                 })}
+                 classes={{
+                    paper: clsx({
+                        [classes.drawerOpen]: drawerOpen,
+                        [classes.drawerClose]: !drawerOpen,
+                    }),
+                 }}
+                 open={drawerOpen}
+                 ModalProps={{ keepMounted: true }}
+                >
+                    {drawer}
+                </Drawer>
+            </Hidden>
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />

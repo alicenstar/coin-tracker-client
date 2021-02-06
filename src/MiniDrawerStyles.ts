@@ -1,62 +1,63 @@
 import { makeStyles, Theme } from "@material-ui/core";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
-export const useMiniDrawerStyles = makeStyles((currentTheme: Theme) => ({
+export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 	root: {
 	  display: 'flex',
 	},
 	appBar: {
-	  zIndex: currentTheme.zIndex.drawer + 1,
-	  transition: currentTheme.transitions.create(['width', 'margin'], {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.leavingScreen,
+	  zIndex: theme.zIndex.drawer + 1,
+	  transition: theme.transitions.create(['width', 'margin'], {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
       }),
 	},
 	appBarShift: {
 	  marginLeft: drawerWidth,
 	  width: `calc(100% - ${drawerWidth}px)`,
-	  transition: currentTheme.transitions.create(['width', 'margin'], {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.enteringScreen,
+	  transition: theme.transitions.create(['width', 'margin'], {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.enteringScreen,
 	  }),
 	},
 	menuButton: {
 	  marginRight: 36,
+	  marginLeft: '-8px',
+	  padding: 0
 	},
 	hide: {
 	  display: 'none',
 	},
 	drawer: {
-	  width: drawerWidth,
-	  flexShrink: 0,
-      whiteSpace: 'nowrap',
+		[theme.breakpoints.up('sm')]: {
+			width: drawerWidth,
+			flexShrink: 0,
+			whiteSpace: 'nowrap',
+		},
 	},
 	drawerOpen: {
 	  width: drawerWidth,
-	  transition: currentTheme.transitions.create('width', {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.enteringScreen,
+	  transition: theme.transitions.create('width', {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.enteringScreen,
 	  }),
 	},
 	drawerClose: {
-	  transition: currentTheme.transitions.create('width', {
-		easing: currentTheme.transitions.easing.sharp,
-		duration: currentTheme.transitions.duration.leavingScreen,
+	  transition: theme.transitions.create('width', {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
 	  }),
 	  overflowX: 'hidden',
-	  width: currentTheme.spacing(7) + 1,
-	  [currentTheme.breakpoints.up('sm')]: {
-		width: currentTheme.spacing(9) + 1,
-	  },
+	  width: 56,
 	},
 	toolbar: {
 	  display: 'flex',
 	  alignItems: 'center',
 	  justifyContent: 'flex-end',
-	  padding: currentTheme.spacing(0, 1),
+	  padding: theme.spacing(0, 1),
 	  // necessary for content to be below app bar
-	  ...currentTheme.mixins.toolbar,
+	  ...theme.mixins.toolbar,
     },
     rightToolbar: {
         marginLeft: 'auto',
@@ -64,6 +65,10 @@ export const useMiniDrawerStyles = makeStyles((currentTheme: Theme) => ({
     },
 	content: {
 	  flexGrow: 1,
-	  padding: currentTheme.spacing(3),
-    },
+	  padding: theme.spacing(3),
+	},
+	icon: {
+		minWidth: 0,
+		paddingRight: 20
+	}
 }));
