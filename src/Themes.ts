@@ -8,6 +8,9 @@ export const defaultTheme = createMuiTheme({
 				'&:nth-of-type(odd)': {
 					backgroundColor: '#000',
 				},
+				'&:nth-of-type(even)': {
+					backgroundColor: '#171717',
+				},
 			}
 		},
 		MuiMenu: {

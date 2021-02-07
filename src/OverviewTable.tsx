@@ -8,7 +8,9 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    Theme,
     Typography,
+    withStyles,
 } from "@material-ui/core";
 import { TablePaginationActions } from './TablePaginationActions';
 import { currencyFormatter, percentFormatter, largeCurrencyFormatter } from "./utils/Formatters";
@@ -19,6 +21,21 @@ interface ITableProps {
     headers?: string[];
     data?: any;
 }
+
+const StickyTableCell = withStyles((theme: Theme) => ({
+    head: {
+        left: 0,
+        position: "sticky",
+        zIndex: theme.zIndex.appBar + 2
+    },
+    body: {
+        minWidth: 50,
+        left: 0,
+        position: "sticky",
+        zIndex: theme.zIndex.appBar + 1,
+        backgroundColor: 'inherit'
+    }
+}))(TableCell);
 
 const useStyles = makeStyles({
     container: {
@@ -64,11 +81,21 @@ export const OverviewTable: React.FC<ITableProps> = ({
                 {headers && (
                     <TableHead>
                         <TableRow>
-                            {headers.map((header: string, index: number) => (
-                                <TableCell key={index}>
-                                    {header}
-                                </TableCell>
-                            ))}
+                            {headers.map((header: string, index: number) => {
+                                if (index === 1) {
+                                    return (
+                                        <StickyTableCell key={index}>
+                                            {header}
+                                        </StickyTableCell>
+                                    );
+                                } else {
+                                    return (
+                                        <TableCell key={index}>
+                                            {header}
+                                        </TableCell>
+                                    );
+                                }
+                            })}
                         </TableRow>
                     </TableHead>
                 )}
@@ -81,10 +108,10 @@ export const OverviewTable: React.FC<ITableProps> = ({
                             <TableCell>
                                 {row.cmc_rank}
                             </TableCell>
-                            <TableCell>
+                            <StickyTableCell>
                                 <Typography variant="subtitle2">{row.symbol}</Typography>
                                 <Typography variant="caption">{row.name}</Typography>
-                            </TableCell>
+                            </StickyTableCell>
                             <TableCell>
                                 {currencyFormatter.format(row.quote.USD.price)}
                             </TableCell>
