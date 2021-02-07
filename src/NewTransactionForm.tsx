@@ -2,6 +2,7 @@ import {
     Button,
     Container,
     Grid,
+    InputAdornment,
     makeStyles,
     MenuItem,
     Theme,
@@ -223,6 +224,9 @@ export const NewTransactionForm: React.FC = () => {
                     </Grid>
                     <Grid item>
                         <MuiTextField
+                        inputProps={{
+                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                          }}
                         helperText="If blank, current market price will be used"
                         name="priceAtTransaction"
                         label="Price"

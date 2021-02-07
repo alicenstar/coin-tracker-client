@@ -87,5 +87,8 @@ export const defaultTheme = createMuiTheme({
 			// size: 'small',
 			variant: 'outlined'
 		},
+		MuiInputLabel: {
+			shrink: true
+		}
 	}
 });

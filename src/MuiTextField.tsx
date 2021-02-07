@@ -1,5 +1,5 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { TextField } from '@material-ui/core';
+import { InputAdornment, TextField } from '@material-ui/core';
 import React from 'react';
 import { Control, Controller, DeepMap, FieldError } from 'react-hook-form';
 
@@ -34,7 +34,7 @@ export const MuiTextField: React.FC<ITextProps> = ({
              render={(props) => (
                 <TextField
                  {...props}
-                 inputProps={inputProps}
+                 InputProps={inputProps}
                  name={name}
                  helperText={helperText}
                  id={labelId}

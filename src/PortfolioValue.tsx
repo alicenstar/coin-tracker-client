@@ -50,11 +50,11 @@ export const PortfolioValue: React.FC = () => {
                  alignItems="center"
                  justify={smallScreen ? "space-between" : "center"}
                  xs={12}
-                 sm={4}
+                 sm={6}
                  md={4}
                 >
                     <Grid item>
-                        <Typography variant="subtitle1">
+                        <Typography variant="h3">
                             {currencyFormatter.format(portfolioTotal)}
                         </Typography>
                     </Grid>
@@ -72,10 +72,10 @@ export const PortfolioValue: React.FC = () => {
                  alignItems="center"
                  justify={smallScreen ? "space-between" : "center"}
                  xs={12}
-                 sm={4}
+                 sm={6}
                  md={4}
                 >
-                    <Typography variant="subtitle1">
+                    <Typography variant="h3">
                         {currencyFormatter.format(tracker!.initialInvestment)}
                     </Typography>
                     <Typography variant="subtitle1">
@@ -89,10 +89,10 @@ export const PortfolioValue: React.FC = () => {
                  alignItems="center"
                  justify={smallScreen ? "space-between" : "center"}
                  xs={12}
-                 sm={4}
+                 sm={6}
                  md={4}
                 >
-                    <Typography variant="subtitle1">
+                    <Typography variant="h3" display="block">
                         {percentFormatter.format(returnOnInvestment)}
                     </Typography>
                     <Typography variant="subtitle1">
