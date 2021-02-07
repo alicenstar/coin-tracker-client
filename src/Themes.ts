@@ -23,7 +23,20 @@ export const defaultTheme = createMuiTheme({
 				height: 40,
 				marginTop: 8
 			}
-		}
+		},
+		MuiList: {
+			padding: {
+				paddingTop: 0,
+				paddingBottom: 0
+			}
+		},
+		// MuiPaper: {
+		// 	root: {
+		// 		paddingTop: 16,
+		// 		paddingBottom: 16,
+		// 		marginBottom: 24,
+		// 	}
+		// }
 	},
 	palette: {
 		type: 'dark',
@@ -88,7 +101,11 @@ export const defaultTheme = createMuiTheme({
 			variant: 'outlined'
 		},
 		MuiInputLabel: {
-			shrink: true
-		}
+			shrink: true,
+		},
+		MuiOutlinedInput: {
+			notched: true,
+		},
+		
 	}
 });

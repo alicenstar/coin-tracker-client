@@ -57,7 +57,7 @@ export const Overview = () => {
     }, [listings, treemapData]);
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" disableGutters>
             <OverviewTable
              headers={[
                 "Rank",

@@ -24,10 +24,10 @@ import { useTrackerContext } from "./TrackerContext";
 
 const useStyles = makeStyles({
     container: {
-        maxWidth: 1000,
+        width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        maxHeight: 250,
+        maxHeight: 380,
     },
     footer: {
         float: 'right'
@@ -169,6 +169,9 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                 </TableCell>
                                 <TableCell>
                                     {row.percentChange1H}
+                                </TableCell>
+                                <TableCell>
+                                    {row.percentChange24H}
                                 </TableCell>
                                 <TableCell align="right" className={classes.editCell}>
                                     {editActive && activeHolding === row.id

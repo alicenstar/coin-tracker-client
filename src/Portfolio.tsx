@@ -1,17 +1,33 @@
 import React from "react";
 import { NewTransactionForm } from "./NewTransactionForm";
 import { HoldingsTable } from "./HoldingsTable";
-import { Container, Typography } from "@material-ui/core";
+import {
+    Container,
+    makeStyles,
+    Paper,
+    Theme,
+    Typography
+} from "@material-ui/core";
 import { useTrackerContext } from "./TrackerContext";
 import { useListingsContext } from "./ListingsContext";
 import { IHolding, IListing } from "./types/types";
 import { currencyFormatter, percentFormatter } from "./utils/Formatters";
 
 
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        padding: 8,
+        marginTop: 8,
+        marginBottom: 24,
+        borderColor: theme.palette.secondary.main,
+    }
+}));
+
 export const Portfolio: React.FC = () => {
     const { tracker } = useTrackerContext()!;
     const { listings } = useListingsContext()!;
     const [ tableData, setTableData ] = React.useState<any>([]);
+    const classes = useStyles();
 
     const createTableData = React.useCallback(() => {
         let data = tracker!.holdings.map((holding: IHolding) => {
@@ -21,6 +37,7 @@ export const Portfolio: React.FC = () => {
                 name: listingMatch!.name,
                 marketPrice: currencyFormatter.format(listingMatch!.quote.USD.price),
                 percentChange1H: percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100),
+                percentChange24H: percentFormatter.format(listingMatch!.quote.USD.percent_change_24h / 100),
                 quantity: parseFloat(holding.quantity),
                 totalValue: parseFloat(holding.quantity) * listingMatch!.quote.USD.price,
             }
@@ -41,7 +58,9 @@ export const Portfolio: React.FC = () => {
                         <Typography variant="h4">
                             {tracker.name}
                         </Typography>
-                        <NewTransactionForm />
+                        <Paper className={classes.root} elevation={7} variant="outlined">
+                            <NewTransactionForm />
+                        </Paper>
                         {tableData.length > 0 &&
                             <HoldingsTable
                             data={tableData}
@@ -49,6 +68,7 @@ export const Portfolio: React.FC = () => {
                                 "Coin Name",
                                 "Market Price",
                                 "1hr",
+                                "24hr",
                                 "Quantity",
                                 "Value"
                             ]}

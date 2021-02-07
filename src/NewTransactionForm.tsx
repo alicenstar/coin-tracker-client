@@ -1,6 +1,5 @@
 import {
     Button,
-    Container,
     Grid,
     InputAdornment,
     makeStyles,
@@ -30,6 +29,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         '& .MuiTextField-root': {
           margin: theme.spacing(1),
         },
+    },
+    button: {
+        margin: 8
+    },
+    header: {
+        padding: 8
     },
 }));
 
@@ -166,16 +171,15 @@ export const NewTransactionForm: React.FC = () => {
     };
 
     return (
-        <Container maxWidth={false} disableGutters>
-            <Typography variant='h6' color="secondary">New Transaction</Typography>
+        <>
+            <Typography className={classes.header} variant='h6' color="secondary">New Transaction</Typography>
             <Grid container alignItems="center">
             <form style={{width: '100%'}} className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-                <Grid container item justify="space-evenly">
+                <Grid container item justify="space-between">
                     <Grid item>
                         <MuiSelect
-                        required={true}
                         name="type"
-                        label="Type"
+                        label="Type *"
                         control={control}
                         defaultValue='Buy'
                         rules={{ required: true, validate: validateForm }}
@@ -209,9 +213,8 @@ export const NewTransactionForm: React.FC = () => {
                     </Grid>
                     <Grid item>
                         <MuiSelect
-                        required={true}
                         name="coinId"
-                        label="Coin"
+                        label="Coin *"
                         control={control}
                         defaultValue={symbols[0].id}
                         rules={{ required: true, validate: validateForm }}
@@ -247,6 +250,7 @@ export const NewTransactionForm: React.FC = () => {
                     </Grid>
                     <Grid item>
                         <Button
+                        className={classes.button}
                          type="submit"
                          color="secondary"
                          variant="outlined">
@@ -261,6 +265,6 @@ export const NewTransactionForm: React.FC = () => {
                 </Grid>
             </form>
             </Grid>
-        </Container>
+        </>
     );
 };
