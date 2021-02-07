@@ -48,9 +48,9 @@ export const Portfolio: React.FC = () => {
                             headers={[
                                 "Coin Name",
                                 "Market Price",
-                                "% Change 1HR",
+                                "1hr",
                                 "Quantity",
-                                "Total Value"
+                                "Value"
                             ]}
                             />
                         }

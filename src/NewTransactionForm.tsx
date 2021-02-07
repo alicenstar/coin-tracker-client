@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme: Theme) => ({
           margin: theme.spacing(1),
         },
     },
-    button: {
-        marginTop: 8,
-        height: 40
-    }
 }));
 
 export const NewTransactionForm: React.FC = () => {
@@ -249,7 +245,12 @@ export const NewTransactionForm: React.FC = () => {
                         />
                     </Grid>
                     <Grid item>
-                        <Button className={classes.button} type="submit" color="secondary" variant="outlined">Add Transaction</Button>
+                        <Button
+                         type="submit"
+                         color="secondary"
+                         variant="outlined">
+                            Add Transaction
+                        </Button>
                         {formState.isSubmitted &&
                             (formState.isSubmitSuccessful
                                 ? 'Form submitted successfully'

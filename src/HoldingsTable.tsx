@@ -1,9 +1,9 @@
 import React from "react";
 import {
     Button,
+    Grid,
     IconButton,
     makeStyles,
-    Paper,
     Table,
     TableBody,
     TableCell,
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
     footer: {
         float: 'right'
     },
-    root: { padding: 10 }
+    root: { padding: 10 },
 });
 
 interface TableFormData {
@@ -144,7 +144,6 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                         </TableRow>
                     </TableHead>
                 )}
-                
                 <TableBody>
                     {data.map((row: any) => {
                         return (
@@ -164,38 +163,46 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                             <ClickAwayListener onClickAway={handleClickAway}>
                                                 <form onSubmit={handleSubmit(onSubmit)}>
                                                     <MuiTextField
-                                                        helperText=""
-                                                        name="newQuantity"
-                                                        control={control}
-                                                        defaultValue={row.quantity.toString()}
-                                                        rules={{
-                                                            pattern: {
-                                                                value: /^\d*?\.?\d*$/,
-                                                                message: 'Wrong number format'
-                                                            },
-                                                            required: 'This field is required',
-                                                            min: {
-                                                                value: 0,
-                                                                message: 'You must enter a value greater than 0'
-                                                            },
-                                                        }}
-                                                        errors={errors}
+                                                     helperText=""
+                                                     name="newQuantity"
+                                                     control={control}
+                                                     defaultValue={row.quantity.toString()}
+                                                     rules={{
+                                                        pattern: {
+                                                            value: /^\d*?\.?\d*$/,
+                                                            message: 'Wrong number format'
+                                                        },
+                                                        required: 'This field is required',
+                                                        min: {
+                                                            value: 0,
+                                                            message: 'You must enter a value greater than 0'
+                                                        },
+                                                     }}
+                                                     errors={errors}
                                                     />
-                                                    <Button type='submit'>Save</Button>
+                                                    <Button
+                                                     variant="outlined"
+                                                     type='submit'>
+                                                        Save
+                                                    </Button>
                                                 </form>
                                             </ClickAwayListener>
                                         ) : (
-                                            <>
-                                                {row.quantity}
-                                                <IconButton
-                                                    className={classes.root}
-                                                    data-quantity={row.quantity}
-                                                    data-holding={row.id}
-                                                    onClick={handleEditClick}
-                                                >
-                                                    <EditIcon />
-                                                </IconButton>
-                                            </>
+                                            <Grid container alignItems="center" justify="space-between">
+                                                <Grid item>
+                                                    {row.quantity}
+                                                </Grid>
+                                                <Grid item>
+                                                    <IconButton
+                                                     className={classes.root}
+                                                     data-quantity={row.quantity}
+                                                     data-holding={row.id}
+                                                     onClick={handleEditClick}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </Grid>
+                                            </Grid>
                                         )
                                     }
                                 </TableCell>

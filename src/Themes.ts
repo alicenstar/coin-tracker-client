@@ -15,6 +15,12 @@ export const defaultTheme = createMuiTheme({
 				maxHeight: 300
 			}
 		},
+		MuiButton: {
+			root: {
+				height: 40,
+				marginTop: 8
+			}
+		}
 	},
 	palette: {
 		type: 'dark',
@@ -67,7 +73,7 @@ export const defaultTheme = createMuiTheme({
 			disableRipple: true,
 		},
 		MuiButton: {
-			disableRipple: true
+			disableRipple: true,
 		},
 		MuiFormControl: {
 			variant: 'outlined',
