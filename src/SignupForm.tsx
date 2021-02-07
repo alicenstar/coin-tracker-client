@@ -65,6 +65,7 @@ export const SignupForm: React.FC<Props> = ({
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <MuiTextField
+             required={true}
              helperText=""
              name="username"
              label="Username"
@@ -80,6 +81,7 @@ export const SignupForm: React.FC<Props> = ({
              errors={errors}
             />
             <MuiTextField
+             required={true}
              inputProps={{ type: 'password' }}
              helperText=""
              name="password"
@@ -96,6 +98,7 @@ export const SignupForm: React.FC<Props> = ({
              errors={errors}
             />
             <MuiTextField
+             required={true}
              helperText=""
              name="email"
              label="Email"
