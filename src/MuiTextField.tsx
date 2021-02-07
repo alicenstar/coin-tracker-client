@@ -14,6 +14,7 @@ interface ITextProps {
     helperText?: string;
     inputProps?: any;
     required?: boolean;
+    width?: number;
 }
 
 export const MuiTextField: React.FC<ITextProps> = ({
@@ -26,13 +27,17 @@ export const MuiTextField: React.FC<ITextProps> = ({
     helperText,
     inputProps,
     required,
+    width
 }: ITextProps) => {
     const labelId = `${name}-label`;
+
+
     return (
         <>
             <Controller
              render={(props) => (
                 <TextField
+                 style={{width: width}}
                  {...props}
                  InputProps={inputProps}
                  name={name}

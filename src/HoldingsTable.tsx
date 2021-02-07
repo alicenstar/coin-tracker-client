@@ -1,7 +1,7 @@
 import React from "react";
 import {
+    Box,
     Button,
-    Grid,
     IconButton,
     makeStyles,
     Table,
@@ -9,7 +9,8 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
+    Typography
 } from "@material-ui/core";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { currencyFormatter } from "./utils/Formatters";
@@ -31,7 +32,19 @@ const useStyles = makeStyles({
     footer: {
         float: 'right'
     },
-    root: { padding: 10 },
+    icon: {
+        padding: 8
+    },
+    editCell: {
+        width: 200,
+    },
+    quantity: {
+        width: 60
+    },
+    noMargin: {
+        marginTop: -8,
+        marginBottom: -4
+    }
 });
 
 interface TableFormData {
@@ -157,12 +170,15 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                 <TableCell>
                                     {row.percentChange1H}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell align="right" className={classes.editCell}>
                                     {editActive && activeHolding === row.id
                                         ? (
                                             <ClickAwayListener onClickAway={handleClickAway}>
                                                 <form onSubmit={handleSubmit(onSubmit)}>
+                                                <Box display="flex" alignItems="flex-start" justifyContent="space-between">
+                                                    <Box className={classes.noMargin}>
                                                     <MuiTextField
+                                                     width={90}
                                                      helperText=""
                                                      name="newQuantity"
                                                      control={control}
@@ -180,34 +196,46 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                      }}
                                                      errors={errors}
                                                     />
+                                                    </Box>
+                                                    <Box className={classes.noMargin}>
                                                     <Button
                                                      variant="outlined"
                                                      type='submit'>
                                                         Save
                                                     </Button>
+                                                    </Box>
+                                                    </Box>
                                                 </form>
                                             </ClickAwayListener>
                                         ) : (
-                                            <Grid container alignItems="center" justify="space-between">
-                                                <Grid item>
-                                                    {row.quantity}
-                                                </Grid>
-                                                <Grid item>
-                                                    <IconButton
-                                                     className={classes.root}
-                                                     data-quantity={row.quantity}
-                                                     data-holding={row.id}
-                                                     onClick={handleEditClick}
-                                                    >
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                </Grid>
-                                            </Grid>
+                                                <Box
+                                                 display="flex"
+                                                 alignItems="center"
+                                                 justifyContent="flex-start"
+                                                >
+                                                    <Box className={classes.quantity}>
+                                                        <Typography display="inline" variant="body1" align="right">
+                                                            {row.quantity}
+                                                        </Typography>
+                                                    </Box>
+                                                    <Box>
+                                                        <IconButton
+                                                         className={classes.icon}
+                                                         data-quantity={row.quantity}
+                                                         data-holding={row.id}
+                                                         onClick={handleEditClick}
+                                                        >
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                    </Box>
+                                                </Box>
                                         )
                                     }
                                 </TableCell>
                                 <TableCell>
-                                    {currencyFormatter.format(row.totalValue)}
+                                    <Typography component="span" variant="body1">
+                                        {currencyFormatter.format(row.totalValue)}
+                                    </Typography>
                                 </TableCell>
                             </TableRow>
                         );
