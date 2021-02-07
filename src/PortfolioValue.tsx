@@ -1,5 +1,7 @@
 import {
     Grid,
+    makeStyles,
+    Paper,
     Theme,
     Typography,
     useMediaQuery,
@@ -11,6 +13,15 @@ import { useTrackerContext } from './TrackerContext';
 import { useListingsContext } from './ListingsContext';
 import { IHolding } from './types/types';
 
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        paddingTop: 16,
+        paddingBottom: 16,
+        marginBottom: 24,
+        borderColor: theme.palette.primary.main,
+    }
+}));
 
 export const PortfolioValue: React.FC = () => {
     const { listings } = useListingsContext()!;
@@ -27,8 +38,10 @@ export const PortfolioValue: React.FC = () => {
     }
     const theme = useTheme();
     const smallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const classes = useStyles();
 
     return (
+        <Paper className={classes.root} elevation={7} variant="outlined">
             <Grid container spacing={3}>
                 <Grid
                  item
@@ -87,5 +100,6 @@ export const PortfolioValue: React.FC = () => {
                     </Typography>
                 </Grid>
             </Grid>
+        </Paper>
     );
 };

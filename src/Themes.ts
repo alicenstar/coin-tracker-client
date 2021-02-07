@@ -1,5 +1,6 @@
 import { createMuiTheme } from '@material-ui/core';
 
+
 export const defaultTheme = createMuiTheme({
 	overrides: {
 		MuiTableRow: {
@@ -8,7 +9,12 @@ export const defaultTheme = createMuiTheme({
 					backgroundColor: '#000',
 				},
 			}
-		}
+		},
+		MuiMenu: {
+			paper: {
+				maxHeight: 300
+			}
+		},
 	},
 	palette: {
 		type: 'dark',
@@ -59,6 +65,18 @@ export const defaultTheme = createMuiTheme({
 		},
 		MuiSwitch: {
 			disableRipple: true,
-		}
+		},
+		MuiButton: {
+			disableRipple: true
+		},
+		MuiFormControl: {
+			variant: 'outlined',
+			margin: 'dense',
+		},
+		MuiTextField: {
+			// margin: 'dense',
+			// size: 'small',
+			variant: 'outlined'
+		},
 	}
 });

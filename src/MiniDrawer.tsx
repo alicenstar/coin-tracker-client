@@ -133,7 +133,7 @@ export default function MiniDrawer({ children }: Props) {
                     <ListItem
                      button
                      id="signup-button"
-                     onClick={() => setLoginOpen(!signupOpen)}
+                     onClick={() => setSignupOpen(!signupOpen)}
                     >
                         <ListItemText secondary="Signup" />
                     </ListItem>

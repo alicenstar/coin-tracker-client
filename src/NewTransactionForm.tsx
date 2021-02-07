@@ -1,7 +1,10 @@
 import {
     Button,
     Container,
+    Grid,
+    makeStyles,
     MenuItem,
+    Theme,
     Typography
 } from '@material-ui/core';
 import React from 'react';
@@ -21,6 +24,14 @@ type TransactionFormData = {
     trackerId: string;
 };
 
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        '& .MuiTextField-root': {
+          margin: theme.spacing(1),
+        },
+    },
+}));
+
 export const NewTransactionForm: React.FC = () => {
     const { tracker, findTracker } = useTrackerContext()!;
     const { listings } = useListingsContext()!;
@@ -35,6 +46,7 @@ export const NewTransactionForm: React.FC = () => {
         criteriaMode: 'all',
         mode: 'onChange'
     });
+    const classes = useStyles();
 
     const validateForm = React.useCallback(async () => {
         const match = tracker!.holdings.find(holding => holding.coinId === getValues('coinId'));
@@ -54,6 +66,18 @@ export const NewTransactionForm: React.FC = () => {
             id: listing.id
         }
     ));
+
+    const menuProps = {
+        anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left'
+        },
+        transformOrigin: {
+            vertical: 'top',
+            horizontal: 'left'
+        },
+        getContentAnchorEl: null
+    }
 
     React.useEffect(() => {
         if (formState.isSubmitSuccessful) {
@@ -142,74 +166,95 @@ export const NewTransactionForm: React.FC = () => {
 
     return (
         <Container maxWidth={false} disableGutters>
-            <Typography variant='h6'>New Transaction</Typography>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <MuiSelect
-                 name="type"
-                 label="Transaction type"
-                 control={control}
-                 defaultValue='Buy'
-                 rules={{ required: true, validate: validateForm }}
-                >
-                    <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
-                    <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
-                </MuiSelect>
-                <MuiSelect
-                 name="coinId"
-                 label="Coin to Buy/Sell"
-                 control={control}
-                 defaultValue={symbols[0].id}
-                 rules={{ required: true, validate: validateForm }}
-                >
-                    {symbols.map((coin) => (
-                        <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
-                    ))}
-                </MuiSelect>
-                <MuiTextField
-                 helperText=""
-                 name="quantity"
-                 label="Quantity to Buy/Sell"
-                 control={control}
-                 defaultValue=''
-                 rules={{
-                    pattern: {
-                        value: /^\d*?\.?\d*$/,
-                        message: 'Wrong number format'
-                    },
-                    required: 'This field is required',
-                    min: {
-                        value: 0,
-                        message: 'You must enter a value greater than 0'
-                    },
-                    validate: validateForm
-                 }}
-                 errors={errors}
-                />
-                <MuiTextField
-                 helperText="If no value is provided, current market price will be used"
-                 name="priceAtTransaction"
-                 label="Price at time of transaction"
-                 control={control}
-                 defaultValue=''
-                 rules={{
-                    min: {
-                        value: 0,
-                        message: 'You must enter a value greater than 0'
-                    },
-                    pattern: {
-                        value: /^\d*?\.?\d*$/,
-                        message: 'Wrong number format'
-                    }
-                 }}
-                 errors={errors}
-                />
-                <Button type="submit">Add Transaction</Button>
-                {formState.isSubmitted &&
-                    (formState.isSubmitSuccessful
-                        ? 'Form submitted successfully'
-                        : 'Submit failed')
-                }
+            <Typography variant='h6' color="secondary">New Transaction</Typography>
+            <Grid container alignItems="center">
+            <form style={{width: '100%'}} className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+                <Grid container item spacing={3}>
+                    <Grid item>
+                        <MuiSelect
+                        required={true}
+                        name="type"
+                        label="Type"
+                        control={control}
+                        defaultValue='Buy'
+                        rules={{ required: true, validate: validateForm }}
+                        menuProps={menuProps}
+                        >
+                            <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
+                            <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
+                        </MuiSelect>
+                    </Grid>
+                
+                    <Grid item>
+                        <MuiTextField
+                        name="quantity"
+                        label="Quantity"
+                        control={control}
+                        defaultValue=''
+                        required={true}
+                        rules={{
+                            pattern: {
+                                value: /^\d*?\.?\d*$/,
+                                message: 'Wrong number format'
+                            },
+                            required: 'This field is required',
+                            min: {
+                                value: 0,
+                                message: 'You must enter a value greater than 0'
+                            },
+                            validate: validateForm
+                        }}
+                        errors={errors}
+                        />
+                    </Grid>
+                
+                    <Grid item>
+                        <MuiSelect
+                        required={true}
+                        name="coinId"
+                        label="Coin"
+                        control={control}
+                        defaultValue={symbols[0].id}
+                        rules={{ required: true, validate: validateForm }}
+                        menuProps={menuProps}
+                        >
+                            {symbols.map((coin) => (
+                                <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
+                            ))}
+                        </MuiSelect>
+                    </Grid>
+                
+                    <Grid item>
+                        <MuiTextField
+                        helperText="If blank, current market price will be used"
+                        name="priceAtTransaction"
+                        label="Price"
+                        control={control}
+                        defaultValue=''
+                        rules={{
+                            min: {
+                                value: 0,
+                                message: 'You must enter a value greater than 0'
+                            },
+                            pattern: {
+                                value: /^\d*?\.?\d*$/,
+                                message: 'Wrong number format'
+                            }
+                        }}
+                        errors={errors}
+                        />
+                    </Grid>
+                    <Grid item alignItems="flex-end">
+                        <Button type="submit" color="secondary" variant="outlined">Add Transaction</Button>
+                        {formState.isSubmitted &&
+                            (formState.isSubmitSuccessful
+                                ? 'Form submitted successfully'
+                                : 'Submit failed')
+                        }
+                    </Grid>
+                </Grid>
             </form>
+            </Grid>
         </Container>
     );
 };

@@ -10,6 +10,8 @@ interface ISelectProps {
     defaultValue: any;
     rules?: any;
     children: React.ReactNode;
+    required?: boolean;
+    menuProps?: any;
 }
 
 export const MuiSelect: React.FC<ISelectProps> = ({
@@ -18,12 +20,14 @@ export const MuiSelect: React.FC<ISelectProps> = ({
     control,
     defaultValue,
     rules,
-    children
+    children,
+    required,
+    menuProps
 }: ISelectProps) => {
     const labelId = `${name}-label`;
 
     return (
-        <FormControl>
+        <FormControl required={required}>
             <InputLabel id={labelId} htmlFor={name}>{label}</InputLabel>
             <Controller
              render={(props) => (
@@ -32,6 +36,7 @@ export const MuiSelect: React.FC<ISelectProps> = ({
                  id={labelId}
                  name={name}
                  label={label}
+                 MenuProps={menuProps}
                 >
                     {children}
                 </Select>
