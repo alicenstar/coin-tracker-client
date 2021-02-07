@@ -169,7 +169,7 @@ export const NewTransactionForm: React.FC = () => {
             <Typography variant='h6' color="secondary">New Transaction</Typography>
             <Grid container alignItems="center">
             <form style={{width: '100%'}} className={classes.root} onSubmit={handleSubmit(onSubmit)}>
-                <Grid container item spacing={3}>
+                <Grid container item justify="space-evenly">
                     <Grid item>
                         <MuiSelect
                         required={true}
@@ -184,7 +184,6 @@ export const NewTransactionForm: React.FC = () => {
                             <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
                         </MuiSelect>
                     </Grid>
-                
                     <Grid item>
                         <MuiTextField
                         name="quantity"
@@ -207,7 +206,6 @@ export const NewTransactionForm: React.FC = () => {
                         errors={errors}
                         />
                     </Grid>
-                
                     <Grid item>
                         <MuiSelect
                         required={true}
@@ -223,7 +221,6 @@ export const NewTransactionForm: React.FC = () => {
                             ))}
                         </MuiSelect>
                     </Grid>
-                
                     <Grid item>
                         <MuiTextField
                         helperText="If blank, current market price will be used"

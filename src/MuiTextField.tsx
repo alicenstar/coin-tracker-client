@@ -40,7 +40,6 @@ export const MuiTextField: React.FC<ITextProps> = ({
                  id={labelId}
                  label={label}
                  required={required}
-                 style={{ width: 200}}
                 />
              )}
              control={control}
