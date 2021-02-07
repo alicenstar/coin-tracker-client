@@ -25,7 +25,7 @@ export const SignupDialog: React.FC<Props> = ({ open, setOpen }: Props) => {
                 <DialogTitle id="dialog-title-signup-form">Sign Up</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Signing up allows you to save multiple trackers to your account.
+                        Sign up to keep track of multiple trackers without worrying about your holdings being editted.
                     </DialogContentText>
                     <SignupForm open={open} setOpen={x => setOpen(x)}>
                         <Button onClick={handleClose}>Close</Button>
