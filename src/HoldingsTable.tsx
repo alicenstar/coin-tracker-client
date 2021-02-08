@@ -10,10 +10,12 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    Theme,
+    Typography,
+    withStyles
 } from "@material-ui/core";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { currencyFormatter } from "./utils/Formatters";
+import { currencyFormatter, percentFormatter } from "./utils/Formatters";
 import { MuiTextField } from "./MuiTextField";
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
@@ -46,6 +48,21 @@ const useStyles = makeStyles({
         marginBottom: -4
     }
 });
+
+const StickyTableCell = withStyles((theme: Theme) => ({
+    head: {
+        left: 0,
+        position: "sticky",
+        zIndex: theme.zIndex.appBar + 2
+    },
+    body: {
+        minWidth: 50,
+        left: 0,
+        position: "sticky",
+        zIndex: theme.zIndex.appBar + 1,
+        backgroundColor: 'inherit'
+    }
+}))(TableCell);
 
 interface TableFormData {
     newQuantity: string;
@@ -149,11 +166,21 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 {headers && (
                     <TableHead>
                         <TableRow>
-                            {headers.map((header: string, index: number) => (
-                                <TableCell key={index}>
-                                    {header}
-                                </TableCell>
-                            ))}
+                            {headers.map((header: string, index: number) => {
+                                if (index === 0) {
+                                    return (
+                                        <StickyTableCell key={index}>
+                                            {header}
+                                        </StickyTableCell>
+                                    );
+                                } else {
+                                    return (
+                                        <TableCell key={index}>
+                                            {header}
+                                        </TableCell>
+                                    );
+                                }
+                            })}
                         </TableRow>
                     </TableHead>
                 )}
@@ -161,17 +188,17 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                     {data.map((row: any) => {
                         return (
                             <TableRow key={row.id}>
+                                <StickyTableCell>
+                                    {row.listing.name} ({row.listing.symbol})
+                                </StickyTableCell>
                                 <TableCell>
-                                    {row.name}
+                                    {currencyFormatter.format(row.listing.quote.USD.price)}
                                 </TableCell>
                                 <TableCell>
-                                    {row.marketPrice}
+                                    {percentFormatter.format(row.listing.quote.USD.percent_change_1h / 100)}
                                 </TableCell>
                                 <TableCell>
-                                    {row.percentChange1H}
-                                </TableCell>
-                                <TableCell>
-                                    {row.percentChange24H}
+                                {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
                                 </TableCell>
                                 <TableCell align="right" className={classes.editCell}>
                                     {editActive && activeHolding === row.id

@@ -6,13 +6,13 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TablePagination,
+    // TablePagination,
     TableRow,
     Theme,
     Typography,
     withStyles,
 } from "@material-ui/core";
-import { TablePaginationActions } from './TablePaginationActions';
+// import { TablePaginationActions } from './TablePaginationActions';
 import { currencyFormatter, percentFormatter, largeCurrencyFormatter } from "./utils/Formatters";
 import { useListingsContext } from './ListingsContext';
 
@@ -122,10 +122,10 @@ export const OverviewTable: React.FC<ITableProps> = ({
                                 {largeCurrencyFormatter(row.quote.USD.volume_24h)}
                             </TableCell>
                             <TableCell>
-                                {percentFormatter.format(row.quote.USD.percent_change_1h)}
+                                {percentFormatter.format(row.quote.USD.percent_change_1h / 100)}
                             </TableCell>
                             <TableCell>
-                                {percentFormatter.format(row.quote.USD.percent_change_24h)}
+                                {percentFormatter.format(row.quote.USD.percent_change_24h / 100)}
                             </TableCell>
                         </TableRow>
                     ))}

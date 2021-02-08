@@ -34,10 +34,7 @@ export const Portfolio: React.FC = () => {
             const listingMatch: IListing | undefined = listings.find(listing => listing.id === holding.coinId);
             return {
                 id: holding._id,
-                name: listingMatch!.name,
-                marketPrice: currencyFormatter.format(listingMatch!.quote.USD.price),
-                percentChange1H: percentFormatter.format(listingMatch!.quote.USD.percent_change_1h / 100),
-                percentChange24H: percentFormatter.format(listingMatch!.quote.USD.percent_change_24h / 100),
+                listing: listingMatch,
                 quantity: parseFloat(holding.quantity),
                 totalValue: parseFloat(holding.quantity) * listingMatch!.quote.USD.price,
             }
