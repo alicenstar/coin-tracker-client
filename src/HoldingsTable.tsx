@@ -29,7 +29,7 @@ const useStyles = makeStyles({
         width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        maxHeight: 380,
+        // maxHeight: 380,
     },
     footer: {
         float: 'right'
