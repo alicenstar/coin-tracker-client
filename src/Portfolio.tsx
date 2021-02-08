@@ -11,7 +11,6 @@ import {
 import { useTrackerContext } from "./TrackerContext";
 import { useListingsContext } from "./ListingsContext";
 import { IHolding, IListing } from "./types/types";
-import { currencyFormatter, percentFormatter } from "./utils/Formatters";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
