@@ -10,7 +10,6 @@ interface ISelectProps {
     defaultValue: any;
     rules?: any;
     children: React.ReactNode;
-    required?: boolean;
     menuProps?: any;
 }
 
@@ -27,14 +26,13 @@ export const MuiSelect: React.FC<ISelectProps> = ({
     defaultValue,
     rules,
     children,
-    required,
     menuProps
 }: ISelectProps) => {
     const labelId = `${name}-label`;
     const classes = useStyles();
 
     return (
-        <FormControl required={required} className={classes.root}>
+        <FormControl className={classes.root}>
             <InputLabel id={labelId} htmlFor={name}>{label}</InputLabel>
             <Controller
              render={(props) => (
