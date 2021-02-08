@@ -58,6 +58,16 @@ export const Overview = () => {
 
     return (
         <Container maxWidth="lg" disableGutters>
+            <div style={{ height: '400px', width: '100%' }} ref={componentRef}>
+                {loaded && 
+                    <OverviewTreemap
+                     data={data.current}
+                     height={height}
+                     width={width}
+                     key={listings[0].quote.USD.market_cap}
+                    />
+                }
+            </div>
             <OverviewTable
              headers={[
                 "Rank",
@@ -69,16 +79,7 @@ export const Overview = () => {
                 "24hr"
              ]}
             />
-            <div style={{ height: '400px', width: '100%' }} ref={componentRef}>
-                {loaded && 
-                    <OverviewTreemap
-                     data={data.current}
-                     height={height}
-                     width={width}
-                     key={listings[0].quote.USD.market_cap}
-                    />
-                }
-            </div>
+
         </Container>
     );
 };

@@ -16,8 +16,7 @@ import { IHolding } from './types/types';
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        paddingTop: 16,
-        paddingBottom: 16,
+        padding: 16,
         marginBottom: 24,
         borderColor: theme.palette.primary.main,
     }
@@ -37,7 +36,7 @@ export const PortfolioValue: React.FC = () => {
         returnOnInvestment = (portfolioTotal / tracker!.initialInvestment) - 1;
     }
     const theme = useTheme();
-    const smallScreen = useMediaQuery(theme.breakpoints.down('xs'));
+    const xsScreen = useMediaQuery(theme.breakpoints.down('xs'));
     const classes = useStyles();
 
     return (
@@ -46,9 +45,9 @@ export const PortfolioValue: React.FC = () => {
                 <Grid
                  item
                  container
-                 direction={smallScreen ? "row-reverse" : "column"}
+                 direction={xsScreen ? "row-reverse" : "column"}
                  alignItems="center"
-                 justify={smallScreen ? "space-between" : "center"}
+                 justify={xsScreen ? "space-between" : "center"}
                  xs={12}
                  sm={6}
                  md={4}
@@ -68,9 +67,9 @@ export const PortfolioValue: React.FC = () => {
                 <Grid
                  item
                  container
-                 direction={smallScreen ? "row-reverse" : "column"}
+                 direction={xsScreen ? "row-reverse" : "column"}
                  alignItems="center"
-                 justify={smallScreen ? "space-between" : "center"}
+                 justify={xsScreen ? "space-between" : "center"}
                  xs={12}
                  sm={6}
                  md={4}
@@ -85,9 +84,9 @@ export const PortfolioValue: React.FC = () => {
                 <Grid
                  item
                  container
-                 direction={smallScreen ? "row-reverse" : "column"}
+                 direction={xsScreen ? "row-reverse" : "column"}
                  alignItems="center"
-                 justify={smallScreen ? "space-between" : "center"}
+                 justify={xsScreen ? "space-between" : "center"}
                  xs={12}
                  sm={6}
                  md={4}

@@ -96,8 +96,8 @@ export const defaultTheme = createMuiTheme({
 			margin: 'dense',
 		},
 		MuiTextField: {
-			// margin: 'dense',
-			// size: 'small',
+			margin: 'dense',
+			size: 'small',
 			variant: 'outlined'
 		},
 		MuiInputLabel: {

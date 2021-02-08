@@ -50,7 +50,8 @@ export const NewTransactionForm: React.FC = () => {
         getValues,
     } = useForm<TransactionFormData>({
         criteriaMode: 'all',
-        mode: 'onChange'
+        mode: 'onSubmit',
+        reValidateMode: 'onChange'
     });
     const classes = useStyles();
 
@@ -178,12 +179,12 @@ export const NewTransactionForm: React.FC = () => {
                 <Grid container item justify="space-between">
                     <Grid item>
                         <MuiSelect
-                        name="type"
-                        label="Type *"
-                        control={control}
-                        defaultValue='Buy'
-                        rules={{ required: true, validate: validateForm }}
-                        menuProps={menuProps}
+                         name="type"
+                         label="Type *"
+                         control={control}
+                         defaultValue='Buy'
+                         rules={{ required: true, validate: validateForm }}
+                         menuProps={menuProps}
                         >
                             <MenuItem key='Buy' value='Buy'>Buy</MenuItem>
                             <MenuItem key='Sell' value='Sell'>Sell</MenuItem>
@@ -191,12 +192,12 @@ export const NewTransactionForm: React.FC = () => {
                     </Grid>
                     <Grid item>
                         <MuiTextField
-                        name="quantity"
-                        label="Quantity"
-                        control={control}
-                        defaultValue=''
-                        required={true}
-                        rules={{
+                         name="quantity"
+                         label="Quantity"
+                         control={control}
+                         defaultValue=''
+                         required={true}
+                         rules={{
                             pattern: {
                                 value: /^\d*?\.?\d*$/,
                                 message: 'Wrong number format'
@@ -207,18 +208,18 @@ export const NewTransactionForm: React.FC = () => {
                                 message: 'You must enter a value greater than 0'
                             },
                             validate: validateForm
-                        }}
-                        errors={errors}
+                         }}
+                         errors={errors}
                         />
                     </Grid>
                     <Grid item>
                         <MuiSelect
-                        name="coinId"
-                        label="Coin *"
-                        control={control}
-                        defaultValue={symbols[0].id}
-                        rules={{ required: true, validate: validateForm }}
-                        menuProps={menuProps}
+                         name="coinId"
+                         label="Coin *"
+                         control={control}
+                         defaultValue={symbols[0].id}
+                         rules={{ required: true, validate: validateForm }}
+                         menuProps={menuProps}
                         >
                             {symbols.map((coin) => (
                                 <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
@@ -227,15 +228,15 @@ export const NewTransactionForm: React.FC = () => {
                     </Grid>
                     <Grid item>
                         <MuiTextField
-                        inputProps={{
+                         inputProps={{
                             startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                          }}
-                        helperText="If blank, current market price will be used"
-                        name="priceAtTransaction"
-                        label="Price"
-                        control={control}
-                        defaultValue=''
-                        rules={{
+                         }}
+                         helperText="If blank, current market price will be used"
+                         name="priceAtTransaction"
+                         label="Price"
+                         control={control}
+                         defaultValue=''
+                         rules={{
                             min: {
                                 value: 0,
                                 message: 'You must enter a value greater than 0'
@@ -244,13 +245,13 @@ export const NewTransactionForm: React.FC = () => {
                                 value: /^\d*?\.?\d*$/,
                                 message: 'Wrong number format'
                             }
-                        }}
-                        errors={errors}
+                         }}
+                         errors={errors}
                         />
                     </Grid>
                     <Grid item>
                         <Button
-                        className={classes.button}
+                         className={classes.button}
                          type="submit"
                          color="secondary"
                          variant="outlined">
