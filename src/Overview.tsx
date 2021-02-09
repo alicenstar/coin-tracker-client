@@ -15,6 +15,7 @@ import { OverviewTable } from "./OverviewTable";
 import { OverviewTreemap } from "./OverviewTreemap";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from "clsx";
+import { useResizeObserver }  from './utils/index';
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -36,35 +37,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
 }));
 
-function useResizeObserver(myRef: React.RefObject<any>) {
-    const [dimensions, setDimensions] = React.useState({
-        width: 0,
-        height: 0
-    });
-    const observer = React.useRef(
-        new ResizeObserver(entries => {
-            const { height, width } = entries[0].contentRect;
-            setDimensions({
-                width: width,
-                height: height,
-            });
-        })
-    );
-  
-    React.useEffect(() => {
-        const observerRef = observer.current;
-        const elementRef = myRef.current;
-        if (myRef.current) {
-            observer.current.observe(myRef.current);
-        }
-        return () => {
-            observerRef.unobserve(elementRef);
-        };
-    }, [myRef, observer]);
-
-    return dimensions;
-};
-
 export const Overview = () => {
     const [ loaded, setLoaded ] = React.useState(false);
     const { listings } = useListingsContext()!;
@@ -72,7 +44,7 @@ export const Overview = () => {
     const componentRef = React.useRef(null);
     const { width, height } = useResizeObserver(componentRef);
     const classes = useStyles();
-    const [ expanded, setExpanded ] = React.useState(false);
+    const [ expanded, setExpanded ] = React.useState(true);
 
     const treemapData = React.useCallback(() => {
         setLoaded(false);
