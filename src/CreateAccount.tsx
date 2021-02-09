@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Container,
     makeStyles,
     Typography
 } from '@material-ui/core';
@@ -17,12 +16,9 @@ const useStyles = makeStyles({
 
 export const CreateAccount: React.FC = () => {
     const classes = useStyles();
-    
+
     return (
-        <Container
-         style={{ width: '270px' }}
-         disableGutters
-        >
+        <>
             <Typography
              color="primary"
              variant="overline"
@@ -32,7 +28,8 @@ export const CreateAccount: React.FC = () => {
                 Create An Account
             </Typography>
             <Typography
-            className={classes.paragraph}
+             style={{ width: 270 }}
+             className={classes.paragraph}
              variant="body2"
              align="center"
              display="block"
@@ -44,6 +41,6 @@ export const CreateAccount: React.FC = () => {
                     Create Account
                 </Button>
             </Box>
-        </Container>
+        </>
     );
 };

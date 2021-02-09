@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Container,
     makeStyles,
     Typography
 } from '@material-ui/core';
@@ -19,11 +18,8 @@ export const CreateTracker: React.FC = () => {
     const classes = useStyles();
 
     return (
-        <Container
-         style={{ width: '270px' }}
-         disableGutters
-        >
-           <Typography
+        <>
+            <Typography
              color="secondary"
              variant="overline"
              align="center"
@@ -32,17 +28,19 @@ export const CreateTracker: React.FC = () => {
                 Create A Tracker
             </Typography>
             <Typography
+             style={{ width: 270 }}
              className={classes.paragraph}
              variant="body2"
              align="center"
              display="block"
             >
-                Create a tracker without an account (Strangers may be able to edit your holdings if they get your URL)           </Typography>
+                Create a tracker without an account (Strangers may be able to edit your holdings if they get your URL)
+            </Typography>
             <Box textAlign="center">
                 <Button color="secondary" variant="contained">
                     Create Tracker
                 </Button>
             </Box>
-        </Container>
+        </>
     );
 };
