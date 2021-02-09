@@ -68,6 +68,7 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 	content: {
 	  flexGrow: 1,
 	  padding: theme.spacing(3),
+	  overflow: 'auto',
 	  [theme.breakpoints.down('sm')]: {
 		width: theme.spacing(7) + 1,
 	  },

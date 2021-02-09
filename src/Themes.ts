@@ -30,6 +30,15 @@ export const defaultTheme = createMuiTheme({
 				paddingBottom: 0
 			}
 		},
+		MuiCardHeader: {
+			root: {
+				justifyContent: 'space-between',
+			},
+			action: {
+				alignSelf: 'center',
+				marginTop: 0,
+			}
+		}
 		// MuiPaper: {
 		// 	root: {
 		// 		paddingTop: 16,

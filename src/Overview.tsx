@@ -1,31 +1,67 @@
-import { Container } from "@material-ui/core";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    Collapse,
+    Container,
+    createStyles,
+    IconButton,
+    makeStyles,
+    Theme
+} from "@material-ui/core";
 import React from "react";
 import { useListingsContext } from "./ListingsContext";
 import { OverviewTable } from "./OverviewTable";
 import { OverviewTreemap } from "./OverviewTreemap";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import clsx from "clsx";
 
 
-function useContainerDimensions(myRef: React.RefObject<any>) {
-    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+const useStyles = makeStyles((theme: Theme) => createStyles({
+    root: {
+        width: '100%'
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
+    button : {
+        padding: 0
+    },
+}));
+
+function useResizeObserver(myRef: React.RefObject<any>) {
+    const [dimensions, setDimensions] = React.useState({
+        width: 0,
+        height: 0
+    });
+    const observer = React.useRef(
+        new ResizeObserver(entries => {
+            const { height, width } = entries[0].contentRect;
+            setDimensions({
+                width: width,
+                height: height,
+            });
+        })
+    );
   
     React.useEffect(() => {
-        const getDimensions = () => ({
-            width: (myRef && myRef.current.offsetWidth) || 0,
-            height: (myRef && myRef.current.offsetHeight) || 0,
-        });
-    
-        const handleResize = () => {
-            setDimensions(getDimensions());
-        };
-
+        const observerRef = observer.current;
+        const elementRef = myRef.current;
         if (myRef.current) {
-            setDimensions(getDimensions());
+            observer.current.observe(myRef.current);
         }
-        window.addEventListener('resize', handleResize);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            observerRef.unobserve(elementRef);
         };
-    }, [myRef]);
+    }, [myRef, observer]);
+
     return dimensions;
 };
 
@@ -34,7 +70,10 @@ export const Overview = () => {
     const { listings } = useListingsContext()!;
     const data = React.useRef<any>();
     const componentRef = React.useRef(null);
-    const { width, height } = useContainerDimensions(componentRef);
+    const { width, height } = useResizeObserver(componentRef);
+    const classes = useStyles();
+    const [ expanded, setExpanded ] = React.useState(false);
+
     const treemapData = React.useCallback(() => {
         setLoaded(false);
         let listingsData = listings.map(listing => ({
@@ -56,18 +95,49 @@ export const Overview = () => {
         }
     }, [listings, treemapData]);
 
+    const handleExpandClick = () => {
+        setExpanded(!expanded);
+    };
+
     return (
         <Container maxWidth="lg" disableGutters>
-            <div style={{ height: '400px', width: '100%' }} ref={componentRef}>
-                {loaded && 
-                    <OverviewTreemap
-                     data={data.current}
-                     height={height}
-                     width={width}
-                     key={listings[0].quote.USD.market_cap}
-                    />
-                }
-            </div>
+            <Card className={classes.root}>
+                <CardHeader
+                 title="Market Cap Breakdown"
+                 action={
+                    <IconButton
+                     className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded,
+                      }, classes.button)}
+                     onClick={handleExpandClick}
+                     aria-expanded={expanded}
+                     aria-label="show graph"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                 }
+                 titleTypographyProps={{
+                    variant: 'h6'
+                 }}
+                />
+                <Collapse className={classes.root} in={expanded} timeout="auto">
+                    <CardContent className={classes.root}>
+                        <div
+                         style={{ height: '300px', width: '100%' }}
+                         ref={componentRef}>
+                            {loaded && 
+                                <OverviewTreemap
+                                data={data.current}
+                                height={height}
+                                width={width}
+                                key={listings[0].quote.USD.market_cap}
+                                />
+                            }
+                        </div>
+                    </CardContent>
+                </Collapse>
+            </Card>
+            
             <OverviewTable
              headers={[
                 "Rank",
