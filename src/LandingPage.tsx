@@ -35,7 +35,9 @@ export const LandingPage: React.FC = () => {
                  alignItems="center"
                  spacing={7}
                 >
-                    <CreateTracker />
+                    <Grid item>
+                        <CreateTracker />
+                    </Grid>
                     <Grid item>
                         <Typography
                          variant="subtitle1"
@@ -43,7 +45,9 @@ export const LandingPage: React.FC = () => {
                             OR
                         </Typography>
                     </Grid>
-                    <CreateAccount />
+                    <Grid item>
+                        <CreateAccount />
+                    </Grid>
                 </Grid>
             </Grid>
         </Container>

@@ -1,37 +1,48 @@
-import { Button, Grid, Typography } from '@material-ui/core';
+import {
+    Box,
+    Button,
+    Container,
+    makeStyles,
+    Typography
+} from '@material-ui/core';
 import React from 'react';
 
 
+const useStyles = makeStyles({
+    paragraph: {
+        paddingTop: 16,
+        paddingBottom: 10
+    }
+});
+
 export const CreateTracker: React.FC = () => {
+    const classes = useStyles();
+
     return (
-        <Grid
-         container
-         item
-         direction="column"
-         justify="center"
-         alignItems="center"
-         spacing={2}
-         style={{ width: '300px' }}
+        <Container
+         style={{ width: '270px' }}
+         disableGutters
         >
-            <Grid item>
-                <Typography
-                 color="secondary"
-                 variant="overline"
-                 align="center"
-                >
-                    Create A Tracker
-                </Typography>
-            </Grid>
-            <Grid item>
-                <Typography variant="body2" align="center">
-                    Create a tracker without an account (Strangers may be able to edit your holdings if they get your URL)
-                </Typography>
-            </Grid>
-            <Grid item>
+           <Typography
+             color="secondary"
+             variant="overline"
+             align="center"
+             display="block"
+            >
+                Create A Tracker
+            </Typography>
+            <Typography
+             className={classes.paragraph}
+             variant="body2"
+             align="center"
+             display="block"
+            >
+                Create a tracker without an account (Strangers may be able to edit your holdings if they get your URL)           </Typography>
+            <Box textAlign="center">
                 <Button color="secondary" variant="contained">
                     Create Tracker
                 </Button>
-            </Grid>
-        </Grid>
+            </Box>
+        </Container>
     );
 };
