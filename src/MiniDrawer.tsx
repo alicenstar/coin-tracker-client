@@ -23,7 +23,7 @@ import clsx from 'clsx';
 import { usePageContext } from './PageContext';
 import { useMiniDrawerStyles } from './MiniDrawerStyles';
 import { Header } from './Header';
-import { NewTracker } from './NewTracker';
+import { NewTracker } from './NewTrackerDialog';
 import Dashboard from './Dashboard';
 import { useParams } from 'react-router-dom';
 import { useTrackerContext } from './TrackerContext';
