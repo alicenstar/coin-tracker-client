@@ -33,7 +33,7 @@ export const LandingPage: React.FC = () => {
                  style={{ width: '100vw'}}
                 >
                     <Grid item xs={12}>
-                        <Typography variant="h1" align="center">
+                        <Typography variant={smScreen ? "h2" : "h1"} align="center">
                             <Box letterSpacing={3}>
                                 Coin Tracker
                             </Box>
