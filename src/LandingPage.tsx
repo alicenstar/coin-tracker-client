@@ -1,6 +1,7 @@
 import {
     Box,
     Grid,
+    IconButton,
     makeStyles,
     Typography,
     useMediaQuery,
@@ -12,6 +13,7 @@ import { CreateAccount } from './CreateAccount';
 import clsx from 'clsx';
 import { CreateTrackerPage } from './CreateTrackerPage';
 import { CreateAccountPage } from './CreateAccountPage';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 
 const useStyles = makeStyles({
@@ -87,6 +89,9 @@ export const LandingPage: React.FC = () => {
                  item
                 >
                     <CreateTrackerPage />
+                    <IconButton aria-label="back" onClick={() => setPage('main')}>
+                        <ArrowBackIcon />
+                    </IconButton>
                 </Grid>
                 <Grid
                  className={clsx({
@@ -95,6 +100,9 @@ export const LandingPage: React.FC = () => {
                  item
                 >
                     <CreateAccountPage />
+                    <IconButton aria-label="back" onClick={() => setPage('main')}>
+                        <ArrowBackIcon />
+                    </IconButton>
                 </Grid>
             </Grid>
         </Grid>
