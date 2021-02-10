@@ -14,7 +14,13 @@ const useStyles = makeStyles({
     }
 });
 
-export const CreateAccount: React.FC = () => {
+type Props = {
+    setPage: (page: string) => void;
+}
+
+export const CreateAccount: React.FC<Props> = ({
+    setPage
+}: Props) => {
     const classes = useStyles();
 
     return (
@@ -37,7 +43,7 @@ export const CreateAccount: React.FC = () => {
                 Keep track of multiple trackers without worrying about your holdings being editted
             </Typography>
             <Box textAlign="center">
-                <Button color="primary" variant="contained">
+                <Button color="primary" variant="contained" onClick={() => setPage('account')}>
                     Create Account
                 </Button>
             </Box>

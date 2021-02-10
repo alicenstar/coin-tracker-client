@@ -39,13 +39,6 @@ export const defaultTheme = createMuiTheme({
 				marginTop: 0,
 			}
 		}
-		// MuiPaper: {
-		// 	root: {
-		// 		paddingTop: 16,
-		// 		paddingBottom: 16,
-		// 		marginBottom: 24,
-		// 	}
-		// }
 	},
 	palette: {
 		type: 'dark',
@@ -107,7 +100,7 @@ export const defaultTheme = createMuiTheme({
 		MuiTextField: {
 			margin: 'dense',
 			size: 'small',
-			variant: 'outlined'
+			variant: 'outlined',
 		},
 		MuiInputLabel: {
 			shrink: true,

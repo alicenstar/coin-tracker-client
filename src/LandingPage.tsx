@@ -1,6 +1,7 @@
 import {
     Box,
     Grid,
+    makeStyles,
     Typography,
     useMediaQuery,
     useTheme
@@ -8,11 +9,21 @@ import {
 import React from 'react';
 import { CreateTracker } from './CreateTracker';
 import { CreateAccount } from './CreateAccount';
+import clsx from 'clsx';
+import { CreateTrackerPage } from './CreateTrackerPage';
 
+
+const useStyles = makeStyles({
+    hide: {
+        display: 'none'
+    }
+})
 
 export const LandingPage: React.FC = () => {
     const theme = useTheme();
     const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const [ page, setPage ] = React.useState('main');
+    const classes = useStyles();
 
     return (
         <Grid
@@ -38,10 +49,20 @@ export const LandingPage: React.FC = () => {
                         </Box>
                     </Typography>
                 </Grid>
-                <Grid item>
-                    <CreateTracker />
+                <Grid
+                 className={clsx({
+                    [classes.hide]: page !== 'main',
+                 })}
+                 item
+                >
+                    <CreateTracker setPage={setPage} />
                 </Grid>
-                <Grid item>
+                <Grid
+                 className={clsx({
+                    [classes.hide]: page !== 'main',
+                 })}
+                 item
+                >
                     <Typography
                      variant="subtitle1"
                      align="center"
@@ -50,8 +71,21 @@ export const LandingPage: React.FC = () => {
                         OR
                     </Typography>
                 </Grid>
-                <Grid item>
-                    <CreateAccount />
+                <Grid
+                 className={clsx({
+                    [classes.hide]: page !== 'main',
+                 })}
+                 item
+                >
+                    <CreateAccount setPage={setPage} />
+                </Grid>
+                <Grid
+                 className={clsx({
+                    [classes.hide]: page !== 'tracker',
+                 })}
+                 item
+                >
+                    <CreateTrackerPage />
                 </Grid>
             </Grid>
         </Grid>

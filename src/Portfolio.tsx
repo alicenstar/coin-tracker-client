@@ -56,7 +56,7 @@ export const Portfolio: React.FC = () => {
     const [ treemapData, setTreemapData ] = React.useState<any>([]);
     const componentRef = React.useRef(null);
     const { width, height } = useResizeObserver(componentRef);
-    const [ expanded, setExpanded ] = React.useState(true);
+    const [ expanded, setExpanded ] = React.useState(tracker && tracker?.holdings.length > 0);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -124,12 +124,17 @@ export const Portfolio: React.FC = () => {
                                 variant: 'h6'
                             }}
                             />
-                            <Collapse className={classes.root} in={expanded} timeout="auto">
+                            
+                            <Collapse
+                            className={classes.root}
+                            in={expanded}
+                            timeout="auto"
+                            >
                                 <CardContent className={classes.root}>
                                     <div
                                     style={{ height: '300px', width: '100%' }}
                                     ref={componentRef}>
-                                        {loaded && 
+                                        {loaded && tracker.holdings.length > 0 &&
                                             <PortfolioTreemap
                                             data={treemapData}
                                             height={height}

@@ -14,7 +14,13 @@ const useStyles = makeStyles({
     }
 });
 
-export const CreateTracker: React.FC = () => {
+type Props = {
+    setPage: (page: string) => void;
+}
+
+export const CreateTracker: React.FC<Props> = ({
+    setPage
+}: Props) => {
     const classes = useStyles();
 
     return (
@@ -37,7 +43,7 @@ export const CreateTracker: React.FC = () => {
                 Create a tracker without an account (Strangers may be able to edit your holdings if they get your URL)
             </Typography>
             <Box textAlign="center">
-                <Button color="secondary" variant="contained">
+                <Button color="secondary" variant="contained" onClick={() => setPage('tracker')}>
                     Create Tracker
                 </Button>
             </Box>

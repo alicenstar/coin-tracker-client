@@ -22,7 +22,7 @@ type Props = {
 type TrackerFormData = {
     trackerName: string;
     user?: string;
-};
+}
 
 export const NewTracker: React.FC<Props> = ({
     open,

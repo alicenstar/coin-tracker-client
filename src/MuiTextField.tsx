@@ -15,6 +15,8 @@ interface ITextProps {
     inputProps?: any;
     required?: boolean;
     width?: number;
+    variant?: 'standard' | 'filled' | 'outlined' | undefined;
+    inputLabelProps?: any;
 }
 
 export const MuiTextField: React.FC<ITextProps> = ({
@@ -27,10 +29,11 @@ export const MuiTextField: React.FC<ITextProps> = ({
     helperText,
     inputProps,
     required,
-    width
+    width,
+    variant,
+    inputLabelProps
 }: ITextProps) => {
     const labelId = `${name}-label`;
-
 
     return (
         <>
@@ -42,9 +45,11 @@ export const MuiTextField: React.FC<ITextProps> = ({
                  InputProps={inputProps}
                  name={name}
                  helperText={helperText}
+                 InputLabelProps={inputLabelProps}
                  id={labelId}
                  label={label}
                  required={required}
+                 variant={variant}
                 />
              )}
              control={control}
