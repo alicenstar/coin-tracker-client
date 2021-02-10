@@ -79,7 +79,6 @@ export const CreateAccountPage: React.FC = () => {
 
     React.useEffect(() => {
         if (formState.isSubmitSuccessful && tracker) {
-            console.log('history push')
             history.push(`/${tracker._id}`);
         }
     }, [history, formState.isSubmitSuccessful, tracker]);

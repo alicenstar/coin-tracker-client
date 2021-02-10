@@ -48,23 +48,27 @@ function App(): JSX.Element {
 	// });
 
 	return (
-		<UserProvider>
-			<TrackerProvider>
-				<PageProvider>
-					<ListingsProvider>
-						<ThemeProvider theme={defaultTheme}>
-							<Router>
+		<Router>
+			<UserProvider>
+				<TrackerProvider>
+					<PageProvider>
+						<ListingsProvider>
+							<ThemeProvider theme={defaultTheme}>
 								<CssBaseline />
 								<Switch>
-									<Route exact path="/" component={() => <LandingPage />} />
-									<Route path="/:id?" component={(props: any) => <MiniDrawer {...props} />} />
+									<Route exact path="/">
+										<LandingPage />
+									</Route>
+									<Route path="/:id">
+										<MiniDrawer />
+									</Route>
 								</Switch>
-							</Router>
-						</ThemeProvider>
-					</ListingsProvider>
-				</PageProvider>
-			</TrackerProvider>
-		</UserProvider>
+							</ThemeProvider>
+						</ListingsProvider>
+					</PageProvider>
+				</TrackerProvider>
+			</UserProvider>
+		</Router>
 	);
 }
 

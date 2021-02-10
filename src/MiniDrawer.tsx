@@ -25,7 +25,7 @@ import { useMiniDrawerStyles } from './MiniDrawerStyles';
 import { Header } from './Header';
 import { NewTracker } from './NewTrackerDialog';
 import Dashboard from './Dashboard';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useTrackerContext } from './TrackerContext';
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
@@ -34,11 +34,7 @@ import { SignupDialog } from './SignupDialog';
 import { useUserContext } from './UserContext';
 
 
-type Props = {
-	children: React.ReactNode
-};
-
-export default function MiniDrawer({ children }: Props) {
+export default function MiniDrawer() {
     const { setPageElement } = usePageContext()!;
     const { tracker, setId } = useTrackerContext()!;
     const classes = useMiniDrawerStyles();
@@ -233,7 +229,6 @@ export default function MiniDrawer({ children }: Props) {
                 <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
                 <SignupDialog open={signupOpen} setOpen={x => setSignupOpen(x)} />
                 <Dashboard />
-                {children}
             </main>
         </div>
 	);

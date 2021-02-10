@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Loading from './Loading';
 import { ITracker } from './types/types';
 
@@ -24,6 +25,7 @@ export const TrackerProvider = ({
     const [ tracker, setTracker ] = React.useState<ITracker | undefined>(undefined);
     const [ id, setId ] = React.useState<string | undefined>(undefined);
     const [ loaded, setLoaded ] = React.useState<boolean>(false);
+    let history = useHistory();
 
     const findTracker = React.useCallback(async () => {
         setLoaded(false);
@@ -33,9 +35,12 @@ export const TrackerProvider = ({
             setTracker(json.tracker);
         } else {
             setTracker(undefined);
+            setId(undefined);
+            //redirect user to home page if no tracker
+            history.push('/');
         }
         setLoaded(true);
-    }, [setTracker, id]);
+    }, [setTracker, id, history]);
 
     React.useEffect(() => {
         if (id) {
