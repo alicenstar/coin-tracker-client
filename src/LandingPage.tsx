@@ -11,6 +11,7 @@ import { CreateTracker } from './CreateTracker';
 import { CreateAccount } from './CreateAccount';
 import clsx from 'clsx';
 import { CreateTrackerPage } from './CreateTrackerPage';
+import { CreateAccountPage } from './CreateAccountPage';
 
 
 const useStyles = makeStyles({
@@ -86,6 +87,14 @@ export const LandingPage: React.FC = () => {
                  item
                 >
                     <CreateTrackerPage />
+                </Grid>
+                <Grid
+                 className={clsx({
+                    [classes.hide]: page !== 'account',
+                 })}
+                 item
+                >
+                    <CreateAccountPage />
                 </Grid>
             </Grid>
         </Grid>

@@ -49,7 +49,6 @@ export const CreateTrackerPage: React.FC = () => {
         const json = await response.json();
         setTracker(json.tracker);
         setPageElement('Portfolio');
-        console.log('submit', json.tracker)
     };
 
     React.useEffect(() => {
