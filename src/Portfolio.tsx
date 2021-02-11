@@ -54,9 +54,29 @@ export const Portfolio: React.FC = () => {
     const classes = useStyles();
     const [ loaded, setLoaded ] = React.useState(false);
     const [ treemapData, setTreemapData ] = React.useState<any>([]);
-    const componentRef = React.useRef(null);
-    const { width, height } = useResizeObserver(componentRef);
-    const [ expanded, setExpanded ] = React.useState(tracker && tracker?.holdings.length > 0);
+    const [ expanded, setExpanded ] = React.useState(
+        tracker && tracker?.holdings.length > 0
+    );
+    const [dimensions, setDimensions] = React.useState({
+        width: 0,
+        height: 0
+    });
+    
+    const ref = React.useCallback((node) => {
+        const observer = new ResizeObserver(entries => {
+            const { height, width } = entries[0].contentRect;
+            setDimensions({
+                width: width,
+                height: height,
+            });
+        });
+        if (node) {
+            observer.observe(node);
+        }
+        return () => {
+            observer.unobserve(node);
+        };
+    }, []);
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -129,16 +149,18 @@ export const Portfolio: React.FC = () => {
                             className={classes.root}
                             in={expanded}
                             timeout="auto"
+                            mountOnEnter
+                            unmountOnExit
                             >
                                 <CardContent className={classes.root}>
                                     <div
                                     style={{ height: '300px', width: '100%' }}
-                                    ref={componentRef}>
+                                    ref={ref}>
                                         {loaded && tracker.holdings.length > 0 &&
                                             <PortfolioTreemap
                                             data={treemapData}
-                                            height={height}
-                                            width={width}
+                                            height={dimensions.height}
+                                            width={dimensions.width}
                                             key={listings[0].quote.USD.market_cap}
                                             />
                                         }

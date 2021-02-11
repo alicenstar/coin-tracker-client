@@ -41,11 +41,29 @@ export const Overview = () => {
     const [ loaded, setLoaded ] = React.useState(false);
     const { listings } = useListingsContext()!;
     const data = React.useRef<any>();
-    const componentRef = React.useRef(null);
-    const { width, height } = useResizeObserver(componentRef);
     const classes = useStyles();
     const [ expanded, setExpanded ] = React.useState(true);
+    const [dimensions, setDimensions] = React.useState({
+        width: 0,
+        height: 0
+    });
 
+    const ref = React.useCallback((node) => {
+        const observer = new ResizeObserver(entries => {
+            const { height, width } = entries[0].contentRect;
+            setDimensions({
+                width: width,
+                height: height,
+            });
+        });
+        if (node) {
+            observer.observe(node);
+        }
+        return () => {
+            observer.unobserve(node);
+        };
+    }, []);
+    
     const treemapData = React.useCallback(() => {
         setLoaded(false);
         let listingsData = listings.map(listing => ({
@@ -92,16 +110,23 @@ export const Overview = () => {
                     variant: 'h6'
                  }}
                 />
-                <Collapse className={classes.root} in={expanded} timeout="auto">
+                <Collapse
+                className={classes.root}
+                in={expanded}
+                timeout="auto"
+                onEnter={() => setLoaded(true)}
+                unmountOnExit
+                mountOnEnter
+                >
                     <CardContent className={classes.root}>
                         <div
                          style={{ height: '300px', width: '100%' }}
-                         ref={componentRef}>
+                         ref={ref}>
                             {loaded && 
                                 <OverviewTreemap
                                 data={data.current}
-                                height={height}
-                                width={width}
+                                height={dimensions.height}
+                                width={dimensions.width}
                                 key={listings[0].quote.USD.market_cap}
                                 />
                             }
