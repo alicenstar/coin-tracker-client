@@ -18,7 +18,6 @@ import { useListingsContext } from "./ListingsContext";
 import { IHolding, IListing } from "./types/types";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from "clsx";
-import { useResizeObserver }  from './utils/index';
 import { PortfolioTreemap }  from './PortfolioTreemap';
 
 
@@ -61,7 +60,7 @@ export const Portfolio: React.FC = () => {
         width: 0,
         height: 0
     });
-    
+
     const ref = React.useCallback((node) => {
         const observer = new ResizeObserver(entries => {
             const { height, width } = entries[0].contentRect;

@@ -15,7 +15,6 @@ import { OverviewTable } from "./OverviewTable";
 import { OverviewTreemap } from "./OverviewTreemap";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from "clsx";
-import { useResizeObserver }  from './utils/index';
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -63,7 +62,7 @@ export const Overview = () => {
             observer.unobserve(node);
         };
     }, []);
-    
+
     const treemapData = React.useCallback(() => {
         setLoaded(false);
         let listingsData = listings.map(listing => ({
