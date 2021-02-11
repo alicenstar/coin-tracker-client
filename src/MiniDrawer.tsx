@@ -71,7 +71,8 @@ export default function MiniDrawer() {
     const handleNav = (event: React.MouseEvent) => {
         var element = event.currentTarget.id;
         setPageElement(element);
-        setDrawerOpen(!drawerOpen);
+        setDrawerOpen(false);
+        setMobileOpen(false);
     };
 
     const handleLogout = async () => {
