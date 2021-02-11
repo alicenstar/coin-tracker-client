@@ -19,7 +19,21 @@ import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
-        width: '100%'
+        width: '100%',
+        backgroundColor: 'transparent',
+    },
+    header: {
+        padding: 0,
+        marginLeft: 2,
+        marginRight: 5,
+    },
+    content: {
+        paddingTop: 0,
+        paddingRight: 0,
+        paddingLeft: 0,
+        "&:last-child": {
+            paddingBottom: 16
+        }
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -92,6 +106,7 @@ export const Overview = () => {
         <Container maxWidth="lg" disableGutters>
             <Card className={classes.root}>
                 <CardHeader
+                 className={classes.header}
                  title="Market Cap Breakdown"
                  action={
                     <IconButton
@@ -106,7 +121,7 @@ export const Overview = () => {
                     </IconButton>
                  }
                  titleTypographyProps={{
-                    variant: 'h6'
+                    variant: 'subtitle1'
                  }}
                 />
                 <Collapse
@@ -117,7 +132,7 @@ export const Overview = () => {
                 unmountOnExit
                 mountOnEnter
                 >
-                    <CardContent className={classes.root}>
+                    <CardContent className={classes.content}>
                         <div
                          style={{ height: '300px', width: '100%' }}
                          ref={ref}>

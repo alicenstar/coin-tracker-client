@@ -29,7 +29,21 @@ const useStyles = makeStyles((theme: Theme) => ({
         borderColor: theme.palette.secondary.main,
     },
     root: {
-        width: '100%'
+        width: '100%',
+        backgroundColor: 'transparent',
+    },
+    header: {
+        padding: 0,
+        marginLeft: 2,
+        marginRight: 5,
+    },
+    content: {
+        paddingTop: 0,
+        paddingRight: 0,
+        paddingLeft: 0,
+        "&:last-child": {
+            paddingBottom: 16
+        }
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -126,41 +140,43 @@ export const Portfolio: React.FC = () => {
                         </Typography>
                         <Card className={classes.root}>
                             <CardHeader
-                            title="Portfolio Breakdown"
-                            action={
+                             className={classes.header}
+                             title="Portfolio Breakdown"
+                             action={
                                 <IconButton
-                                className={clsx(classes.expand, {
+                                 className={clsx(classes.expand, {
                                     [classes.expandOpen]: expanded,
-                                }, classes.button)}
-                                onClick={handleExpandClick}
-                                aria-expanded={expanded}
-                                aria-label="show graph"
+                                 }, classes.button)}
+                                 onClick={handleExpandClick}
+                                 aria-expanded={expanded}
+                                 aria-label="show graph"
                                 >
                                     <ExpandMoreIcon />
                                 </IconButton>
                             }
-                            titleTypographyProps={{
-                                variant: 'h6'
-                            }}
+                             titleTypographyProps={{
+                                variant: 'subtitle1'
+                             }}
                             />
                             
                             <Collapse
-                            className={classes.root}
-                            in={expanded}
-                            timeout="auto"
-                            mountOnEnter
-                            unmountOnExit
+                             className={classes.root}
+                             in={expanded}
+                             timeout="auto"
+                             mountOnEnter
+                             unmountOnExit
                             >
-                                <CardContent className={classes.root}>
+                                <CardContent className={classes.content}>
                                     <div
-                                    style={{ height: '300px', width: '100%' }}
-                                    ref={ref}>
+                                     style={{ height: '300px', width: '100%' }}
+                                     ref={ref}
+                                    >
                                         {loaded && tracker.holdings.length > 0 &&
                                             <PortfolioTreemap
-                                            data={treemapData}
-                                            height={dimensions.height}
-                                            width={dimensions.width}
-                                            key={listings[0].quote.USD.market_cap}
+                                             data={treemapData}
+                                             height={dimensions.height}
+                                             width={dimensions.width}
+                                             key={listings[0].quote.USD.market_cap}
                                             />
                                         }
                                     </div>
