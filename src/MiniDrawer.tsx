@@ -25,7 +25,7 @@ import { useMiniDrawerStyles } from './MiniDrawerStyles';
 import { Header } from './Header';
 import { NewTracker } from './NewTrackerDialog';
 import Dashboard from './Dashboard';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTrackerContext } from './TrackerContext';
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
@@ -43,6 +43,7 @@ export default function MiniDrawer() {
     const [ newTrackerOpen, setNewTrackerOpen ] = React.useState(false);
     const [ loginOpen, setLoginOpen ] = React.useState(false);
     const [ signupOpen, setSignupOpen ] = React.useState(false);
+    const [ mobileOpen, setMobileOpen ] = React.useState(false);
     const { user, setUser } = useUserContext()!;
     const { id } = useParams<{id: string}>();
 
@@ -58,10 +59,15 @@ export default function MiniDrawer() {
 	const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
 	};
+
+    const handleMobileToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
   
     const handleNav = (event: React.MouseEvent) => {
         var element = event.currentTarget.id;
         setPageElement(element);
+        setDrawerOpen(!drawerOpen);
     };
 
     const handleLogout = async () => {
@@ -75,12 +81,13 @@ export default function MiniDrawer() {
         }
     }, [id, setId]);
 
-    const drawer = (<>
-        <div className={classes.toolbar}>
-            <IconButton onClick={handleDrawerToggle}>
-                <ChevronLeftIcon />
-            </IconButton>
-        </div>
+    const toggleDrawer = (open: boolean) => {
+        setMobileOpen(open);
+        setDrawerOpen(open);
+    };
+
+    const drawer = (
+        <>
         <Divider />
         <List>
             {drawerLinks.map((text, index) => (
@@ -114,7 +121,7 @@ export default function MiniDrawer() {
         </List>
         <Divider />
         <List className={clsx({
-            [classes.hide]: !drawerOpen,
+            [classes.hide]: !mobileOpen && !drawerOpen,
         })}>
             {!user 
                 ? (
@@ -145,28 +152,41 @@ export default function MiniDrawer() {
                 )
             }
         </List>
-    </>);
+        </>
+    );
 
 	return (
         <div className={classes.root}>
             <AppBar
-            color="default"
+             color="default"
              position="fixed"
              className={clsx(classes.appBar, {
                 [classes.appBarShift]: drawerOpen,
              })}
             >
                 <Toolbar>
-                <IconButton
-                     onClick={handleDrawerToggle}
-                     edge="start"
-                     aria-label="menu"
-                     className={clsx(classes.menuButton, {
-                        [classes.hide]: drawerOpen,
-                     })}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                    <Hidden xsDown implementation="css">
+                        <IconButton
+                        onClick={handleDrawerToggle}
+                        edge="start"
+                        aria-label="menu"
+                        className={clsx(classes.menuButton, {
+                            [classes.hide]: drawerOpen,
+                        })}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Hidden>
+                    <Hidden smUp implementation="css">
+                        <IconButton
+                        onClick={handleMobileToggle}
+                        edge="start"
+                        aria-label="menu"
+                        className={clsx(classes.menuButton)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Hidden>
                     <Header />
                     <section className={classes.rightToolbar}>
                         <Hidden xsDown implementation="css">
@@ -188,18 +208,23 @@ export default function MiniDrawer() {
                  className={clsx(classes.drawer, {
                     [classes.drawerOpen]: drawerOpen,
                     [classes.drawerClose]: !drawerOpen,
-                    // [classes.hide]: drawerOpen,
                  })}
                  classes={{
                     paper: clsx({
                         [classes.drawerOpen]: drawerOpen,
                         [classes.drawerClose]: !drawerOpen,
-                        // [classes.hide]: drawerOpen,
                     }),
                  }}
                  open={drawerOpen}
-                 ModalProps={{ keepMounted: true }}
+                 ModalProps={{
+                    keepMounted: true,
+                }}
                 >
+                    <div className={classes.toolbar}>
+                        <IconButton onClick={handleDrawerToggle}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
                     {drawer}
                 </Drawer>
             </Hidden>
@@ -208,22 +233,28 @@ export default function MiniDrawer() {
                 <Drawer
                  variant="temporary"
                  className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: drawerOpen,
-                    [classes.drawerClose]: !drawerOpen,
+                    [classes.drawerOpen]: mobileOpen,
+                    [classes.drawerClose]: !mobileOpen,
                  })}
                  classes={{
                     paper: clsx({
-                        [classes.drawerOpen]: drawerOpen,
-                        [classes.drawerClose]: !drawerOpen,
+                        [classes.drawerOpen]: mobileOpen,
+                        [classes.drawerClose]: !mobileOpen,
                     }),
                  }}
-                 open={drawerOpen}
+                 open={mobileOpen}
                  ModalProps={{ keepMounted: true }}
+                 onBackdropClick={() => toggleDrawer(false)}
                 >
+                    <div className={classes.toolbar}>
+                        <IconButton onClick={handleMobileToggle}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
                     {drawer}
                 </Drawer>
             </Hidden>
-            <main className={classes.content}>
+            <main className={classes.content} onClick={() => toggleDrawer(false)}>
                 <div className={classes.toolbar} />
                 <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />
                 <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
