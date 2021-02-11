@@ -2,6 +2,8 @@ import React from 'react';
 import {
     Hidden,
 	Switch,
+    useMediaQuery,
+    useTheme,
 } from '@material-ui/core';
 import {
 	AppBar,
@@ -46,6 +48,8 @@ export default function MiniDrawer() {
     const [ mobileOpen, setMobileOpen ] = React.useState(false);
     const { user, setUser } = useUserContext()!;
     const { id } = useParams<{id: string}>();
+    const theme = useTheme();
+    const xsScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
     let drawerLinks;
     tracker
@@ -85,6 +89,14 @@ export default function MiniDrawer() {
         setMobileOpen(open);
         setDrawerOpen(open);
     };
+
+    // Check if user resizes window while drawer is open
+    React.useEffect(() => {
+        if (drawerOpen && xsScreen) {
+            setMobileOpen(true);
+            setDrawerOpen(false);
+        }
+    }, [drawerOpen, mobileOpen, xsScreen]);
 
     const drawer = (
         <>
