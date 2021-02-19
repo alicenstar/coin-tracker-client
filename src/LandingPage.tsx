@@ -9,10 +9,8 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { CreateTracker } from './CreateTracker';
-import { CreateAccount } from './CreateAccount';
 import clsx from 'clsx';
 import { CreateTrackerPage } from './CreateTrackerPage';
-import { CreateAccountPage } from './CreateAccountPage';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 
@@ -76,30 +74,11 @@ export const LandingPage: React.FC = () => {
                 </Grid>
                 <Grid
                  className={clsx({
-                    [classes.hide]: page !== 'main',
-                 })}
-                 item
-                >
-                    <CreateAccount setPage={setPage} />
-                </Grid>
-                <Grid
-                 className={clsx({
                     [classes.hide]: page !== 'tracker',
                  })}
                  item
                 >
                     <CreateTrackerPage />
-                    <IconButton aria-label="back" onClick={() => setPage('main')}>
-                        <ArrowBackIcon />
-                    </IconButton>
-                </Grid>
-                <Grid
-                 className={clsx({
-                    [classes.hide]: page !== 'account',
-                 })}
-                 item
-                >
-                    <CreateAccountPage />
                     <IconButton aria-label="back" onClick={() => setPage('main')}>
                         <ArrowBackIcon />
                     </IconButton>

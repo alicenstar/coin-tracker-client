@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import { MuiTextField } from './MuiTextField';
 import { usePageContext } from './PageContext';
 import { useTrackerContext } from './TrackerContext';
-import { useUserContext } from './UserContext';
 
 
 type TrackerFormData = {
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const CreateTrackerPage: React.FC = () => {
     const { tracker, setTracker } = useTrackerContext()!;
-    const { user } = useUserContext()!;
     const {
         control,
         handleSubmit,
@@ -36,9 +34,6 @@ export const CreateTrackerPage: React.FC = () => {
 
     const onSubmit = async (data: TrackerFormData) => {
         // if user logged in, associate user with tracker
-        if (user) {
-            data.user = user.id;
-        }
         const response = await fetch('http://localhost:5000/api/trackers/', {
             method: 'POST',
             headers: {
