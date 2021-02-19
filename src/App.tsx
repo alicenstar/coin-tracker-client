@@ -8,7 +8,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MiniDrawer from './MiniDrawer';
 import { PageProvider } from './PageContext';
 import { TrackerProvider } from './TrackerContext';
-import { UserProvider } from './UserContext';
 import { ListingsProvider } from './ListingsContext';
 import { LandingPage } from './LandingPage';
 import { ThemeProvider } from '@material-ui/core';
@@ -49,7 +48,6 @@ function App(): JSX.Element {
 
 	return (
 		<Router>
-			<UserProvider>
 				<TrackerProvider>
 					<PageProvider>
 						<ListingsProvider>
@@ -67,7 +65,6 @@ function App(): JSX.Element {
 						</ListingsProvider>
 					</PageProvider>
 				</TrackerProvider>
-			</UserProvider>
 		</Router>
 	);
 }

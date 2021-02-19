@@ -31,9 +31,6 @@ import { useParams } from 'react-router-dom';
 import { useTrackerContext } from './TrackerContext';
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
-import { LoginDialog } from './LoginDialog';
-import { SignupDialog } from './SignupDialog';
-import { useUserContext } from './UserContext';
 
 
 export default function MiniDrawer() {
@@ -43,10 +40,7 @@ export default function MiniDrawer() {
     const [ drawerOpen, setDrawerOpen ] = React.useState(false);
 	const [ darkModeOn, setDarkModeOn ] = React.useState(false);
     const [ newTrackerOpen, setNewTrackerOpen ] = React.useState(false);
-    const [ loginOpen, setLoginOpen ] = React.useState(false);
-    const [ signupOpen, setSignupOpen ] = React.useState(false);
     const [ mobileOpen, setMobileOpen ] = React.useState(false);
-    const { user, setUser } = useUserContext()!;
     const { id } = useParams<{id: string}>();
     const theme = useTheme();
     const xsScreen = useMediaQuery(theme.breakpoints.down('xs'));
@@ -73,11 +67,6 @@ export default function MiniDrawer() {
         setPageElement(element);
         setDrawerOpen(false);
         setMobileOpen(false);
-    };
-
-    const handleLogout = async () => {
-        await fetch('http://localhost:5000/api/auth/logout');
-        setUser(undefined);
     };
 
     React.useEffect(() => {
@@ -131,39 +120,6 @@ export default function MiniDrawer() {
                 </ListItemIcon>
                 <ListItemText primary='New Tracker' />
             </ListItem>
-        </List>
-        <Divider />
-        <List className={clsx({
-            [classes.hide]: !mobileOpen && !drawerOpen,
-        })}>
-            {!user 
-                ? (
-                <>
-                    <ListItem
-                     button
-                     id="login-button"
-                     onClick={() => setLoginOpen(!loginOpen)}
-                    >
-                        <ListItemText secondary="Login" />
-                    </ListItem>
-                    <ListItem
-                     button
-                     id="signup-button"
-                     onClick={() => setSignupOpen(!signupOpen)}
-                    >
-                        <ListItemText secondary="Signup" />
-                    </ListItem>
-                </>
-                ) : (
-                    <ListItem
-                     button
-                     id="logout-button"
-                     onClick={handleLogout}
-                    >
-                        <ListItemText secondary="Logout" />
-                    </ListItem>
-                )
-            }
         </List>
         </>
     );
@@ -270,8 +226,6 @@ export default function MiniDrawer() {
             <main className={classes.content} onClick={() => toggleDrawer(false)}>
                 <div className={classes.toolbar} />
                 <NewTracker open={newTrackerOpen} setOpen={x => setNewTrackerOpen(x)} />
-                <LoginDialog open={loginOpen} setOpen={x => setLoginOpen(x)} />
-                <SignupDialog open={signupOpen} setOpen={x => setSignupOpen(x)} />
                 <Dashboard />
             </main>
         </div>
