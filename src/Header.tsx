@@ -1,4 +1,10 @@
 import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     IconButton,
     makeStyles,
     SvgIcon,
@@ -9,7 +15,10 @@ import {
 import React from "react";
 import { useTrackerContext } from "./TrackerContext";
 import GetAppIcon from '@material-ui/icons/GetApp';
-
+import PublishIcon from '@material-ui/icons/Publish';
+import { useForm } from "react-hook-form";
+import { MuiTextField } from "./MuiTextField";
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 const useStyles = makeStyles((theme: Theme) => ({
     buttons: {
@@ -18,11 +27,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     title: {
         paddingRight: 8
     }
-}))
+}));
+
+type UploadFormData = {
+    file: any;
+}
 
 export const Header: React.FC = () => {
     const { tracker } = useTrackerContext()!;
     const classes = useStyles();
+    const [ open, setOpen ] = React.useState(false);
+    const {
+        control,
+        handleSubmit,
+        errors,
+        formState
+    } = useForm<UploadFormData>({
+        criteriaMode: 'all',
+    });
 
     const handleCopyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
@@ -39,13 +61,13 @@ export const Header: React.FC = () => {
         .then((blob) => {
             // Create blob link to download
             const url = window.URL.createObjectURL(
-            new Blob([blob]),
+                new Blob([blob]),
             );
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute(
-            'download',
-            `tracker-${tracker!._id}.csv`,
+                'download',
+                `tracker-${tracker!._id}.csv`,
             );
             // Append to html link element page
             document.body.appendChild(link);
@@ -54,6 +76,39 @@ export const Header: React.FC = () => {
             // Clean up and remove the link
             link.remove();
         });
+    };
+
+    const handleUploadClick = async () => {
+        setOpen(true);
+    };
+
+    const onUploadSubmit = async (data: UploadFormData) => {
+        await fetch(`http://localhost:5000/api/trackers/upload/${tracker!._id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/csv',
+            },
+            body: JSON.stringify(data)
+        })
+        // .then((response) => response.blob())
+        // .then((blob) => {
+        //     // Create blob link to download
+        //     const url = window.URL.createObjectURL(
+        //     new Blob([blob]),
+        //     );
+        //     const link = document.createElement('a');
+        //     link.href = url;
+        //     link.setAttribute(
+        //     'download',
+        //     `tracker-${tracker!._id}.csv`,
+        //     );
+        //     // Append to html link element page
+        //     document.body.appendChild(link);
+        //     // Start download
+        //     link.click();
+        //     // Clean up and remove the link
+        //     link.remove();
+        // });
     };
 
     return (
@@ -80,8 +135,42 @@ export const Header: React.FC = () => {
                             <GetAppIcon />
                         </IconButton>
                     </Tooltip>
+                    <Tooltip title="Upload .csv">
+                        <IconButton className={classes.buttons} onClick={handleUploadClick}>
+                            <PublishIcon />
+                        </IconButton>
+                    </Tooltip>
                 </>
             )}
+            <Dialog open={open} onClose={() => setOpen(!open)} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Upload Your .csv File</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        <ErrorOutlineIcon color="error" />
+                        <Typography variant="subtitle1" color="error" display="inline">
+                            This will override the current data associated with this tracker
+                        </Typography>
+                    </DialogContentText>
+                    <form onSubmit={handleSubmit(onUploadSubmit)}>
+                        <MuiTextField
+                        type="file"
+                        helperText=""
+                        name="csvFile"
+                        label=".csv File"
+                        control={control}
+                        defaultValue=''
+                        rules={{
+                            required: 'This field is required',
+                        }}
+                        errors={errors}
+                        />
+                        <DialogActions>
+                            <Button type="submit">Upload .csv</Button>
+                            <Button onClick={() => setOpen(!open)}>Close</Button>
+                        </DialogActions>
+                    </form>
+                </DialogContent>
+            </Dialog>
         </React.Fragment>
     );
 };
