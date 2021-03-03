@@ -6,13 +6,12 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    // TablePagination,
     TableRow,
     Theme,
     Typography,
     withStyles,
 } from "@material-ui/core";
-// import { TablePaginationActions } from './TablePaginationActions';
+import { TablePaginationActions } from './TablePaginationActions';
 import { currencyFormatter, percentFormatter, largeCurrencyFormatter } from "./utils/Formatters";
 import { useListingsContext } from './ListingsContext';
 
@@ -39,10 +38,7 @@ const StickyTableCell = withStyles((theme: Theme) => ({
 
 const useStyles = makeStyles({
     container: {
-        width: '100%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        // maxHeight: 380,
+        float: 'right'
     },
     footer: {
         float: 'right'
@@ -55,17 +51,17 @@ export const OverviewTable: React.FC<ITableProps> = ({
 }: ITableProps) => {
     const { listings } = useListingsContext()!;
     const classes = useStyles();
-    // const [ page, setPage ] = React.useState(0);
-    // const [ rowsPerPage, setRowsPerPage ] = React.useState(10);
+    const [ page, setPage ] = React.useState(0);
+    const [ rowsPerPage, setRowsPerPage ] = React.useState(40);
 
-    // const emptyRows = rowsPerPage - Math.min(rowsPerPage, listings.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, listings.length - page * rowsPerPage);
     
-    // const handleChangePage = (
-    //     event: React.MouseEvent<HTMLButtonElement> | null,
-    //     newPage: number
-    // ) => {
-    //     setPage(newPage);
-    // };
+    const handleChangePage = (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number
+    ) => {
+        setPage(newPage);
+    };
 
     // const handleChangeRowsPerPage = (
     //     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -100,10 +96,9 @@ export const OverviewTable: React.FC<ITableProps> = ({
                     </TableHead>
                 )}
                 <TableBody>
-                    {/* {(rowsPerPage > 0
+                    {(rowsPerPage > 0
                         ? listings.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : listings */}
-                    {listings.map((row: any) => (
+                        : listings).map((row: any) => (
                         <TableRow key={row.id}>
                             <TableCell>
                                 {row.cmc_rank}
@@ -129,36 +124,22 @@ export const OverviewTable: React.FC<ITableProps> = ({
                             </TableCell>
                         </TableRow>
                     ))}
-                    {/* {emptyRows > 0 && (
+                    {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
                             <TableCell colSpan={6} />
                         </TableRow>
-                    )} */}
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>
-        {/* <div className={classes.container}>
-            <TablePagination
-             className={classes.footer}
-             rowsPerPageOptions={[
-                5,
-                10,
-                25,
-                { label: 'All', value: -1 }
-             ]}
-             colSpan={4}
+        <div className={classes.container}>
+            <TablePaginationActions
              count={listings.length}
              rowsPerPage={rowsPerPage}
              page={page}
-             SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-             }}
              onChangePage={handleChangePage}
-             onChangeRowsPerPage={handleChangeRowsPerPage}
-             ActionsComponent={TablePaginationActions}
             />
-        </div> */}
+        </div>
         </>
     );
 };
