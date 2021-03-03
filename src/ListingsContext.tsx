@@ -22,7 +22,7 @@ export const ListingsProvider = ({
     const [ listings, setListings ] = React.useState<IListing[]>([]);
 
     const fetchListings = React.useCallback(async () => {
-        const response = await fetch('http://localhost:5000/api/listings/');
+        const response = await fetch('http://97.87.184.181/api/listings/');
         const json = await response.json();
         setListings(json.listings);
     }, []);
