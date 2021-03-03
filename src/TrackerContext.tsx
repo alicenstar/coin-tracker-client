@@ -29,7 +29,7 @@ export const TrackerProvider = ({
 
     const findTracker = React.useCallback(async () => {
         setLoaded(false);
-        const response = await fetch(`http://localhost:5000/api/trackers/${id}`);
+        const response = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${id}`);
         const json = await response.json();
         if (json.tracker) {
             setTracker(json.tracker);

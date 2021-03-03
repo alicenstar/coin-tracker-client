@@ -121,7 +121,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 priceAtTransaction: transactionBody.priceAtTransaction
             };
             // add new adjustment transaction
-            await fetch(`http://localhost:5000/api/transactions/`, {
+            await fetch(`https://coin-tracker-api.herokuapp.com/api/transactions/`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -129,7 +129,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 body: JSON.stringify(transactionBody),
             });
             // update holding value
-            await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
+            await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${activeHolding}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
@@ -137,7 +137,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 body: JSON.stringify(holdingBody),
             });
             // update tracker
-            const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
+            const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
             const trackerJson = await trackerResponse.json();
             setTracker(trackerJson.tracker);
         }
