@@ -18,12 +18,12 @@ const useStyles = makeStyles({
     hide: {
         display: 'none'
     }
-})
+});
 
 export const LandingPage: React.FC = () => {
     const theme = useTheme();
     const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const [ page, setPage ] = React.useState('main');
+    const [ page, setPage ] = React.useState('tracker');
     const classes = useStyles();
 
     return (
@@ -58,7 +58,7 @@ export const LandingPage: React.FC = () => {
                 >
                     <CreateTracker setPage={setPage} />
                 </Grid>
-                <Grid
+                {/* <Grid
                  className={clsx({
                     [classes.hide]: page !== 'main',
                  })}
@@ -71,7 +71,7 @@ export const LandingPage: React.FC = () => {
                     >
                         OR
                     </Typography>
-                </Grid>
+                </Grid> */}
                 <Grid
                  className={clsx({
                     [classes.hide]: page !== 'tracker',
@@ -79,9 +79,9 @@ export const LandingPage: React.FC = () => {
                  item
                 >
                     <CreateTrackerPage />
-                    <IconButton aria-label="back" onClick={() => setPage('main')}>
+                    {/* <IconButton aria-label="back" onClick={() => setPage('main')}>
                         <ArrowBackIcon />
-                    </IconButton>
+                    </IconButton> */}
                 </Grid>
             </Grid>
         </Grid>
