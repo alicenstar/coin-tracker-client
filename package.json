@@ -51,5 +51,6 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "proxy": "https://coin-tracker-api.herokuapp.com/"
 }
