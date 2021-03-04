@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
     };
 
     const handleDownloadClick = async () => {
-        await fetch(`http://localhost:5000/api/trackers/download/${tracker!._id}`, {
+        await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/download/${tracker!._id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'text/csv',
