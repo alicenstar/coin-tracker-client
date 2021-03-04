@@ -52,5 +52,7 @@
     ]
   },
   "devDependencies": {},
-  "proxy": "https://coin-tracker-api.herokuapp.com/"
+  "engines": {
+    "node": "15.x"
+  }
 }
