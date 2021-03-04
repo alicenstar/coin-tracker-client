@@ -145,7 +145,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
 =======
         } else {
             // Else, if quantity === 0, delete
-            const deleteResponse = await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
+            const deleteResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${activeHolding}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-type': 'application/json'
@@ -154,7 +154,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
 >>>>>>> 0e78d5fb3ac49bd5e6d67c03716936568b4b8e68
         }
         // get updated tracker data
-        const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
+        const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
         const trackerJson = await trackerResponse.json();
         setTracker(trackerJson.tracker);
         setQuantity(undefined);
@@ -180,14 +180,14 @@ export const HoldingsTable: React.FC<ITableProps> = ({
         const targetElement = e.target.closest('button[data-holding]');
         const holdingId = targetElement.getAttribute('data-holding');
         // call API to delete holding
-        const deleteResponse = await fetch(`http://localhost:5000/api/holdings/${holdingId}`, {
+        const deleteResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${holdingId}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json'
             },
         });
         console.log('deleted', deleteResponse);
-        const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
+        const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
         const trackerJson = await trackerResponse.json();
         setTracker(trackerJson.tracker);
     };
