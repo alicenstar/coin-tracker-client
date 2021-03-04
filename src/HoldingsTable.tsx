@@ -136,13 +136,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify(holdingBody),
-            });
-<<<<<<< HEAD
-            // update tracker
-            const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
-            const trackerJson = await trackerResponse.json();
-            setTracker(trackerJson.tracker);
-=======
+            })
         } else {
             // Else, if quantity === 0, delete
             const deleteResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${activeHolding}`, {
@@ -151,7 +145,6 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                     'Content-type': 'application/json'
                 },
             });
->>>>>>> 0e78d5fb3ac49bd5e6d67c03716936568b4b8e68
         }
         // get updated tracker data
         const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
