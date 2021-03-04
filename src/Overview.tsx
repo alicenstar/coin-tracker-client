@@ -79,7 +79,8 @@ export const Overview = () => {
 
     const treemapData = React.useCallback(() => {
         setLoaded(false);
-        let listingsData = listings.map(listing => ({
+        // Only get top 100 listings for treemap
+        let listingsData = listings.slice(0, 101).map((listing) => ({
             category: 'Market Cap',
             name: listing.symbol,
             value: listing.quote.USD.market_cap,
