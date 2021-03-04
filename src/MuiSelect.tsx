@@ -37,7 +37,6 @@ export const MuiSelect: React.FC<ISelectProps> = ({
             <Controller
              render={(props) => (
                 <Select
-                
                  {...props}
                  id={labelId}
                  name={name}

@@ -22,6 +22,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import { IHolding, IListing } from "./types/types";
 import { useListingsContext } from "./ListingsContext";
 import { useTrackerContext } from "./TrackerContext";
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const useStyles = makeStyles({
@@ -136,11 +137,19 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 },
                 body: JSON.stringify(holdingBody),
             });
-            // update tracker
-            const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
-            const trackerJson = await trackerResponse.json();
-            setTracker(trackerJson.tracker);
+        } else {
+            // Else, if quantity === 0, delete
+            const deleteResponse = await fetch(`http://localhost:5000/api/holdings/${activeHolding}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+            });
         }
+        // get updated tracker data
+        const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
+        const trackerJson = await trackerResponse.json();
+        setTracker(trackerJson.tracker);
         setQuantity(undefined);
         setActiveHolding(undefined);
     };
@@ -158,6 +167,22 @@ export const HoldingsTable: React.FC<ITableProps> = ({
         setEditActive(false);
         setQuantity(undefined);
         setActiveHolding(undefined);
+    };
+
+    const handleDelete = async (e: any) => {
+        const targetElement = e.target.closest('button[data-holding]');
+        const holdingId = targetElement.getAttribute('data-holding');
+        // call API to delete holding
+        const deleteResponse = await fetch(`http://localhost:5000/api/holdings/${holdingId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            },
+        });
+        console.log('deleted', deleteResponse);
+        const trackerResponse = await fetch(`http://localhost:5000/api/trackers/${tracker!._id}`);
+        const trackerJson = await trackerResponse.json();
+        setTracker(trackerJson.tracker);
     };
 
     return (
@@ -181,6 +206,9 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     );
                                 }
                             })}
+                            <TableCell>
+                                Delete
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                 )}
@@ -198,7 +226,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     {percentFormatter.format(row.listing.quote.USD.percent_change_1h / 100)}
                                 </TableCell>
                                 <TableCell>
-                                {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
+                                    {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
                                 </TableCell>
                                 <TableCell align="right" className={classes.editCell}>
                                     {editActive && activeHolding === row.id
@@ -266,6 +294,11 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     <Typography component="span" variant="body1">
                                         {currencyFormatter.format(row.totalValue)}
                                     </Typography>
+                                </TableCell>
+                                <TableCell align="center">
+                                    <IconButton data-holding={row.id} onClick={handleDelete}>
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         );
