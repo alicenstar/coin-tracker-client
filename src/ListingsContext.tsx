@@ -33,7 +33,7 @@ export const ListingsProvider = ({
 
     useInterval(() => {
         fetchListings();
-    }, 90000);
+    }, 120000);
 
     return (
         <ListingsContext.Provider value={{ listings, setListings }}>
