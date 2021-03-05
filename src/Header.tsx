@@ -10,16 +10,17 @@ import {
     SvgIcon,
     Theme,
     Tooltip,
-    Typography
+    Typography,
+    useMediaQuery,
+    useTheme
 } from "@material-ui/core";
 import React from "react";
 import { useTrackerContext } from "./TrackerContext";
 import GetAppIcon from '@material-ui/icons/GetApp';
 import PublishIcon from '@material-ui/icons/Publish';
-import { useForm } from "react-hook-form";
-import { MuiTextField } from "./MuiTextField";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CSVReader from "react-csv-reader";
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     buttons: {
@@ -30,24 +31,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-type UploadFormData = {
-    file: any;
-}
-
 export const Header: React.FC = () => {
     const { tracker, findTracker } = useTrackerContext()!;
     const classes = useStyles();
     const [ open, setOpen ] = React.useState(false);
     const [ data, setData ] = React.useState([]);
     const [ disabled, setDisabled ] = React.useState(true);
-    const {
-        control,
-        handleSubmit,
-        errors,
-        formState
-    } = useForm<UploadFormData>({
-        criteriaMode: 'all',
-    });
+    const theme = useTheme();
+    const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleCopyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
@@ -103,12 +94,18 @@ export const Header: React.FC = () => {
         findTracker();
         setOpen(false);
     };
+    let headerText = '';
+    if (smScreen) {
+        headerText = '#' + tracker!._id.slice(0, 11) + '...';
+    } else {
+        headerText = '# ' + tracker!._id;
+    }
 
     return (
         <React.Fragment>
             <Typography className={classes.title} variant="h6" color="primary">
                 {tracker && tracker
-                    ? '# ' + tracker!._id
+                    ? headerText
                     : '< Create a tracker'
                 }
             </Typography>
@@ -147,18 +144,6 @@ export const Header: React.FC = () => {
                         <CSVReader
                          onFileLoaded={handleLoaded}
                         />
-                        {/* <MuiTextField
-                        type="file"
-                        helperText=""
-                        name="csvFile"
-                        label=".csv File"
-                        control={control}
-                        defaultValue=''
-                        rules={{
-                            required: 'This field is required',
-                        }}
-                        errors={errors}
-                        /> */}
                         <DialogActions>
                             <Button disabled={disabled} onClick={onUploadSubmit}>
                                 Upload .csv
