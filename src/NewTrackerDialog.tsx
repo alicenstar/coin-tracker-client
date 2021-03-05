@@ -41,7 +41,7 @@ export const NewTracker: React.FC<Props> = ({
 
     const onSubmit = async (data: TrackerFormData) => {
         // if user logged in, associate user with tracker
-        const response = await fetch('https://coin-tracker-api.herokuapp.com/api/trackers/', {
+        const response = await fetch('https://backend-cointracker-dev.herokuapp.com/api/trackers/', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'

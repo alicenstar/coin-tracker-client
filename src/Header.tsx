@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
     };
 
     const handleDownloadClick = async () => {
-        await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/download/${tracker!._id}`, {
+        await fetch(`https://backend-cointracker-dev.herokuapp.com/api/trackers/download/${tracker!._id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'text/csv',
@@ -93,7 +93,7 @@ export const Header: React.FC = () => {
     const onUploadSubmit = async () => {
         const trimmedData = data.slice(1, -1);
         console.log(data.slice(1, -1));
-        await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/upload/${tracker!._id}`, {
+        await fetch(`https://backend-cointracker-dev.herokuapp.com/api/trackers/upload/${tracker!._id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

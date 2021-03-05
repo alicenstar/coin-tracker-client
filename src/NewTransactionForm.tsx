@@ -115,7 +115,7 @@ export const NewTransactionForm: React.FC = () => {
         
         if (holdingMatch && data.type === 'Buy') {
             // If user already own the coin, update their shares
-            await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${holdingMatch._id}`, {
+            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingMatch._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
@@ -124,7 +124,7 @@ export const NewTransactionForm: React.FC = () => {
             });
         } else if (!holdingMatch && data.type === 'Buy') {
             // If user does not own the coin, create a new holding
-            await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/`, {
+            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -136,7 +136,7 @@ export const NewTransactionForm: React.FC = () => {
                 return;
             } else if (parseFloat(data.quantity) === parseFloat(holdingMatch.quantity)) {
                 // delete holding
-                await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${holdingMatch._id}`, {
+                await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingMatch._id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-type': 'application/json'
@@ -147,7 +147,7 @@ export const NewTransactionForm: React.FC = () => {
                 // update holding
                 // change quantity to negative number
                 data.quantity = '-' + data.quantity;
-                await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${holdingMatch._id}`, {
+                await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingMatch._id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-type': 'application/json'
@@ -163,7 +163,7 @@ export const NewTransactionForm: React.FC = () => {
             holdingMatch && data.type === 'Sell' && data.quantity <= holdingMatch.quantity
         )) {
             // create transaction
-            await fetch(`https://coin-tracker-api.herokuapp.com/api/transactions/`, {
+            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/transactions/`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
