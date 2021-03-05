@@ -62,7 +62,7 @@ export const Overview = () => {
     });
 
     const ref = React.useCallback((node) => {
-        const observer = new ResizeObserver(entries => {
+        const observer = new ResizeObserver((entries: any) => {
             const { height, width } = entries[0].contentRect;
             setDimensions({
                 width: width,
