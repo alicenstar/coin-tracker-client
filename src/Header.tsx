@@ -19,6 +19,7 @@ import PublishIcon from '@material-ui/icons/Publish';
 import { useForm } from "react-hook-form";
 import { MuiTextField } from "./MuiTextField";
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import CSVReader from "react-csv-reader";
 
 const useStyles = makeStyles((theme: Theme) => ({
     buttons: {
@@ -34,9 +35,11 @@ type UploadFormData = {
 }
 
 export const Header: React.FC = () => {
-    const { tracker } = useTrackerContext()!;
+    const { tracker, findTracker } = useTrackerContext()!;
     const classes = useStyles();
     const [ open, setOpen ] = React.useState(false);
+    const [ data, setData ] = React.useState([]);
+    const [ disabled, setDisabled ] = React.useState(true);
     const {
         control,
         handleSubmit,
@@ -82,33 +85,23 @@ export const Header: React.FC = () => {
         setOpen(true);
     };
 
-    const onUploadSubmit = async (data: UploadFormData) => {
+    const handleLoaded = (data: any[]) => {
+        setData(data as []);
+        setDisabled(false);
+    };
+
+    const onUploadSubmit = async () => {
+        const trimmedData = data.slice(1, -1);
+        console.log(data.slice(1, -1));
         await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/upload/${tracker!._id}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'text/csv',
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
-        })
-        // .then((response) => response.blob())
-        // .then((blob) => {
-        //     // Create blob link to download
-        //     const url = window.URL.createObjectURL(
-        //     new Blob([blob]),
-        //     );
-        //     const link = document.createElement('a');
-        //     link.href = url;
-        //     link.setAttribute(
-        //     'download',
-        //     `tracker-${tracker!._id}.csv`,
-        //     );
-        //     // Append to html link element page
-        //     document.body.appendChild(link);
-        //     // Start download
-        //     link.click();
-        //     // Clean up and remove the link
-        //     link.remove();
-        // });
+            body: JSON.stringify(trimmedData)
+        });
+        findTracker();
+        setOpen(false);
     };
 
     return (
@@ -151,8 +144,10 @@ export const Header: React.FC = () => {
                             This will override the current data associated with this tracker
                         </Typography>
                     </DialogContentText>
-                    <form onSubmit={handleSubmit(onUploadSubmit)}>
-                        <MuiTextField
+                        <CSVReader
+                         onFileLoaded={handleLoaded}
+                        />
+                        {/* <MuiTextField
                         type="file"
                         helperText=""
                         name="csvFile"
@@ -163,12 +158,13 @@ export const Header: React.FC = () => {
                             required: 'This field is required',
                         }}
                         errors={errors}
-                        />
+                        /> */}
                         <DialogActions>
-                            <Button type="submit">Upload .csv</Button>
+                            <Button disabled={disabled} onClick={onUploadSubmit}>
+                                Upload .csv
+                            </Button>
                             <Button onClick={() => setOpen(!open)}>Close</Button>
                         </DialogActions>
-                    </form>
                 </DialogContent>
             </Dialog>
         </React.Fragment>

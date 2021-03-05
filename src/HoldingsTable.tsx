@@ -136,7 +136,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify(holdingBody),
-            })
+            });
         } else {
             // Else, if quantity === 0, delete
             const deleteResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${activeHolding}`, {

@@ -98,6 +98,9 @@ export const NewTransactionForm: React.FC = () => {
     }, [formState.isSubmitSuccessful, reset, symbols]);
 
     const onSubmit = async (data: TransactionFormData) => {
+        data.priceAtTransaction = data.priceAtTransaction.trim();
+        data.quantity = data.quantity.trim();
+        console.log(data)
         data.trackerId = tracker!._id;
         // Check if user currently owns the submitted coin
         let holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: IHolding) => {
