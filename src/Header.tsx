@@ -95,11 +95,14 @@ export const Header: React.FC = () => {
         setOpen(false);
     };
     let headerText = '';
-    if (smScreen) {
-        headerText = '#' + tracker!._id.slice(0, 11) + '...';
-    } else {
-        headerText = '# ' + tracker!._id;
+    if (tracker) {
+        if (smScreen) {
+            headerText = '#' + tracker!._id.slice(0, 11) + '...';
+        } else {
+            headerText = '# ' + tracker!._id;
+        }
     }
+
 
     return (
         <React.Fragment>
