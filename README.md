@@ -1,7 +1,7 @@
 # Coin Tracker (front end code)
 #### Visit the site [here](https://www.cointracker.me/) or view a pre-filled tracker page [here](https://www.cointracker.me/6046ee08e4fabe00153867e5)!
 
-Full stack website (backend code can be found in [this](https://github.com/alicenstar/coin-tracker-3-api) repository) for manually tracking cryptocurrency holdings. Generates a unique URL that will store your holdings for you so that you can keep track of your crypto hodlings anonymously (no account necessary).
+Full stack website (back end code can be found in [this](https://github.com/alicenstar/coin-tracker-3-api) repository) for manually tracking cryptocurrency holdings. Generates a unique URL that will store your holdings for you so that you can keep track of your crypto hodlings anonymously (no account necessary).
 
 ## Features
 - d3.js treemaps to visually represent market data and portfolio holdings
