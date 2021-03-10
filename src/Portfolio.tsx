@@ -127,7 +127,9 @@ export const Portfolio: React.FC = () => {
     }, [listings, tracker])
 
     React.useEffect(() => {
-        createTableData();
+        if (tracker !== undefined) {
+            createTableData();
+        }
     }, [createTableData, listings, tracker]);
 
     return (
