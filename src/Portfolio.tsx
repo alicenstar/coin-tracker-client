@@ -132,7 +132,7 @@ export const Portfolio: React.FC = () => {
 
     return (
         <div className="portfolio-container">
-            {tracker
+            {tracker && tracker
                 ? (
                     <Container disableGutters>
                         <Typography variant="h4">
