@@ -106,6 +106,7 @@ export const Portfolio: React.FC = () => {
                 totalValue: parseFloat(holding.quantity) * listingMatch!.quote.USD.price,
             }
         });
+        // Sort table based on total value, high to low
         tblData.sort(function(a: any, b: any) { return b.totalValue - a.totalValue });
         setTableData(tblData);
 
@@ -134,83 +135,78 @@ export const Portfolio: React.FC = () => {
 
     return (
         <div className="portfolio-container">
-            {tracker && tracker
-                ? (
-                    <Container disableGutters>
-                        <Typography variant="h4">
-                            {tracker.name}
-                        </Typography>
-                        <Card className={classes.root}>
-                            <CardHeader
-                             className={classes.header}
-                             title="Portfolio Breakdown"
-                             action={
-                                <IconButton
-                                 className={clsx(classes.expand, {
-                                    [classes.expandOpen]: expanded,
-                                 }, classes.button)}
-                                 onClick={handleExpandClick}
-                                 aria-expanded={expanded}
-                                 aria-label="show graph"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
-                            }
-                             titleTypographyProps={{
-                                variant: 'subtitle1'
-                             }}
-                            />
-                            
-                            <Collapse
-                             className={classes.root}
-                             in={expanded}
-                             timeout="auto"
-                             mountOnEnter
-                             unmountOnExit
+            {tracker && (
+                <Container disableGutters>
+                    <Typography variant="h4">
+                        {tracker.name}
+                    </Typography>
+                    <Card className={classes.root}>
+                        <CardHeader
+                         className={classes.header}
+                         title="Portfolio Breakdown"
+                         action={
+                            <IconButton
+                             className={clsx(classes.expand, {
+                                [classes.expandOpen]: expanded,
+                             }, classes.button)}
+                             onClick={handleExpandClick}
+                             aria-expanded={expanded}
+                             aria-label="show graph"
                             >
-                                <CardContent className={classes.content}>
-                                    <div
-                                     style={{ height: '300px', width: '100%' }}
-                                     ref={ref}
-                                    >
-                                        {loaded && tracker.holdings.length > 0 &&
-                                            <PortfolioTreemap
-                                             data={treemapData}
-                                             height={dimensions.height}
-                                             width={dimensions.width}
-                                             key={listings[0].quote.USD.market_cap}
-                                            />
-                                        }
-                                    </div>
-                                </CardContent>
-                            </Collapse>
-                        </Card>
-                        <Paper
-                         className={classes.paper}
-                         elevation={7}
-                         variant="outlined"
-                        >
-                            <NewTransactionForm />
-                        </Paper>
-                        {tableData.length > 0 &&
-                            <HoldingsTable
-                             data={tableData}
-                             headers={[
-                                "Coin Name",
-                                "Market Price",
-                                "1hr",
-                                "24hr",
-                                "Quantity",
-                                "Value"
-                             ]}
-                            />
+                                <ExpandMoreIcon />
+                            </IconButton>
                         }
-                            
-                    </Container>
-                ) : (
-                    'Tracker Not Found'
-                )
-            }
+                         titleTypographyProps={{
+                            variant: 'subtitle1'
+                         }}
+                        />
+                        
+                        <Collapse
+                         className={classes.root}
+                         in={expanded}
+                         timeout="auto"
+                         mountOnEnter
+                         unmountOnExit
+                        >
+                            <CardContent className={classes.content}>
+                                <div
+                                 style={{ height: '300px', width: '100%' }}
+                                 ref={ref}
+                                >
+                                    {loaded && tracker.holdings.length > 0 &&
+                                        <PortfolioTreemap
+                                         data={treemapData}
+                                         height={dimensions.height}
+                                         width={dimensions.width}
+                                         key={listings[0].quote.USD.market_cap}
+                                        />
+                                    }
+                                </div>
+                            </CardContent>
+                        </Collapse>
+                    </Card>
+                    <Paper
+                     className={classes.paper}
+                     elevation={7}
+                     variant="outlined"
+                    >
+                        <NewTransactionForm />
+                    </Paper>
+                    {tableData.length > 0 &&
+                        <HoldingsTable
+                         data={tableData}
+                         headers={[
+                            "Coin Name",
+                            "Market Price",
+                            "1hr",
+                            "24hr",
+                            "Quantity",
+                            "Value"
+                         ]}
+                        />
+                    }
+                </Container>
+            )}
         </div>
     );
 };
