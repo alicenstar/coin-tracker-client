@@ -218,7 +218,8 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                         return (
                             <TableRow key={row.id}>
                                 <StickyTableCell>
-                                    {row.listing.name} ({row.listing.symbol})
+                                    <Typography variant="subtitle2">{row.listing.symbol}</Typography>
+                                    <Typography variant="caption">{row.listing.name}</Typography>
                                 </StickyTableCell>
                                 <TableCell align="right">
                                     {currencyFormatter.format(row.listing.quote.USD.price)}
