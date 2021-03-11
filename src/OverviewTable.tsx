@@ -52,9 +52,12 @@ export const OverviewTable: React.FC<ITableProps> = ({
     const { listings } = useListingsContext()!;
     const classes = useStyles();
     const [ page, setPage ] = React.useState(0);
-    const [ rowsPerPage, setRowsPerPage ] = React.useState(40);
+    const [ rowsPerPage ] = React.useState(40);
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, listings.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(
+        rowsPerPage,
+        listings.length - page * rowsPerPage
+    );
     
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -63,17 +66,10 @@ export const OverviewTable: React.FC<ITableProps> = ({
         setPage(newPage);
     };
 
-    // const handleChangeRowsPerPage = (
-    //     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    // ) => {
-    //     setRowsPerPage(parseInt(event.target.value, 10));
-    //     setPage(0);
-    // };
-
     return (
         <>
             <TableContainer className={classes.container}>
-                <Table size="small" aria-label="a dense table">
+                <Table size="small" aria-label="market overview table">
                     {headers && (
                         <TableHead>
                             <TableRow>
@@ -145,10 +141,10 @@ export const OverviewTable: React.FC<ITableProps> = ({
             </TableContainer>
             <div className={classes.container}>
                 <TablePaginationActions
-                count={listings.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
+                 count={listings.length}
+                 rowsPerPage={rowsPerPage}
+                 page={page}
+                 onChangePage={handleChangePage}
                 />
             </div>
         </>
