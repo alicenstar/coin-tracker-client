@@ -17,7 +17,7 @@ import { useListingsContext } from './ListingsContext';
 
 
 interface ITableProps {
-    headers?: string[];
+    headers: string[];
     data?: any;
 }
 
@@ -137,7 +137,7 @@ export const OverviewTable: React.FC<ITableProps> = ({
                         )}
                         {emptyRows > 0 && (
                             <TableRow>
-                                <TableCell colSpan={7} />
+                                <TableCell colSpan={headers.length} />
                             </TableRow>
                         )}
                     </TableBody>
