@@ -30,21 +30,19 @@ const useStyles = makeStyles({
         width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        // maxHeight: 380,
     },
     footer: {
         float: 'right'
     },
     icon: {
         padding: 8,
-        position: 'relative',
-        left: 30
     },
     editCell: {
-        width: 200,
+        width: 216,
     },
     quantity: {
-        width: 60
+        width: 100,
+        textAlign: 'right'
     },
     noMargin: {
         marginTop: -8,
@@ -208,7 +206,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     );
                                 }
                             })}
-                            <TableCell>
+                            <TableCell align="center">
                                 Delete
                             </TableCell>
                         </TableRow>
@@ -238,7 +236,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                     <Box display="flex" alignItems="flex-start" justifyContent="space-between">
                                                         <Box className={classes.noMargin}>
                                                             <MuiTextField
-                                                             width={90}
+                                                             width={110}
                                                              helperText=""
                                                              name="newQuantity"
                                                              control={control}
@@ -269,31 +267,31 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                 </form>
                                             </ClickAwayListener>
                                         ) : (
-                                                <Box
-                                                 display="flex"
-                                                 alignItems="center"
-                                                 justifyContent="flex-start"
-                                                >
-                                                    <Box className={classes.quantity}>
-                                                        <Typography
-                                                         display="inline"
-                                                         variant="body1"
-                                                         align="right"
-                                                        >
-                                                            {row.quantity}
-                                                        </Typography>
-                                                    </Box>
-                                                    <Box>
-                                                        <IconButton
-                                                         className={classes.icon}
-                                                         data-quantity={row.quantity}
-                                                         data-holding={row.id}
-                                                         onClick={handleEditClick}
-                                                        >
-                                                            <EditIcon />
-                                                        </IconButton>
-                                                    </Box>
+                                            <Box
+                                             display="flex"
+                                             alignItems="center"
+                                             justifyContent="space-between"
+                                            >
+                                                <Box className={classes.quantity}>
+                                                    <Typography
+                                                     display="inline"
+                                                     variant="body1"
+                                                     align="right"
+                                                    >
+                                                        {row.quantity}
+                                                    </Typography>
                                                 </Box>
+                                                <Box>
+                                                    <IconButton
+                                                     className={classes.icon}
+                                                     data-quantity={row.quantity}
+                                                     data-holding={row.id}
+                                                     onClick={handleEditClick}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
                                         )
                                     }
                                 </TableCell>
