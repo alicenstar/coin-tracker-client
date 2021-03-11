@@ -125,8 +125,8 @@ export const OverviewTable: React.FC<ITableProps> = ({
                         </TableRow>
                     ))}
                     {emptyRows > 0 && (
-                        <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
+                        <TableRow>
+                            <TableCell colSpan={7} />
                         </TableRow>
                     )}
                 </TableBody>
