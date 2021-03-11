@@ -55,37 +55,41 @@ export const CreateTrackerPage: React.FC = () => {
 
     return (
         <>
-            <Typography variant="overline" color="secondary" display="block">
+            <Typography
+             variant="overline"
+             color="primary"
+             display="block"
+            >
                 Create A Tracker
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid
-                container
-                item
-                justify="space-between"
-                alignItems="center"
-                spacing={2}
+                 container
+                 item
+                 justify="space-between"
+                 alignItems="center"
+                 spacing={2}
                 >
                     <Grid item>
                         <MuiTextField
-                        name="trackerName"
-                        label="Name"
-                        control={control}
-                        defaultValue=''
-                        rules={{
+                         name="trackerName"
+                         label="Tracker Name"
+                         control={control}
+                         defaultValue=''
+                         rules={{
                             required: 'This field is required',
-                        }}
-                        errors={errors}
-                        inputProps={{
+                         }}
+                         errors={errors}
+                         inputProps={{
                             disableUnderline: true
-                        }}
-                        variant="filled"
+                         }}
+                         variant="filled"
                         />
                     </Grid>
                     <Grid item>
                         <Button
-                        type="submit"
-                        variant="contained"
+                         type="submit"
+                         variant="contained"
                         >
                             Create Tracker
                         </Button>
