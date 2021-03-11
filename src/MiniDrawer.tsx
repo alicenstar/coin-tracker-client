@@ -157,7 +157,7 @@ export default function MiniDrawer() {
                         </IconButton>
                     </Hidden>
                     <Header />
-                    <section className={classes.rightToolbar}>
+                    {/* <section className={classes.rightToolbar}>
                         <Hidden xsDown implementation="css">
                             <Switch
                              onChange={toggleTheme}
@@ -167,7 +167,7 @@ export default function MiniDrawer() {
                              checkedIcon={<Brightness3Icon />}
                             />
                         </Hidden>
-                    </section>
+                    </section> */}
                 </Toolbar>
             </AppBar>
             {/* Large screens */}
