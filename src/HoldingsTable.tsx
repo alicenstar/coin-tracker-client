@@ -36,7 +36,9 @@ const useStyles = makeStyles({
         float: 'right'
     },
     icon: {
-        padding: 8
+        padding: 8,
+        position: 'relative',
+        left: 30
     },
     editCell: {
         width: 200,
@@ -233,35 +235,36 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                         ? (
                                             <ClickAwayListener onClickAway={handleClickAway}>
                                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                                <Box display="flex" alignItems="flex-start" justifyContent="space-between">
-                                                    <Box className={classes.noMargin}>
-                                                    <MuiTextField
-                                                     width={90}
-                                                     helperText=""
-                                                     name="newQuantity"
-                                                     control={control}
-                                                     defaultValue={row.quantity.toString()}
-                                                     rules={{
-                                                        pattern: {
-                                                            value: /^\d*?\.?\d*$/,
-                                                            message: 'Wrong number format'
-                                                        },
-                                                        required: 'This field is required',
-                                                        min: {
-                                                            value: 0,
-                                                            message: 'You must enter a value greater than 0'
-                                                        },
-                                                     }}
-                                                     errors={errors}
-                                                    />
-                                                    </Box>
-                                                    <Box className={classes.noMargin}>
-                                                    <Button
-                                                     variant="outlined"
-                                                     type='submit'>
-                                                        Save
-                                                    </Button>
-                                                    </Box>
+                                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between">
+                                                        <Box className={classes.noMargin}>
+                                                            <MuiTextField
+                                                             width={90}
+                                                             helperText=""
+                                                             name="newQuantity"
+                                                             control={control}
+                                                             defaultValue={row.quantity.toString()}
+                                                             rules={{
+                                                                pattern: {
+                                                                    value: /^\d*?\.?\d*$/,
+                                                                    message: 'Wrong number format'
+                                                                },
+                                                                required: 'This field is required',
+                                                                min: {
+                                                                    value: 0,
+                                                                    message: 'You must enter a value greater than 0'
+                                                                },
+                                                             }}
+                                                             errors={errors}
+                                                            />
+                                                        </Box>
+                                                        <Box className={classes.noMargin}>
+                                                            <Button
+                                                             variant="outlined"
+                                                             type='submit'
+                                                            >
+                                                                Save
+                                                            </Button>
+                                                        </Box>
                                                     </Box>
                                                 </form>
                                             </ClickAwayListener>
@@ -272,7 +275,11 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                  justifyContent="flex-start"
                                                 >
                                                     <Box className={classes.quantity}>
-                                                        <Typography display="inline" variant="body1" align="right">
+                                                        <Typography
+                                                         display="inline"
+                                                         variant="body1"
+                                                         align="right"
+                                                        >
                                                             {row.quantity}
                                                         </Typography>
                                                     </Box>
