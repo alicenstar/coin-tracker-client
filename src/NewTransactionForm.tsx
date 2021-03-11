@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
+type Symbol = {
+    symbol: string;
+    id: number;
+}
+
 export const NewTransactionForm: React.FC = () => {
     const { tracker, findTracker } = useTrackerContext()!;
     const { listings } = useListingsContext()!;
@@ -67,7 +72,7 @@ export const NewTransactionForm: React.FC = () => {
         return true;
     }, [getValues, tracker]);
 
-    const symbols = listings.map((listing: IListing) => (
+    const symbols: Symbol[] = listings!.map((listing: IListing) => (
         {
             symbol: listing.symbol,
             id: listing.id
