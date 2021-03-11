@@ -90,7 +90,7 @@ export const NewTransactionForm: React.FC = () => {
         },
         getContentAnchorEl: null
     }
-
+    
     React.useEffect(() => {
         if (formState.isSubmitSuccessful) {
             reset({
@@ -220,20 +220,22 @@ export const NewTransactionForm: React.FC = () => {
                          errors={errors}
                         />
                     </Grid>
-                    <Grid item>
-                        <MuiSelect
-                         name="coinId"
-                         label="Coin *"
-                         control={control}
-                         defaultValue={symbols[0].id}
-                         rules={{ required: true, validate: validateForm }}
-                         menuProps={menuProps}
-                        >
-                            {symbols.map((coin) => (
-                                <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
-                            ))}
-                        </MuiSelect>
-                    </Grid>
+                    {symbols.length > 0 && (
+                        <Grid item>
+                            <MuiSelect
+                             name="coinId"
+                             label="Coin *"
+                             control={control}
+                             defaultValue={symbols[0].id}
+                             rules={{ required: true, validate: validateForm }}
+                             menuProps={menuProps}
+                            >
+                                {symbols.map((coin) => (
+                                    <MenuItem key={coin.id} value={coin.id}>{coin.symbol}</MenuItem>
+                                ))}
+                            </MuiSelect>
+                        </Grid>
+                    )}
                     <Grid item>
                         <MuiTextField
                          inputProps={{
