@@ -201,7 +201,7 @@ export const Portfolio: React.FC = () => {
                             "1hr",
                             "24hr",
                             "Quantity",
-                            "Value"
+                            "Total Value"
                          ]}
                         />
                     }
