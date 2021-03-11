@@ -7,7 +7,6 @@ import {
     DialogTitle,
     IconButton,
     makeStyles,
-    SvgIcon,
     Theme,
     Tooltip,
     Typography,
@@ -20,6 +19,7 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import PublishIcon from '@material-ui/icons/Publish';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import CSVReader from "react-csv-reader";
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -106,41 +106,60 @@ export const Header: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Typography className={classes.title} variant="h6" color="primary">
+            <Typography
+             className={classes.title}
+             variant="h6"
+             color="primary"
+            >
                 {tracker && tracker
                     ? headerText
                     : '< Create a tracker'
                 }
             </Typography>
             {tracker && (
-                <>
+                <div>
                     <Tooltip title="Copy URL">
-                        <IconButton className={classes.buttons} onClick={handleCopyUrl}>
-                            <SvgIcon children={
-                                <svg style={{width: '24px', height: '24px'}} viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
-                                </svg>
-                            } />
+                        <IconButton
+                         className={classes.buttons}
+                         onClick={handleCopyUrl}
+                        >
+                            <FileCopyOutlinedIcon />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Download .csv">
-                        <IconButton className={classes.buttons} onClick={handleDownloadClick}>
+                        <IconButton
+                         className={classes.buttons}
+                         onClick={handleDownloadClick}
+                        >
                             <GetAppIcon />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Upload .csv">
-                        <IconButton className={classes.buttons} onClick={handleUploadClick}>
+                        <IconButton
+                         className={classes.buttons}
+                         onClick={handleUploadClick}
+                        >
                             <PublishIcon />
                         </IconButton>
                     </Tooltip>
-                </>
+                </div>
             )}
-            <Dialog open={open} onClose={() => setOpen(!open)} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Upload Your .csv File</DialogTitle>
+            <Dialog
+             open={open}
+             onClose={() => setOpen(!open)}
+             aria-labelledby="form-dialog-title"
+            >
+                <DialogTitle id="form-dialog-title">
+                    Upload Your .csv File
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         <ErrorOutlineIcon color="error" />
-                        <Typography variant="subtitle1" color="error" display="inline">
+                        <Typography
+                         variant="subtitle1"
+                         color="error"
+                         display="inline"
+                        >
                             This will override the current data associated with this tracker
                         </Typography>
                     </DialogContentText>
@@ -148,10 +167,17 @@ export const Header: React.FC = () => {
                          onFileLoaded={handleLoaded}
                         />
                         <DialogActions>
-                            <Button disabled={disabled} onClick={onUploadSubmit}>
+                            <Button
+                             disabled={disabled}
+                             onClick={onUploadSubmit}
+                            >
                                 Upload .csv
                             </Button>
-                            <Button onClick={() => setOpen(!open)}>Close</Button>
+                            <Button
+                             onClick={() => setOpen(!open)}
+                            >
+                                Close
+                            </Button>
                         </DialogActions>
                 </DialogContent>
             </Dialog>
