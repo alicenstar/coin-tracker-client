@@ -188,7 +188,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
 
     return (
         <TableContainer className={classes.container}>
-            <Table size="small" aria-label="a dense table">
+            <Table size="small" aria-label="portfolio overview table">
                 {headers && (
                     <TableHead>
                         <TableRow>
@@ -218,8 +218,12 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                         return (
                             <TableRow key={row.id}>
                                 <StickyTableCell>
-                                    <Typography variant="subtitle2">{row.listing.symbol}</Typography>
-                                    <Typography variant="caption">{row.listing.name}</Typography>
+                                    <Typography variant="subtitle2">
+                                        {row.listing.symbol}
+                                    </Typography>
+                                    <Typography variant="caption">
+                                        {row.listing.name}
+                                    </Typography>
                                 </StickyTableCell>
                                 <TableCell align="right">
                                     {currencyFormatter.format(row.listing.quote.USD.price)}
