@@ -38,11 +38,12 @@ const useStyles = makeStyles({
         padding: 8,
     },
     editCell: {
-        width: 216,
+        maxWidth: 216,
     },
     quantity: {
-        width: 100,
-        textAlign: 'right'
+        maxWidth: 100,
+        textAlign: 'right',
+        marginRight: 16
     },
     noMargin: {
         marginTop: -8,
@@ -200,7 +201,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     );
                                 } else {
                                     return (
-                                        <TableCell key={index}>
+                                        <TableCell align="right" key={index}>
                                             {header}
                                         </TableCell>
                                     );
@@ -219,21 +220,21 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                 <StickyTableCell>
                                     {row.listing.name} ({row.listing.symbol})
                                 </StickyTableCell>
-                                <TableCell>
+                                <TableCell align="right">
                                     {currencyFormatter.format(row.listing.quote.USD.price)}
                                 </TableCell>
-                                <TableCell>
-                                    {percentFormatter.format(row.listing.quote.USD.percent_change_1h / 100)}
-                                </TableCell>
-                                <TableCell>
-                                    {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
-                                </TableCell>
-                                <TableCell align="right" className={classes.editCell}>
+                                <TableCell
+                                 className={classes.editCell}
+                                >
                                     {editActive && activeHolding === row.id
                                         ? (
                                             <ClickAwayListener onClickAway={handleClickAway}>
                                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                                    <Box display="flex" alignItems="flex-start" justifyContent="space-between">
+                                                    <Box
+                                                     display="flex"
+                                                     alignItems="flex-start"
+                                                     justifyContent="space-between"
+                                                    >
                                                         <Box className={classes.noMargin}>
                                                             <MuiTextField
                                                              width={110}
@@ -270,7 +271,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                             <Box
                                              display="flex"
                                              alignItems="center"
-                                             justifyContent="space-between"
+                                             justifyContent="flex-end"
                                             >
                                                 <Box className={classes.quantity}>
                                                     <Typography
@@ -295,13 +296,25 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                         )
                                     }
                                 </TableCell>
-                                <TableCell>
-                                    <Typography component="span" variant="body1">
+                                <TableCell align="right">
+                                    <Typography
+                                     component="span"
+                                     variant="body1"
+                                    >
                                         {currencyFormatter.format(row.totalValue)}
                                     </Typography>
                                 </TableCell>
+                                <TableCell align="right">
+                                    {percentFormatter.format(row.listing.quote.USD.percent_change_1h / 100)}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
+                                </TableCell>
                                 <TableCell align="center">
-                                    <IconButton data-holding={row.id} onClick={handleDelete}>
+                                    <IconButton
+                                     data-holding={row.id}
+                                     onClick={handleDelete}
+                                    >
                                         <DeleteIcon />
                                     </IconButton>
                                 </TableCell>
