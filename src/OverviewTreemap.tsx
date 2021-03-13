@@ -18,6 +18,7 @@ export const OverviewTreemap: React.FC<IProps> = ({
 
     const renderTreemap = React.useCallback(() => {
         d3.selectAll('g').remove();
+        d3.selectAll('.tooltip').remove();
 
         const svg = d3.select(svgRef.current);
         svg.attr('width', width).attr('height', height);
@@ -48,6 +49,7 @@ export const OverviewTreemap: React.FC<IProps> = ({
           .style("text-anchor", "middle");
 
         var tooltip = d3.select("body")
+          .attr('class', 'tooltip')
           .append("div")
           .style("position", "absolute")
           .style("z-index", "10")
