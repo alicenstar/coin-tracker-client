@@ -169,19 +169,26 @@ export const Portfolio: React.FC = () => {
                          unmountOnExit
                         >
                             <CardContent className={classes.content}>
-                                <div
-                                 style={{ height: '300px', width: '100%' }}
-                                 ref={ref}
-                                >
-                                    {loaded && tracker.holdings.length > 0 &&
-                                        <PortfolioTreemap
-                                         data={treemapData}
-                                         height={dimensions.height}
-                                         width={dimensions.width}
-                                         key={listings[0].quote.USD.market_cap}
-                                        />
-                                    }
-                                </div>
+                                {tracker.holdings.length > 0 && (
+                                    <div
+                                        style={{ height: '300px', width: '100%' }}
+                                        ref={ref}
+                                    >
+                                        {loaded &&
+                                            <PortfolioTreemap
+                                                data={treemapData}
+                                                height={dimensions.height}
+                                                width={dimensions.width}
+                                                key={listings[0].quote.USD.market_cap}
+                                            />
+                                        }
+                                    </div>
+                                )}
+                                {tracker.holdings.length === 0 && (
+                                    <Typography align="center" variant="body1">
+                                        Add some coins and view a graph of your portfolio here
+                                    </Typography>
+                                )}
                             </CardContent>
                         </Collapse>
                     </Card>
@@ -192,18 +199,24 @@ export const Portfolio: React.FC = () => {
                     >
                         <NewTransactionForm />
                     </Paper>
-                    {tableData.length > 0 &&
-                        <HoldingsTable
-                         data={tableData}
-                         headers={[
-                            "Coin Name",
-                            "Market Price",
-                            "Quantity",
-                            "Total Value",
-                            "1hr",
-                            "24hr"
-                         ]}
-                        />
+                    {tableData.length > 0
+                        ? (
+                            <HoldingsTable
+                             data={tableData}
+                             headers={[
+                                "Coin Name",
+                                "Market Price",
+                                "Quantity",
+                                "Total Value",
+                                "1hr",
+                                "24hr"
+                             ]}
+                            />
+                        ) : (
+                            <Typography align="center" variant="body1">
+                                Add some coins and view them here
+                            </Typography>
+                        )
                     }
                 </Container>
             )}
