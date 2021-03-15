@@ -46,48 +46,48 @@ export const OverviewTreemap: React.FC<IProps> = ({
           .attr('x', d => (d.x1 - d.x0) / 2)
           .attr('y', d => (d.y1 - d.y0) / 2)
           .attr('dy', '.35em')
-          .style("text-anchor", "middle");
+          .style('text-anchor', 'middle');
 
-        var tooltip = d3.select("body")
-          .attr('class', 'tooltip')
-          .append("div")
-          .style("position", "absolute")
-          .style("z-index", "10")
-          .style("visibility", "hidden")
-          .style("background", "#fff")
-          .style("padding", '10px')
-          .style("pointer-events", 'none')
-          .style("width", "170px")
-          .style("height", "100px")
-          .style("color", "#000000");
+        var tooltip = d3.select('body')
+          .append('div')
+          .style('position', 'absolute')
+          .style('z-index', '10')
+          .style('visibility', 'hidden')
+          .style('background', '#fff')
+          .style('padding', '10px')
+          .style('pointer-events', 'none')
+          .style('width', '170px')
+          .style('height', '100px')
+          .style('color', '#000000')
+          .attr('class', 'tooltip');
       
         nodes
-            .on("mouseover", function(d) {
+            .on('mouseover', function(d) {
                 tooltip.html(`
                     <div>
                         <p>${d.target.__data__.data.name}</p>
                         <p>Market Cap: ${largeCurrencyFormatter(d.target.__data__.value)}</p>
                     </div>
                 `);
-                return tooltip.style("visibility", "visible");
+                return tooltip.style('visibility', 'visible');
             })
-            .on("mousemove", function(e) {
+            .on('mousemove', function(e) {
                 if (e.pageX > (width - 70)) {
                     tooltip
-                        .style("top", (e.pageY)+"px")
-                        .style("left", (e.pageX-170)+"px")
-                        .style("text-align", 'right');
+                        .style('top', (e.pageY)+'px')
+                        .style('left', (e.pageX-170)+'px')
+                        .style('text-align', 'right');
                 } else {
                     tooltip
-                        .style("top", (e.pageY)+"px")
-                        .style("left",(e.pageX)+"px")
-                        .style("text-align", 'left');
+                        .style('top', (e.pageY)+'px')
+                        .style('left',(e.pageX)+'px')
+                        .style('text-align', 'left');
                 }
                 return tooltip
             })
-            .on("mouseout", function() {
+            .on('mouseout', function() {
                 return tooltip
-                        .style("visibility", "hidden")
+                        .style('visibility', 'hidden')
             });
     }, [data, height, width]);
      
