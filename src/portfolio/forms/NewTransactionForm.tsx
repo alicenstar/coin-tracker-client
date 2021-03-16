@@ -9,11 +9,11 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useTrackerContext } from './TrackerContext';
-import { IHolding, IListing } from './types/types';
-import { MuiSelect } from './MuiSelect';
-import { MuiTextField } from './MuiTextField';
-import { useListingsContext } from './ListingsContext';
+import { useTrackerContext } from '../../context/TrackerContext';
+import { IHolding, IListing } from '../../types/types';
+import { MuiSelect } from '../../forms/MuiSelect';
+import { MuiTextField } from '../../forms/MuiTextField';
+import { useListingsContext } from '../../context/ListingsContext';
 
 
 type TransactionFormData = {
@@ -23,6 +23,7 @@ type TransactionFormData = {
     priceAtTransaction: string;
     trackerId: string;
 };
+
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -105,7 +106,6 @@ export const NewTransactionForm: React.FC = () => {
     const onSubmit = async (data: TransactionFormData) => {
         data.priceAtTransaction = data.priceAtTransaction.trim();
         data.quantity = data.quantity.trim();
-        console.log(data)
         data.trackerId = tracker!._id;
         // Check if user currently owns the submitted coin
         let holdingMatch: IHolding | undefined = tracker!.holdings.find((holding: IHolding) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import Loading from './Loading';
-import { ITracker } from './types/types';
+import Loading from '../utils/Loading';
+import { ITracker } from '../types/types';
 
 
 type Props = {

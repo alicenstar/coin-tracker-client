@@ -5,13 +5,13 @@ import {
 	Switch
 } from "react-router-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MiniDrawer from './MiniDrawer';
-import { PageProvider } from './PageContext';
-import { TrackerProvider } from './TrackerContext';
-import { ListingsProvider } from './ListingsContext';
-import { LandingPage } from './LandingPage';
+import MiniDrawer from './common/MiniDrawer';
+import { PageProvider } from './context/PageContext';
+import { TrackerProvider } from './context/TrackerContext';
+import { ListingsProvider } from './context/ListingsContext';
+import { LandingPage } from './landing/LandingPage';
 import { ThemeProvider } from '@material-ui/core';
-import { defaultTheme } from './Themes';
+import { defaultTheme } from './styles/Themes';
 // import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 

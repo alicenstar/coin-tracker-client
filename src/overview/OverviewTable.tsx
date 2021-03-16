@@ -12,8 +12,12 @@ import {
     withStyles,
 } from "@material-ui/core";
 import { TablePaginationActions } from './TablePaginationActions';
-import { currencyFormatter, percentFormatter, largeCurrencyFormatter } from "./utils/Formatters";
-import { useListingsContext } from './ListingsContext';
+import {
+    currencyFormatter,
+    percentFormatter,
+    largeCurrencyFormatter
+} from "../utils/Formatters";
+import { useListingsContext } from '../context/ListingsContext';
 
 
 interface ITableProps {

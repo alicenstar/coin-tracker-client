@@ -8,9 +8,9 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import { MuiTextField } from "./MuiTextField";
-import { usePageContext } from "./PageContext";
-import { useTrackerContext } from "./TrackerContext";
+import { MuiTextField } from "../forms/MuiTextField";
+import { usePageContext } from "../context/PageContext";
+import { useTrackerContext } from "../context/TrackerContext";
 
 
 type Props = {
