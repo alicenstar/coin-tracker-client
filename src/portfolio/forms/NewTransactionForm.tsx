@@ -91,16 +91,6 @@ export const NewTransactionForm: React.FC = () => {
         },
         getContentAnchorEl: null,
     }
-
-    const fetchHolding = async (method: string, data: any, id: string) => {
-        await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${id}`, {
-            method: method,
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(data),
-        });
-    }
     
     React.useEffect(() => {
         if (formState.isSubmitSuccessful) {
@@ -112,6 +102,16 @@ export const NewTransactionForm: React.FC = () => {
             });
         }
     }, [formState.isSubmitSuccessful, reset, symbols]);
+
+    const fetchHolding = async (method: string, data: any, id: string) => {
+        await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${id}`, {
+            method: method,
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+    };
 
     const onSubmit = async (data: TransactionFormData) => {
         data.priceAtTransaction = data.priceAtTransaction.trim();
