@@ -83,7 +83,6 @@ export const Header: React.FC = () => {
 
     const onUploadSubmit = async () => {
         const trimmedData = data.slice(1, -1);
-        console.log(data.slice(1, -1));
         await fetch(`https://backend-cointracker-dev.herokuapp.com/api/trackers/upload/${tracker!._id}`, {
             method: 'POST',
             headers: {
@@ -94,6 +93,7 @@ export const Header: React.FC = () => {
         findTracker();
         setOpen(false);
     };
+
     let headerText = '';
     if (tracker) {
         if (smScreen) {
@@ -102,7 +102,6 @@ export const Header: React.FC = () => {
             headerText = '# ' + tracker!._id;
         }
     }
-
 
     return (
         <React.Fragment>
