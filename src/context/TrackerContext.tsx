@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import Loading from './Loading';
-import { ITracker } from './types/types';
+import Loading from '../utils/Loading';
+import { ITracker } from '../types/types';
 
 
 type Props = {
@@ -29,7 +29,7 @@ export const TrackerProvider = ({
 
     const findTracker = React.useCallback(async () => {
         setLoaded(false);
-        const response = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${id}`);
+        const response = await fetch(`https://backend-cointracker-dev.herokuapp.com/api/trackers/${id}`);
         const json = await response.json();
         if (json.tracker) {
             setTracker(json.tracker);

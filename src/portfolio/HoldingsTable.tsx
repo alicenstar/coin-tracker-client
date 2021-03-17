@@ -15,13 +15,13 @@ import {
     withStyles
 } from "@material-ui/core";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { currencyFormatter, percentFormatter } from "./utils/Formatters";
-import { MuiTextField } from "./MuiTextField";
+import { currencyFormatter, percentFormatter } from "../utils/Formatters";
+import { MuiTextField } from "../forms/MuiTextField";
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';
-import { IHolding, IListing } from "./types/types";
-import { useListingsContext } from "./ListingsContext";
-import { useTrackerContext } from "./TrackerContext";
+import { IHolding, IListing } from "../types/types";
+import { useListingsContext } from "../context/ListingsContext";
+import { useTrackerContext } from "../context/TrackerContext";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
@@ -30,19 +30,20 @@ const useStyles = makeStyles({
         width: '100%',
         marginLeft: 'auto',
         marginRight: 'auto',
-        // maxHeight: 380,
     },
     footer: {
         float: 'right'
     },
     icon: {
-        padding: 8
+        padding: 8,
     },
     editCell: {
-        width: 200,
+        maxWidth: 216,
     },
     quantity: {
-        width: 60
+        maxWidth: 100,
+        textAlign: 'right',
+        marginRight: 16
     },
     noMargin: {
         marginTop: -8,
@@ -122,7 +123,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 priceAtTransaction: transactionBody.priceAtTransaction
             };
             // add new adjustment transaction
-            await fetch(`https://coin-tracker-api.herokuapp.com/api/transactions/`, {
+            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/transactions/`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -130,16 +131,16 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                 body: JSON.stringify(transactionBody),
             });
             // update holding value
-            await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${activeHolding}`, {
+            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${activeHolding}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
                 },
                 body: JSON.stringify(holdingBody),
-            })
+            });
         } else {
             // Else, if quantity === 0, delete
-            const deleteResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${activeHolding}`, {
+            const deleteResponse = await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${activeHolding}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-type': 'application/json'
@@ -147,7 +148,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
             });
         }
         // get updated tracker data
-        const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
+        const trackerResponse = await fetch(`https://backend-cointracker-dev.herokuapp.com/api/trackers/${tracker!._id}`);
         const trackerJson = await trackerResponse.json();
         setTracker(trackerJson.tracker);
         setQuantity(undefined);
@@ -173,21 +174,21 @@ export const HoldingsTable: React.FC<ITableProps> = ({
         const targetElement = e.target.closest('button[data-holding]');
         const holdingId = targetElement.getAttribute('data-holding');
         // call API to delete holding
-        const deleteResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/holdings/${holdingId}`, {
+        const deleteResponse = await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingId}`, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json'
             },
         });
         console.log('deleted', deleteResponse);
-        const trackerResponse = await fetch(`https://coin-tracker-api.herokuapp.com/api/trackers/${tracker!._id}`);
+        const trackerResponse = await fetch(`https://backend-cointracker-dev.herokuapp.com/api/trackers/${tracker!._id}`);
         const trackerJson = await trackerResponse.json();
         setTracker(trackerJson.tracker);
     };
 
     return (
         <TableContainer className={classes.container}>
-            <Table size="small" aria-label="a dense table">
+            <Table size="small" aria-label="portfolio overview table">
                 {headers && (
                     <TableHead>
                         <TableRow>
@@ -200,13 +201,13 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                     );
                                 } else {
                                     return (
-                                        <TableCell key={index}>
+                                        <TableCell align="right" key={index}>
                                             {header}
                                         </TableCell>
                                     );
                                 }
                             })}
-                            <TableCell>
+                            <TableCell align="center">
                                 Delete
                             </TableCell>
                         </TableRow>
@@ -217,86 +218,108 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                         return (
                             <TableRow key={row.id}>
                                 <StickyTableCell>
-                                    {row.listing.name} ({row.listing.symbol})
+                                    <Typography variant="subtitle2">
+                                        {row.listing.symbol}
+                                    </Typography>
+                                    <Typography variant="caption">
+                                        {row.listing.name}
+                                    </Typography>
                                 </StickyTableCell>
-                                <TableCell>
+                                <TableCell align="right">
                                     {currencyFormatter.format(row.listing.quote.USD.price)}
                                 </TableCell>
-                                <TableCell>
-                                    {percentFormatter.format(row.listing.quote.USD.percent_change_1h / 100)}
-                                </TableCell>
-                                <TableCell>
-                                    {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
-                                </TableCell>
-                                <TableCell align="right" className={classes.editCell}>
+                                <TableCell
+                                 className={classes.editCell}
+                                >
                                     {editActive && activeHolding === row.id
                                         ? (
                                             <ClickAwayListener onClickAway={handleClickAway}>
                                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                                <Box display="flex" alignItems="flex-start" justifyContent="space-between">
-                                                    <Box className={classes.noMargin}>
-                                                    <MuiTextField
-                                                     width={90}
-                                                     helperText=""
-                                                     name="newQuantity"
-                                                     control={control}
-                                                     defaultValue={row.quantity.toString()}
-                                                     rules={{
-                                                        pattern: {
-                                                            value: /^\d*?\.?\d*$/,
-                                                            message: 'Wrong number format'
-                                                        },
-                                                        required: 'This field is required',
-                                                        min: {
-                                                            value: 0,
-                                                            message: 'You must enter a value greater than 0'
-                                                        },
-                                                     }}
-                                                     errors={errors}
-                                                    />
-                                                    </Box>
-                                                    <Box className={classes.noMargin}>
-                                                    <Button
-                                                     variant="outlined"
-                                                     type='submit'>
-                                                        Save
-                                                    </Button>
-                                                    </Box>
+                                                    <Box
+                                                     display="flex"
+                                                     alignItems="flex-start"
+                                                     justifyContent="space-between"
+                                                    >
+                                                        <Box className={classes.noMargin}>
+                                                            <MuiTextField
+                                                             width={110}
+                                                             helperText=""
+                                                             name="newQuantity"
+                                                             control={control}
+                                                             defaultValue={row.quantity.toString()}
+                                                             rules={{
+                                                                pattern: {
+                                                                    value: /^\d*?\.?\d*$/,
+                                                                    message: 'Wrong number format'
+                                                                },
+                                                                required: 'This field is required',
+                                                                min: {
+                                                                    value: 0,
+                                                                    message: 'You must enter a value greater than 0'
+                                                                },
+                                                             }}
+                                                             errors={errors}
+                                                            />
+                                                        </Box>
+                                                        <Box className={classes.noMargin}>
+                                                            <Button
+                                                             variant="outlined"
+                                                             type='submit'
+                                                            >
+                                                                Save
+                                                            </Button>
+                                                        </Box>
                                                     </Box>
                                                 </form>
                                             </ClickAwayListener>
                                         ) : (
-                                                <Box
-                                                 display="flex"
-                                                 alignItems="center"
-                                                 justifyContent="flex-start"
-                                                >
-                                                    <Box className={classes.quantity}>
-                                                        <Typography display="inline" variant="body1" align="right">
-                                                            {row.quantity}
-                                                        </Typography>
-                                                    </Box>
-                                                    <Box>
-                                                        <IconButton
-                                                         className={classes.icon}
-                                                         data-quantity={row.quantity}
-                                                         data-holding={row.id}
-                                                         onClick={handleEditClick}
-                                                        >
-                                                            <EditIcon />
-                                                        </IconButton>
-                                                    </Box>
+                                            <Box
+                                             display="flex"
+                                             alignItems="center"
+                                             justifyContent="flex-end"
+                                            >
+                                                <Box className={classes.quantity}>
+                                                    <Typography
+                                                     display="inline"
+                                                     variant="body1"
+                                                     align="right"
+                                                    >
+                                                        {row.quantity}
+                                                    </Typography>
                                                 </Box>
+                                                <Box>
+                                                    <IconButton
+                                                     className={classes.icon}
+                                                     data-quantity={row.quantity}
+                                                     data-holding={row.id}
+                                                     onClick={handleEditClick}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </Box>
+                                            </Box>
                                         )
                                     }
                                 </TableCell>
-                                <TableCell>
-                                    <Typography component="span" variant="body1">
+                                <TableCell align="right">
+                                    <Typography
+                                     component="span"
+                                     variant="body1"
+                                    >
                                         {currencyFormatter.format(row.totalValue)}
                                     </Typography>
                                 </TableCell>
+                                <TableCell align="right">
+                                    {percentFormatter.format(row.listing.quote.USD.percent_change_1h / 100)}
+                                </TableCell>
+                                <TableCell align="right">
+                                    {percentFormatter.format(row.listing.quote.USD.percent_change_24h / 100)}
+                                </TableCell>
                                 <TableCell align="center">
-                                    <IconButton data-holding={row.id} onClick={handleDelete}>
+                                    <IconButton
+                                     data-holding={row.id}
+                                     onClick={handleDelete}
+                                    >
                                         <DeleteIcon />
                                     </IconButton>
                                 </TableCell>

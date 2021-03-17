@@ -1,6 +1,7 @@
 import React from 'react';
-import { IListing } from './types/types';
-import { useInterval } from './utils';
+import Loading from '../utils/Loading';
+import { IListing } from '../types/types';
+import { useInterval } from '../utils';
 
 
 type Props = {
@@ -20,11 +21,13 @@ export const ListingsProvider = ({
     children
 }: Props) => {
     const [ listings, setListings ] = React.useState<IListing[]>([]);
+    const [ loaded, setLoaded ] = React.useState(false);
 
     const fetchListings = React.useCallback(async () => {
-        const response = await fetch('https://coin-tracker-api.herokuapp.com/api/listings/');
+        const response = await fetch('https://backend-cointracker-dev.herokuapp.com/api/listings/');
         const json = await response.json();
         setListings(json.listings);
+        setLoaded(true);
     }, []);
 
     React.useEffect(() => {
@@ -37,6 +40,7 @@ export const ListingsProvider = ({
 
     return (
         <ListingsContext.Provider value={{ listings, setListings }}>
+            {!loaded && <Loading />}
             {children}
         </ListingsContext.Provider>
     );

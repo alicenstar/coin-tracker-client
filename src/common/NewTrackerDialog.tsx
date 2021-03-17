@@ -8,9 +8,9 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import { MuiTextField } from "./MuiTextField";
-import { usePageContext } from "./PageContext";
-import { useTrackerContext } from "./TrackerContext";
+import { MuiTextField } from "../forms/MuiTextField";
+import { usePageContext } from "../context/PageContext";
+import { useTrackerContext } from "../context/TrackerContext";
 
 
 type Props = {
@@ -41,7 +41,7 @@ export const NewTracker: React.FC<Props> = ({
 
     const onSubmit = async (data: TrackerFormData) => {
         // if user logged in, associate user with tracker
-        const response = await fetch('https://coin-tracker-api.herokuapp.com/api/trackers/', {
+        const response = await fetch('https://backend-cointracker-dev.herokuapp.com/api/trackers/', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'

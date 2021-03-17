@@ -10,7 +10,7 @@ import {
     Theme
 } from "@material-ui/core";
 import React from "react";
-import { useListingsContext } from "./ListingsContext";
+import { useListingsContext } from "../context/ListingsContext";
 import { OverviewTable } from "./OverviewTable";
 import { OverviewTreemap } from "./OverviewTreemap";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';

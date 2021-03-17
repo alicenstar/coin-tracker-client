@@ -8,10 +8,10 @@ import {
     useTheme
 } from '@material-ui/core';
 import React from 'react';
-import { currencyFormatter, percentFormatter } from './utils/Formatters';
-import { useTrackerContext } from './TrackerContext';
-import { useListingsContext } from './ListingsContext';
-import { IHolding } from './types/types';
+import { currencyFormatter, percentFormatter } from '../utils/Formatters';
+import { useTrackerContext } from '../context/TrackerContext';
+import { useListingsContext } from '../context/ListingsContext';
+import { IHolding } from '../types/types';
 
 
 const useStyles = makeStyles((theme: Theme) => ({

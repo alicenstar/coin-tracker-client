@@ -22,13 +22,13 @@ import AssessmentSharpIcon from '@material-ui/icons/AssessmentSharp';
 import WorkSharpIcon from '@material-ui/icons/WorkSharp';
 import AddIcon from '@material-ui/icons/Add';
 import clsx from 'clsx';
-import { usePageContext } from './PageContext';
-import { useMiniDrawerStyles } from './MiniDrawerStyles';
+import { usePageContext } from '../context/PageContext';
+import { useMiniDrawerStyles } from '../styles/MiniDrawerStyles';
 import { Header } from './Header';
 import { NewTracker } from './NewTrackerDialog';
 import Dashboard from './Dashboard';
 import { useParams } from 'react-router-dom';
-import { useTrackerContext } from './TrackerContext';
+import { useTrackerContext } from '../context/TrackerContext';
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 
@@ -157,7 +157,7 @@ export default function MiniDrawer() {
                         </IconButton>
                     </Hidden>
                     <Header />
-                    <section className={classes.rightToolbar}>
+                    {/* <section className={classes.rightToolbar}>
                         <Hidden xsDown implementation="css">
                             <Switch
                              onChange={toggleTheme}
@@ -167,7 +167,7 @@ export default function MiniDrawer() {
                              checkedIcon={<Brightness3Icon />}
                             />
                         </Hidden>
-                    </section>
+                    </section> */}
                 </Toolbar>
             </AppBar>
             {/* Large screens */}

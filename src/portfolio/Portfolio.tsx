@@ -1,5 +1,5 @@
 import React from "react";
-import { NewTransactionForm } from "./NewTransactionForm";
+import { NewTransactionForm } from "./forms/NewTransactionForm";
 import { HoldingsTable } from "./HoldingsTable";
 import {
     Card,
@@ -13,9 +13,9 @@ import {
     Theme,
     Typography
 } from "@material-ui/core";
-import { useTrackerContext } from "./TrackerContext";
-import { useListingsContext } from "./ListingsContext";
-import { IHolding, IListing } from "./types/types";
+import { useTrackerContext } from "../context/TrackerContext";
+import { useListingsContext } from "../context/ListingsContext";
+import { IHolding, IListing } from "../types/types";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from "clsx";
 import { PortfolioTreemap }  from './PortfolioTreemap';
@@ -106,6 +106,7 @@ export const Portfolio: React.FC = () => {
                 totalValue: parseFloat(holding.quantity) * listingMatch!.quote.USD.price,
             }
         });
+        // Sort table based on total value, high to low
         tblData.sort(function(a: any, b: any) { return b.totalValue - a.totalValue });
         setTableData(tblData);
 
@@ -127,88 +128,98 @@ export const Portfolio: React.FC = () => {
     }, [listings, tracker])
 
     React.useEffect(() => {
-        createTableData();
+        if (tracker !== undefined && listings.length > 0) {
+            createTableData();
+        }
     }, [createTableData, listings, tracker]);
 
     return (
         <div className="portfolio-container">
-            {tracker
-                ? (
-                    <Container disableGutters>
-                        <Typography variant="h4">
-                            {tracker.name}
-                        </Typography>
-                        <Card className={classes.root}>
-                            <CardHeader
-                             className={classes.header}
-                             title="Portfolio Breakdown"
-                             action={
-                                <IconButton
-                                 className={clsx(classes.expand, {
-                                    [classes.expandOpen]: expanded,
-                                 }, classes.button)}
-                                 onClick={handleExpandClick}
-                                 aria-expanded={expanded}
-                                 aria-label="show graph"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
-                            }
-                             titleTypographyProps={{
-                                variant: 'subtitle1'
-                             }}
-                            />
-                            
-                            <Collapse
-                             className={classes.root}
-                             in={expanded}
-                             timeout="auto"
-                             mountOnEnter
-                             unmountOnExit
+            {tracker && (
+                <Container disableGutters>
+                    <Typography variant="h4">
+                        {tracker.name}
+                    </Typography>
+                    <Card className={classes.root}>
+                        <CardHeader
+                         className={classes.header}
+                         title="Portfolio Breakdown"
+                         action={
+                            <IconButton
+                             className={clsx(classes.expand, {
+                                [classes.expandOpen]: expanded,
+                             }, classes.button)}
+                             onClick={handleExpandClick}
+                             aria-expanded={expanded}
+                             aria-label="show graph"
                             >
-                                <CardContent className={classes.content}>
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        }
+                         titleTypographyProps={{
+                            variant: 'subtitle1'
+                         }}
+                        />
+                        
+                        <Collapse
+                         className={classes.root}
+                         in={expanded}
+                         timeout="auto"
+                         mountOnEnter
+                         unmountOnExit
+                        >
+                            <CardContent className={classes.content}>
+                                {tracker.holdings.length > 0 && (
                                     <div
-                                     style={{ height: '300px', width: '100%' }}
-                                     ref={ref}
+                                        style={{ height: '300px', width: '100%' }}
+                                        ref={ref}
                                     >
-                                        {loaded && tracker.holdings.length > 0 &&
+                                        {loaded &&
                                             <PortfolioTreemap
-                                             data={treemapData}
-                                             height={dimensions.height}
-                                             width={dimensions.width}
-                                             key={listings[0].quote.USD.market_cap}
+                                                data={treemapData}
+                                                height={dimensions.height}
+                                                width={dimensions.width}
+                                                key={listings[0].quote.USD.market_cap}
                                             />
                                         }
                                     </div>
-                                </CardContent>
-                            </Collapse>
-                        </Card>
-                        <Paper
-                         className={classes.paper}
-                         elevation={7}
-                         variant="outlined"
-                        >
-                            <NewTransactionForm />
-                        </Paper>
-                        {tableData.length > 0 &&
+                                )}
+                                {tracker.holdings.length === 0 && (
+                                    <Typography align="center" variant="body1">
+                                        Add some coins and view a graph of your portfolio here
+                                    </Typography>
+                                )}
+                            </CardContent>
+                        </Collapse>
+                    </Card>
+                    <Paper
+                     className={classes.paper}
+                     elevation={7}
+                     variant="outlined"
+                    >
+                        <NewTransactionForm />
+                    </Paper>
+                    {tableData.length > 0
+                        ? (
                             <HoldingsTable
                              data={tableData}
                              headers={[
                                 "Coin Name",
                                 "Market Price",
-                                "1hr",
-                                "24hr",
                                 "Quantity",
-                                "Value"
+                                "Total Value",
+                                "1hr",
+                                "24hr"
                              ]}
                             />
-                        }
-                            
-                    </Container>
-                ) : (
-                    'Tracker Not Found'
-                )
-            }
+                        ) : (
+                            <Typography align="center" variant="body1">
+                                Add some coins and view them here
+                            </Typography>
+                        )
+                    }
+                </Container>
+            )}
         </div>
     );
 };

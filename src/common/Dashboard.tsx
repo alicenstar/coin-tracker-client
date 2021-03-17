@@ -1,9 +1,9 @@
 import React from 'react';
-import { usePageContext } from './PageContext';
-import { Overview } from './Overview';
-import { Portfolio } from './Portfolio';
-import { useTrackerContext } from './TrackerContext';
-import { useListingsContext } from './ListingsContext';
+import { usePageContext } from '../context/PageContext';
+import { Overview } from '../overview/Overview';
+import { Portfolio } from '../portfolio/Portfolio';
+import { useTrackerContext } from '../context/TrackerContext';
+import { useListingsContext } from '../context/ListingsContext';
 import { PortfolioValue } from './PortfolioValue';
 import { Container } from '@material-ui/core';
 

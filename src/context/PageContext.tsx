@@ -17,7 +17,7 @@ const PageContext = React.createContext<PageContextType | undefined>(
 export const PageProvider = ({
     children
 }: Props) => {
-    const [ pageElement, setPageElement ] = React.useState('Overview');
+    const [ pageElement, setPageElement ] = React.useState('Portfolio');
 
     return (
         <PageContext.Provider value={{ pageElement, setPageElement }}>

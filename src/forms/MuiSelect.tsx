@@ -26,14 +26,19 @@ export const MuiSelect: React.FC<ISelectProps> = ({
     defaultValue,
     rules,
     children,
-    menuProps
+    menuProps,
 }: ISelectProps) => {
     const labelId = `${name}-label`;
     const classes = useStyles();
 
     return (
         <FormControl className={classes.root}>
-            <InputLabel id={labelId} htmlFor={name}>{label}</InputLabel>
+            <InputLabel
+             id={labelId}
+             htmlFor={name}
+            >
+                {label}
+            </InputLabel>
             <Controller
              render={(props) => (
                 <Select
