@@ -91,6 +91,16 @@ export const NewTransactionForm: React.FC = () => {
         },
         getContentAnchorEl: null,
     }
+
+    const fetchHolding = async (method: string, data: any, id: string) => {
+        await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${id}`, {
+            method: method,
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        });
+    }
     
     React.useEffect(() => {
         if (formState.isSubmitSuccessful) {
@@ -120,47 +130,24 @@ export const NewTransactionForm: React.FC = () => {
         
         if (holdingMatch && data.type === 'Buy') {
             // If user already own the coin, update their shares
-            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingMatch._id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(data),
-            });
+            await fetchHolding('PUT', data, holdingMatch._id);
         } else if (!holdingMatch && data.type === 'Buy') {
             // If user does not own the coin, create a new holding
-            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/`, {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: JSON.stringify(data),
-            });
+            await fetchHolding('POST', data, '');
         } else if (holdingMatch && data.type === 'Sell') {
             if (parseFloat(data.quantity) > parseFloat(holdingMatch.quantity)) {
                 return;
             } else if (parseFloat(data.quantity) === parseFloat(holdingMatch.quantity)) {
                 // delete holding
-                await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingMatch._id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
-                });
+                await fetchHolding('DELETE', data, holdingMatch._id);
             } else {
                 // update holding
                 // change quantity to negative number
                 data.quantity = '-' + data.quantity;
-                await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${holdingMatch._id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
-                });
+                await fetchHolding('PUT', data, holdingMatch._id);
             }
         } else if (!holdingMatch && data.type === 'Sell') {
+            // If user is trying to sell a coin they don't own
             return;
         }
         // Check to see if a transaction should be created
