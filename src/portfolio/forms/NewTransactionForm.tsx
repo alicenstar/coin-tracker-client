@@ -150,6 +150,7 @@ export const NewTransactionForm: React.FC = () => {
             // If user is trying to sell a coin they don't own
             return;
         }
+
         // Check to see if a transaction should be created
         if (data.type === 'Buy' || (
             holdingMatch && data.type === 'Sell' && data.quantity <= holdingMatch.quantity
@@ -163,6 +164,7 @@ export const NewTransactionForm: React.FC = () => {
                 body: JSON.stringify(data),
             });
         }
+        
         findTracker();
     };
 
