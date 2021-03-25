@@ -18,7 +18,7 @@ Are you tired of having to log in to seven different exchanges just to see where
 - You can view current market data for 500 coins on the **Overview** page.
 
 ![Coin Tracker landing page](./images/landing.png "Create a tracker") ![Coin Tracker add a holding](./images/addholding.png "Add a holding")
-![Coin Tracker portfolio page](./images/portfolio.png "Your portfolio") ![Coin Tracker market overview](./images/marketoverview.png "Overview page")
+![Coin Tracker portfolio page](./images/portfolio.png "Your portfolio") ![Coin Tracker market overview](./images/overview.png "Overview page")
 
 ## Development Features
 - Designed fully responsive `d3.js` treemaps with tooltips to represent market data and portfolio holdings
