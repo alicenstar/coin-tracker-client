@@ -172,7 +172,7 @@ export const NewTransactionForm: React.FC = () => {
         <React.Fragment>
             <Typography
              className={classes.header}
-             variant='h6'
+             variant='h5'
              color="secondary"
             >
                 New Transaction

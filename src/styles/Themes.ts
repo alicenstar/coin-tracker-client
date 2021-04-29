@@ -49,7 +49,7 @@ export const defaultTheme = createMuiTheme({
 			contrastText: '#000'
 		},
 		secondary: {
-			main: '#ff66c4',
+			main: '#ff82d1',
 			contrastText: '#000'
 		},
 		text: {

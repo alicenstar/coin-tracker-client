@@ -109,6 +109,7 @@ export const Header: React.FC = () => {
             <Typography
              className={classes.title}
              variant="h6"
+             variantMapping={{ h6: "h1" }}
              color="primary"
             >
                 {tracker && tracker
@@ -120,26 +121,29 @@ export const Header: React.FC = () => {
                 <React.Fragment>
                     <Tooltip title="Copy URL">
                         <IconButton
+                         aria-label="Copy URL"
                          className={classes.buttons}
                          onClick={handleCopyUrl}
                         >
-                            <FileCopyOutlinedIcon />
+                            <FileCopyOutlinedIcon style={{fontSize: '32px'}} />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Download .csv">
                         <IconButton
+                         aria-label="Download .csv"
                          className={classes.buttons}
                          onClick={handleDownloadClick}
                         >
-                            <GetAppIcon />
+                            <GetAppIcon style={{fontSize: '32px'}} />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Upload .csv">
                         <IconButton
+                         aria-label="Upload .csv"
                          className={classes.buttons}
                          onClick={handleUploadClick}
                         >
-                            <PublishIcon />
+                            <PublishIcon style={{fontSize: '32px'}} />
                         </IconButton>
                     </Tooltip>
                 </React.Fragment>

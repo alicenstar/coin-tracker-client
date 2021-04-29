@@ -263,6 +263,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                         </Box>
                                                         <Box className={classes.noMargin}>
                                                             <Button
+                                                             aria-label='save changes'
                                                              variant="outlined"
                                                              type='submit'
                                                             >
@@ -289,12 +290,13 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                                 </Box>
                                                 <Box>
                                                     <IconButton
+                                                     aria-label='edit quantity'
                                                      className={classes.icon}
                                                      data-quantity={row.quantity}
                                                      data-holding={row.id}
                                                      onClick={handleEditClick}
                                                     >
-                                                        <EditIcon />
+                                                        <EditIcon aria-label='edit icon' />
                                                     </IconButton>
                                                 </Box>
                                             </Box>
@@ -317,10 +319,11 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                                 </TableCell>
                                 <TableCell align="center">
                                     <IconButton
+                                     aria-label={'delete' + row.listing.name + 'holding'}
                                      data-holding={row.id}
                                      onClick={handleDelete}
                                     >
-                                        <DeleteIcon />
+                                        <DeleteIcon aria-label='delete icon' />
                                     </IconButton>
                                 </TableCell>
                             </TableRow>

@@ -92,8 +92,9 @@ export default function MiniDrawer() {
         <React.Fragment>
             <Divider />
             <List>
-                {drawerLinks.map((text, index) => (
+                {drawerLinks.map((text) => (
                     <ListItem
+                     aria-label={text}
                      button
                      id={text}
                      key={text}
@@ -101,21 +102,22 @@ export default function MiniDrawer() {
                     >
                         <ListItemIcon className={classes.drawerIcon}>
                             {text === 'Overview' && (
-                                <AssessmentSharpIcon />
+                                <AssessmentSharpIcon aria-label={text} />
                             )}
                             {text === 'Portfolio' && (
-                                <WorkSharpIcon />
+                                <WorkSharpIcon aria-label={text} />
                             )}
                         </ListItemIcon>
                         <ListItemText primary={text} />
                     </ListItem>
                 ))}
                 <ListItem
+                 aria-label='New Tracker'
                  button
                  id='New Tracker'
                  onClick={() => setNewTrackerOpen(!newTrackerOpen)}
                 >
-                    <ListItemIcon className={classes.drawerIcon}>
+                    <ListItemIcon aria-label='New Tracker' className={classes.drawerIcon}>
                         <AddIcon />
                     </ListItemIcon>
                     <ListItemText primary='New Tracker' />
@@ -136,24 +138,24 @@ export default function MiniDrawer() {
                 <Toolbar>
                     <Hidden xsDown implementation="css">
                         <IconButton
-                        onClick={handleDrawerToggle}
-                        edge="start"
-                        aria-label="menu"
-                        className={clsx(classes.menuButton, {
+                         aria-label='Open Menu'
+                         onClick={handleDrawerToggle}
+                         edge="start"
+                         className={clsx(classes.menuButton, {
                             [classes.hide]: drawerOpen,
                         })}
                         >
-                            <MenuIcon />
+                            <MenuIcon aria-label='menu icon' />
                         </IconButton>
                     </Hidden>
                     <Hidden smUp implementation="css">
                         <IconButton
-                        onClick={handleMobileToggle}
-                        edge="start"
-                        aria-label="menu"
-                        className={clsx(classes.menuButton)}
+                         onClick={handleMobileToggle}
+                         edge="start"
+                         aria-label="Open Menu"
+                         className={clsx(classes.menuButton)}
                         >
-                            <MenuIcon />
+                            <MenuIcon aria-label='menu icon' />
                         </IconButton>
                     </Hidden>
                     <Header />
@@ -190,7 +192,10 @@ export default function MiniDrawer() {
                 }}
                 >
                     <div className={classes.toolbar}>
-                        <IconButton onClick={handleDrawerToggle}>
+                        <IconButton
+                         aria-label='Collapse Menu'
+                         onClick={handleDrawerToggle}
+                        >
                             <ChevronLeftIcon />
                         </IconButton>
                     </div>

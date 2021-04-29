@@ -53,7 +53,7 @@ export const PortfolioValue: React.FC = () => {
                  md={4}
                 >
                     <Grid item>
-                        <Typography variant="h3">
+                        <Typography variant="h3" variantMapping={{ h3: 'h2' }}>
                             {currencyFormatter.format(portfolioTotal)}
                         </Typography>
                     </Grid>
