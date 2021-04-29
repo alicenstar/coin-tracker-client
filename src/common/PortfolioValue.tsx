@@ -59,7 +59,7 @@ export const PortfolioValue: React.FC = () => {
                     </Grid>
                     
                     <Grid item>
-                        <Typography variant="subtitle1">
+                        <Typography variant="body1">
                             Portfolio Value
                         </Typography>
                     </Grid>
@@ -77,7 +77,7 @@ export const PortfolioValue: React.FC = () => {
                     <Typography variant="h3">
                         {currencyFormatter.format(tracker!.initialInvestment)}
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="body1">
                         Initial Investment
                     </Typography>
                 </Grid>
@@ -94,7 +94,7 @@ export const PortfolioValue: React.FC = () => {
                     <Typography variant="h3" display="block">
                         {percentFormatter.format(returnOnInvestment)}
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="body1">
                         Return on Investment
                     </Typography>
                 </Grid>
