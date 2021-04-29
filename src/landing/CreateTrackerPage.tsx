@@ -1,4 +1,4 @@
-import { Button, Grid, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Button, Grid, makeStyles, Theme, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -31,6 +31,9 @@ export const CreateTrackerPage: React.FC = () => {
     const { setPageElement } = usePageContext()!;
     const history = useHistory();
     const classes = useStyles();
+    const theme: Theme = useTheme();
+    const smScreen: boolean = useMediaQuery(theme.breakpoints.down('sm'));
+
 
     const onSubmit = async (data: TrackerFormData) => {
         // if user logged in, associate user with tracker
@@ -54,7 +57,7 @@ export const CreateTrackerPage: React.FC = () => {
     }, [history, formState.isSubmitSuccessful, tracker]);
 
     return (
-        <>
+        <React.Fragment>
             <Typography
              variant="overline"
              color="primary"
@@ -69,8 +72,9 @@ export const CreateTrackerPage: React.FC = () => {
                  justify="space-between"
                  alignItems="center"
                  spacing={2}
+                 direction={smScreen ? "column" : "row"}
                 >
-                    <Grid item>
+                    <Grid item xs={smScreen ? 12 : false}>
                         <MuiTextField
                          name="trackerName"
                          label="Tracker Name"
@@ -86,7 +90,7 @@ export const CreateTrackerPage: React.FC = () => {
                          variant="filled"
                         />
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={smScreen ? 12 : false}>
                         <Button
                          type="submit"
                          variant="contained"
@@ -96,6 +100,6 @@ export const CreateTrackerPage: React.FC = () => {
                     </Grid>
                 </Grid>
             </form>
-        </>
+        </React.Fragment>
     );
 };

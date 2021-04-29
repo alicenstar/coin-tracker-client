@@ -3,6 +3,7 @@ import {
     Grid,
     IconButton,
     makeStyles,
+    Theme,
     Typography,
     useMediaQuery,
     useTheme
@@ -21,9 +22,9 @@ const useStyles = makeStyles({
 });
 
 export const LandingPage: React.FC = () => {
-    const theme = useTheme();
-    const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const [ page, setPage ] = React.useState('tracker');
+    const theme: Theme = useTheme();
+    const smScreen: boolean = useMediaQuery(theme.breakpoints.down('sm'));
+    const [ page, setPage ] = React.useState<string>('tracker');
     const classes = useStyles();
 
     return (
