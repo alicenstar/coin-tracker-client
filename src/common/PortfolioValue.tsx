@@ -8,7 +8,7 @@ import {
     useTheme
 } from '@material-ui/core';
 import React from 'react';
-import { currencyFormatter, percentFormatter } from '../utils/Formatters';
+import { currencyFormatter, percentFormatter } from '../utils/formatters';
 import { useTrackerContext } from '../context/TrackerContext';
 import { useListingsContext } from '../context/ListingsContext';
 import { IHolding } from '../types/types';

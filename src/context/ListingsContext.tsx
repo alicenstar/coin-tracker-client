@@ -1,7 +1,7 @@
 import React from 'react';
 import Loading from '../utils/Loading';
 import { IListing } from '../types/types';
-import { useInterval } from '../utils';
+import { useInterval } from '../utils/hooks';
 
 
 type Props = {

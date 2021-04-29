@@ -15,7 +15,7 @@ import {
     withStyles
 } from "@material-ui/core";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { currencyFormatter, percentFormatter } from "../utils/Formatters";
+import { currencyFormatter, percentFormatter } from "../utils/formatters";
 import { MuiTextField } from "../forms/MuiTextField";
 import { useForm } from "react-hook-form";
 import EditIcon from '@material-ui/icons/Edit';

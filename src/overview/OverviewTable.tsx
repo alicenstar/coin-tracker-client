@@ -16,7 +16,7 @@ import {
     currencyFormatter,
     percentFormatter,
     largeCurrencyFormatter
-} from "../utils/Formatters";
+} from "../utils/formatters";
 import { useListingsContext } from '../context/ListingsContext';
 
 
