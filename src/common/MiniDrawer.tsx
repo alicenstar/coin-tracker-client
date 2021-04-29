@@ -89,39 +89,39 @@ export default function MiniDrawer() {
     }, [drawerOpen, mobileOpen, xsScreen]);
 
     const drawer = (
-        <>
-        <Divider />
-        <List>
-            {drawerLinks.map((text, index) => (
+        <React.Fragment>
+            <Divider />
+            <List>
+                {drawerLinks.map((text, index) => (
+                    <ListItem
+                     button
+                     id={text}
+                     key={text}
+                     onClick={handleNav}
+                    >
+                        <ListItemIcon className={classes.drawerIcon}>
+                            {text === 'Overview' && (
+                                <AssessmentSharpIcon />
+                            )}
+                            {text === 'Portfolio' && (
+                                <WorkSharpIcon />
+                            )}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItem>
+                ))}
                 <ListItem
                  button
-                 id={text}
-                 key={index}
-                 onClick={handleNav}
+                 id='New Tracker'
+                 onClick={() => setNewTrackerOpen(!newTrackerOpen)}
                 >
                     <ListItemIcon className={classes.drawerIcon}>
-                        {text === 'Overview' && (
-                            <AssessmentSharpIcon />
-                        )}
-                        {text === 'Portfolio' && (
-                            <WorkSharpIcon />
-                        )}
+                        <AddIcon />
                     </ListItemIcon>
-                    <ListItemText primary={text} />
+                    <ListItemText primary='New Tracker' />
                 </ListItem>
-            ))}
-            <ListItem
-             button
-             id='New Tracker'
-             onClick={() => setNewTrackerOpen(!newTrackerOpen)}
-            >
-                <ListItemIcon className={classes.drawerIcon}>
-                    <AddIcon />
-                </ListItemIcon>
-                <ListItemText primary='New Tracker' />
-            </ListItem>
-        </List>
-        </>
+            </List>
+        </React.Fragment>
     );
 
 	return (

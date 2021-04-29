@@ -21,10 +21,10 @@ export default function Loading() {
     const classes = useStyles();
 
     return (
-        <div>
+        <React.Fragment>
             <Backdrop className={classes.backdrop} open={true}>
                 <CircularProgress color="inherit" />
             </Backdrop>
-        </div>
+        </React.Fragment>
     );
 };

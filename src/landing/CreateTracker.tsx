@@ -24,7 +24,7 @@ export const CreateTracker: React.FC<Props> = ({
     const classes = useStyles();
 
     return (
-        <>
+        <React.Fragment>
             <Typography
              color="secondary"
              variant="overline"
@@ -47,6 +47,6 @@ export const CreateTracker: React.FC<Props> = ({
                     Create Tracker
                 </Button>
             </Box>
-        </>
+        </React.Fragment>
     );
 };

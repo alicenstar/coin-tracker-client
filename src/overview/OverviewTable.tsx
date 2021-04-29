@@ -71,7 +71,7 @@ export const OverviewTable: React.FC<ITableProps> = ({
     };
 
     return (
-        <>
+        <React.Fragment>
             <TableContainer className={classes.container}>
                 <Table size="small" aria-label="market overview table">
                     {headers && (
@@ -151,6 +151,6 @@ export const OverviewTable: React.FC<ITableProps> = ({
                  onChangePage={handleChangePage}
                 />
             </div>
-        </>
+        </React.Fragment>
     );
 };

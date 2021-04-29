@@ -169,7 +169,7 @@ export const NewTransactionForm: React.FC = () => {
     };
 
     return (
-        <>
+        <React.Fragment>
             <Typography
              className={classes.header}
              variant='h6'
@@ -285,6 +285,6 @@ export const NewTransactionForm: React.FC = () => {
                     </Grid>
                 </form>
             </Grid>
-        </>
+        </React.Fragment>
     );
 };

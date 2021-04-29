@@ -117,7 +117,7 @@ export const Header: React.FC = () => {
                 }
             </Typography>
             {tracker && (
-                <div>
+                <React.Fragment>
                     <Tooltip title="Copy URL">
                         <IconButton
                          className={classes.buttons}
@@ -142,7 +142,7 @@ export const Header: React.FC = () => {
                             <PublishIcon />
                         </IconButton>
                     </Tooltip>
-                </div>
+                </React.Fragment>
             )}
             <Dialog
              open={open}

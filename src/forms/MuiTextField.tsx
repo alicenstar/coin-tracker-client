@@ -38,7 +38,7 @@ export const MuiTextField: React.FC<ITextProps> = ({
     const labelId = `${name}-label`;
 
     return (
-        <>
+        <React.Fragment>
             <Controller
              render={(props) => (
                 <TextField
@@ -73,6 +73,6 @@ export const MuiTextField: React.FC<ITextProps> = ({
                  key={name}
                />
             )}
-        </>
+        </React.Fragment>
     );
 };

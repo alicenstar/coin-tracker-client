@@ -54,7 +54,7 @@ export const CreateTrackerPage: React.FC = () => {
     }, [history, formState.isSubmitSuccessful, tracker]);
 
     return (
-        <>
+        <React.Fragment>
             <Typography
              variant="overline"
              color="primary"
@@ -96,6 +96,6 @@ export const CreateTrackerPage: React.FC = () => {
                     </Grid>
                 </Grid>
             </form>
-        </>
+        </React.Fragment>
     );
 };

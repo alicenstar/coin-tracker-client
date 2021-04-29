@@ -171,8 +171,8 @@ export const Portfolio: React.FC = () => {
                             <CardContent className={classes.content}>
                                 {tracker.holdings.length > 0 && (
                                     <div
-                                        style={{ height: '300px', width: '100%' }}
-                                        ref={ref}
+                                     style={{ height: '300px', width: '100%' }}
+                                     ref={ref}
                                     >
                                         {loaded &&
                                             <PortfolioTreemap
@@ -185,7 +185,10 @@ export const Portfolio: React.FC = () => {
                                     </div>
                                 )}
                                 {tracker.holdings.length === 0 && (
-                                    <Typography align="center" variant="body1">
+                                    <Typography
+                                     align="center"
+                                     variant="body1"
+                                    >
                                         Add some coins and view a graph of your portfolio here
                                     </Typography>
                                 )}
@@ -213,7 +216,10 @@ export const Portfolio: React.FC = () => {
                              ]}
                             />
                         ) : (
-                            <Typography align="center" variant="body1">
+                            <Typography
+                             align="center"
+                             variant="body1"
+                            >
                                 Add some coins and view them here
                             </Typography>
                         )
