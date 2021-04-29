@@ -94,6 +94,7 @@ export const Header: React.FC = () => {
         setOpen(false);
     };
 
+    // Shorten the header text on mobile
     let headerText = '';
     if (tracker) {
         if (smScreen) {
