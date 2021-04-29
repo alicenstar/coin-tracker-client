@@ -154,9 +154,12 @@ export const Header: React.FC = () => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        <ErrorOutlineIcon color="error" />
+                        <ErrorOutlineIcon
+                         color="error"
+                         style={{ verticalAlign: 'bottom' }}
+                        />
                         <Typography
-                         variant="subtitle1"
+                         variant="body1"
                          color="error"
                          display="inline"
                         >
