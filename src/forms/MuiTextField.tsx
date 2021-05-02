@@ -1,8 +1,15 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { InputAdornment, TextField } from '@material-ui/core';
+import { makeStyles, TextField, Typography } from '@material-ui/core';
 import React from 'react';
 import { Control, Controller, DeepMap, FieldError } from 'react-hook-form';
 
+
+const useStyles = makeStyles({
+    errorText: {
+        marginLeft: '14px',
+        marginRight: '14px'
+    }
+});
 
 interface ITextProps {
     label?: string;
@@ -14,7 +21,7 @@ interface ITextProps {
     helperText?: string;
     inputProps?: any;
     required?: boolean;
-    width?: number;
+    width?: number | string;
     variant?: 'standard' | 'filled' | 'outlined' | undefined;
     inputLabelProps?: any;
     type?: any;
@@ -35,7 +42,9 @@ export const MuiTextField: React.FC<ITextProps> = ({
     inputLabelProps,
     type
 }: ITextProps) => {
+
     const labelId = `${name}-label`;
+    const classes = useStyles();
 
     return (
         <React.Fragment>
@@ -67,7 +76,14 @@ export const MuiTextField: React.FC<ITextProps> = ({
                  render={({ messages }) =>
                     messages &&
                         Object.entries(messages).map(([type, message]) => (
-                            <p key={type}>{message}</p>
+                            <Typography
+                             className={classes.errorText}
+                             key={type}
+                             variant="caption"
+                             color="error"
+                            >
+                                {message}
+                            </Typography>
                         ))
                  }
                  key={name}

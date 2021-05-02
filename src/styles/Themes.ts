@@ -20,8 +20,9 @@ export const defaultTheme = createMuiTheme({
 		},
 		MuiButton: {
 			root: {
-				height: 40,
-				marginTop: 8
+				marginTop: '8px',
+				marginBottom: '8px',
+				height: '40px'
 			}
 		},
 		MuiList: {
@@ -57,7 +58,8 @@ export const defaultTheme = createMuiTheme({
 			secondary: '#e6e6e6',
 		},
 		background: {
-			default: '#171717'
+			default: '#171717',
+			paper: '#222121'
 		}
 	},
 	typography: {
@@ -81,7 +83,7 @@ export const defaultTheme = createMuiTheme({
 		}
 	},
 	shape: {
-		borderRadius: 0
+		borderRadius: 8
 	},
 	props: {
 		MuiTable: {

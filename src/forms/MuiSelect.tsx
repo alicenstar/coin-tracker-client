@@ -1,4 +1,8 @@
-import { FormControl, InputLabel, makeStyles, Select, Theme } from '@material-ui/core';
+import {
+    FormControl,
+    InputLabel,
+    Select
+} from '@material-ui/core';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
@@ -11,13 +15,7 @@ interface ISelectProps {
     rules?: any;
     children: React.ReactNode;
     menuProps?: any;
-}
-
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        margin: 8
-    }
-}))
+};
 
 export const MuiSelect: React.FC<ISelectProps> = ({
     label,
@@ -28,11 +26,11 @@ export const MuiSelect: React.FC<ISelectProps> = ({
     children,
     menuProps,
 }: ISelectProps) => {
+
     const labelId = `${name}-label`;
-    const classes = useStyles();
 
     return (
-        <FormControl className={classes.root}>
+        <FormControl>
             <InputLabel
              id={labelId}
              htmlFor={name}
@@ -47,6 +45,7 @@ export const MuiSelect: React.FC<ISelectProps> = ({
                  name={name}
                  label={label}
                  MenuProps={menuProps}
+                 style={{ width: '100%'}}
                 >
                     {children}
                 </Select>

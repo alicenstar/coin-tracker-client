@@ -55,7 +55,7 @@ export const TrackerProvider = ({
             {!loaded && <Loading />}
             {children}
         </TrackerContext.Provider>
-    )
+    );
 };
 
 export const useTrackerContext = () => React.useContext(TrackerContext);
