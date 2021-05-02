@@ -1,4 +1,11 @@
-import { Button, Grid, makeStyles, Theme, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import {
+    Button,
+    Grid,
+    Theme,
+    Typography,
+    useMediaQuery,
+    useTheme
+} from '@material-ui/core';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
@@ -12,13 +19,8 @@ type TrackerFormData = {
     user?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-    input: {
-        // backgroundColor: 'lightgray'
-    }
-}));
-
 export const CreateTrackerPage: React.FC = () => {
+
     const { tracker, setTracker } = useTrackerContext()!;
     const {
         control,
@@ -30,7 +32,6 @@ export const CreateTrackerPage: React.FC = () => {
     });
     const { setPageElement } = usePageContext()!;
     const history = useHistory();
-    const classes = useStyles();
     const theme: Theme = useTheme();
     const smScreen: boolean = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -50,6 +51,7 @@ export const CreateTrackerPage: React.FC = () => {
     };
 
     React.useEffect(() => {
+        // redirect to tracker page
         if (formState.isSubmitSuccessful && tracker) {
             console.log('history push')
             history.push(`/${tracker._id}`);
@@ -92,6 +94,7 @@ export const CreateTrackerPage: React.FC = () => {
                     </Grid>
                     <Grid item xs={smScreen ? 12 : false}>
                         <Button
+                        style={{height: '52px', marginBottom: '4px'}}
                          type="submit"
                          variant="contained"
                         >

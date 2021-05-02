@@ -39,6 +39,16 @@ export const defaultTheme = createMuiTheme({
 				alignSelf: 'center',
 				marginTop: 0,
 			}
+		},
+		MuiFilledInput: {
+			root: {
+				borderRadius: '8px',
+				height: '52px',
+				margin: 0
+			},
+			inputMarginDense: {
+				paddingTop: '22px'
+			}
 		}
 	},
 	palette: {
@@ -110,6 +120,5 @@ export const defaultTheme = createMuiTheme({
 		MuiOutlinedInput: {
 			notched: true,
 		},
-		
 	}
 });
