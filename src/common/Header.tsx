@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     title: {
         paddingRight: 8
+    },
+    headerIcons: {
+        [theme.breakpoints.down('sm')]: {
+            fontSize: '32px'
+        }
     }
 }));
 
@@ -125,7 +130,7 @@ export const Header: React.FC = () => {
                          className={classes.buttons}
                          onClick={handleCopyUrl}
                         >
-                            <FileCopyOutlinedIcon style={{fontSize: '32px'}} />
+                            <FileCopyOutlinedIcon className={classes.headerIcons} />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Download .csv">
@@ -134,7 +139,7 @@ export const Header: React.FC = () => {
                          className={classes.buttons}
                          onClick={handleDownloadClick}
                         >
-                            <GetAppIcon style={{fontSize: '32px'}} />
+                            <GetAppIcon className={classes.headerIcons} />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Upload .csv">
@@ -143,7 +148,7 @@ export const Header: React.FC = () => {
                          className={classes.buttons}
                          onClick={handleUploadClick}
                         >
-                            <PublishIcon style={{fontSize: '32px'}} />
+                            <PublishIcon className={classes.headerIcons} />
                         </IconButton>
                     </Tooltip>
                 </React.Fragment>
