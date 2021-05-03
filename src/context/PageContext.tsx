@@ -7,7 +7,7 @@ type Props = {
 
 type PageContextType = {
     pageElement: string;
-    setPageElement: (value: any) => void;
+    setPageElement: (page: string) => void;
 }
 
 const PageContext = React.createContext<PageContextType | undefined>(
