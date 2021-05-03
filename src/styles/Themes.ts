@@ -42,7 +42,6 @@ export const defaultTheme = createMuiTheme({
 		},
 		MuiFilledInput: {
 			root: {
-				borderRadius: '8px',
 				height: '52px',
 				margin: 0
 			},
@@ -93,7 +92,7 @@ export const defaultTheme = createMuiTheme({
 		}
 	},
 	shape: {
-		borderRadius: 8
+		borderRadius: 0
 	},
 	props: {
 		MuiTable: {
