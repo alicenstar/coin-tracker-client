@@ -23,7 +23,19 @@ import { useListingsContext } from '../context/ListingsContext';
 interface ITableProps {
     headers: string[];
     data?: any;
-}
+};
+
+const useStyles = makeStyles({
+    container: {
+        width: '100%',
+        height: '80vh',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+    },
+    footer: {
+        float: 'right'
+    },
+});
 
 const StickyTableCell = withStyles((theme: Theme) => ({
     head: {
@@ -40,14 +52,21 @@ const StickyTableCell = withStyles((theme: Theme) => ({
     }
 }))(TableCell);
 
-const useStyles = makeStyles({
-    container: {
-        float: 'right'
+const StickyTableHeaderCell = withStyles((theme: Theme) => ({
+    head: {
+        left: 0,
+        top: 0,
+        position: "sticky",
+        zIndex: theme.zIndex.appBar + 2
     },
-    footer: {
-        float: 'right'
-    },
-});
+    body: {
+        minWidth: 50,
+        left: 0,
+        position: "sticky",
+        zIndex: theme.zIndex.appBar + 1,
+        backgroundColor: 'inherit'
+    }
+}))(TableCell);
 
 export const OverviewTable: React.FC<ITableProps> = ({
     headers,
@@ -80,19 +99,19 @@ export const OverviewTable: React.FC<ITableProps> = ({
                                 {headers.map((header: string, index: number) => {
                                     if (index === 0) {
                                         return (
-                                            <TableCell key={index}>
+                                            <TableCell key={header}>
                                                 {header}
                                             </TableCell>
                                         )
                                     } else if (index === 1) {
                                         return (
-                                            <StickyTableCell key={index}>
+                                            <StickyTableHeaderCell key={header}>
                                                 {header}
-                                            </StickyTableCell>
+                                            </StickyTableHeaderCell>
                                         );
                                     } else {
                                         return (
-                                            <TableCell align="right" key={index}>
+                                            <TableCell align="right" key={header}>
                                                 {header}
                                             </TableCell>
                                         );

@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         padding: 16,
         marginBottom: 24,
         borderColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.type === 'light' ? '#D6EFF4' : theme.palette.background.paper
     }
 }));
 

@@ -27,10 +27,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginTop: 8,
         marginBottom: 24,
         borderColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.type === 'light' ? '#FFD8E9' : theme.palette.background.paper
     },
     root: {
         width: '100%',
         backgroundColor: 'transparent',
+        boxShadow: 'none'
     },
     header: {
         padding: 0,
@@ -56,7 +58,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         transform: 'rotate(180deg)',
     },
     button : {
-        padding: 0
+        padding: 0,
+        color: theme.palette.type === 'light' ? '#000' : '#fff'
     },
 }));
 

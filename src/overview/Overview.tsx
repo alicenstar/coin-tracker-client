@@ -20,6 +20,7 @@ import clsx from "clsx";
 const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
         width: '100%',
+        boxShadow: 'none',
         backgroundColor: 'transparent',
     },
     header: {
@@ -46,7 +47,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         transform: 'rotate(180deg)',
     },
     button : {
-        padding: 0
+        padding: 0,
+        color: theme.palette.type === 'light' ? '#000' : '#fff'
     },
 }));
 

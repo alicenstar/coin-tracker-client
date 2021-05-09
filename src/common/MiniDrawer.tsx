@@ -29,16 +29,18 @@ import { NewTracker } from './NewTrackerDialog';
 import Dashboard from './Dashboard';
 import { useParams } from 'react-router-dom';
 import { useTrackerContext } from '../context/TrackerContext';
-import Brightness5Icon from '@material-ui/icons/Brightness5';
-import Brightness3Icon from '@material-ui/icons/Brightness3';
+import { useThemeContext } from '../context/ThemeContext';
+import Cookies from 'universal-cookie';
 
+
+const cookies = new Cookies();
 
 export default function MiniDrawer() {
     const { setPageElement } = usePageContext()!;
     const { tracker, setId } = useTrackerContext()!;
+    const { darkMode, setDarkMode } = useThemeContext()!;
     const classes = useMiniDrawerStyles();
     const [ drawerOpen, setDrawerOpen ] = React.useState(false);
-	const [ darkModeOn, setDarkModeOn ] = React.useState(false);
     const [ newTrackerOpen, setNewTrackerOpen ] = React.useState(false);
     const [ mobileOpen, setMobileOpen ] = React.useState(false);
     const { id } = useParams<{id: string}>();
@@ -50,9 +52,22 @@ export default function MiniDrawer() {
         ? drawerLinks = ['Overview', 'Portfolio']
         : drawerLinks = ['Overview'];
 
-	const toggleTheme = () => {
-		setDarkModeOn(!darkModeOn);
-	};
+    const toggleTheme = () => {
+
+        // Toggle currentTheme and switched
+        const currentTheme = darkMode ? 'light' : 'dark';
+        setDarkMode(!darkMode);
+        // Get date a month from now (add month in milliseconds)
+        const d = Date.now() + 2629800000;
+        const expDate = new Date(d);
+        // Update cookie value
+        cookies.set('theme', currentTheme, {
+            path: '/',
+            secure: true,
+            sameSite: "strict",
+            expires: expDate
+        });
+    };
 
 	const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
@@ -159,17 +174,15 @@ export default function MiniDrawer() {
                         </IconButton>
                     </Hidden>
                     <Header />
-                    {/* <section className={classes.rightToolbar}>
+                    <section className={classes.rightToolbar}>
                         <Hidden xsDown implementation="css">
                             <Switch
                              onChange={toggleTheme}
-                             checked={darkModeOn}
-                             name="darkSwitch"
-                             icon={<Brightness5Icon />}
-                             checkedIcon={<Brightness3Icon />}
+                             checked={darkMode}
+                             aria-label='toggle dark mode'
                             />
                         </Hidden>
-                    </section> */}
+                    </section>
                 </Toolbar>
             </AppBar>
             {/* Large screens */}
@@ -193,6 +206,7 @@ export default function MiniDrawer() {
                 >
                     <div className={classes.toolbar}>
                         <IconButton
+                         className={classes.closeDrawerIcon}
                          aria-label='Collapse Menu'
                          onClick={handleDrawerToggle}
                         >
@@ -221,7 +235,10 @@ export default function MiniDrawer() {
                  onBackdropClick={() => toggleDrawer(false)}
                 >
                     <div className={classes.toolbar}>
-                        <IconButton onClick={handleMobileToggle}>
+                        <IconButton
+                         className={classes.closeDrawerIcon}
+                         onClick={handleMobileToggle}
+                        >
                             <ChevronLeftIcon />
                         </IconButton>
                     </div>

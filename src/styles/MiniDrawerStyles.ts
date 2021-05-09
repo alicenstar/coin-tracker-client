@@ -36,6 +36,9 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 			whiteSpace: 'nowrap',
 		},
 	},
+	closeDrawerIcon: {
+		color: theme.palette.type === 'light' ? '#000' : 'fff'
+	},
 	drawerOpen: {
 	  width: drawerWidth,
 	  transition: theme.transitions.create('width', {
@@ -72,6 +75,7 @@ export const useMiniDrawerStyles = makeStyles((theme: Theme) => ({
 	  [theme.breakpoints.down('sm')]: {
 		width: theme.spacing(7) + 1,
 	  },
+	  height: '100%'
 	},
 	drawerIcon: {
 		minWidth: 0,

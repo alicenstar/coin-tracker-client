@@ -3,16 +3,6 @@ import { createMuiTheme } from '@material-ui/core';
 
 export const defaultTheme = createMuiTheme({
 	overrides: {
-		MuiTableRow: {
-			root: {
-				'&:nth-of-type(odd)': {
-					backgroundColor: '#000',
-				},
-				'&:nth-of-type(even)': {
-					backgroundColor: '#171717',
-				},
-			}
-		},
 		MuiMenu: {
 			paper: {
 				maxHeight: 300
@@ -48,27 +38,6 @@ export const defaultTheme = createMuiTheme({
 			inputMarginDense: {
 				paddingTop: '22px'
 			}
-		}
-	},
-	palette: {
-		type: 'dark',
-		primary: {
-			light: '#7be0e4',
-			main: '#5ce1e6',
-			dark: '#3bc3c8',
-			contrastText: '#000'
-		},
-		secondary: {
-			main: '#ff82d1',
-			contrastText: '#000'
-		},
-		text: {
-			primary: '#e6e6e6',
-			secondary: '#e6e6e6',
-		},
-		background: {
-			default: '#171717',
-			paper: '#222121'
 		}
 	},
 	typography: {
@@ -120,4 +89,111 @@ export const defaultTheme = createMuiTheme({
 			notched: true,
 		},
 	}
+});
+
+export const lightTheme = createMuiTheme(defaultTheme, {
+	overrides: {
+		MuiIconButton: {
+			root: {
+				color: '#fff'
+			}
+		},
+		MuiAppBar: {
+			colorDefault: {
+				backgroundColor: '#222121'
+			}
+		},
+		MuiListItemIcon: {
+			root: {
+				color: '#222121'
+			}
+		},
+		MuiTableRow: {
+			root: {
+				'&:nth-of-type(odd) > td': {
+					backgroundColor: '#2b2d2f',
+					color: '#fff'
+				},
+				'&:nth-of-type(even) > td': {
+					backgroundColor: '#d9dadb',
+					color: '#000'
+				},
+				'&:nth-of-type(even) svg': {
+					color: '#000'
+				},
+			}
+		},
+	},
+	palette: {
+		type: 'light',
+		primary: {
+			light: '#7be0e4',
+			main: '#5ce1e6',
+			dark: '#3bc3c8',
+			contrastText: '#000'
+		},
+		secondary: {
+			main: '#f00eae',
+			contrastText: '#000'
+		},
+		text: {
+			primary: '#000',
+			secondary: '#000',
+		},
+		background: {
+			default: '#d9dadb',
+            paper: '#FBFBFB'
+		}
+	},
+});
+
+export const darkTheme = createMuiTheme(defaultTheme, {
+	overrides: {
+		MuiIconButton: {
+			root: {
+				color: '#fff'
+			}
+		},
+		MuiListItemIcon: {
+			root: {
+				color: '#fff'
+			}
+		},
+		MuiTableRow: {
+			root: {
+				'&:nth-of-type(odd) > td': {
+					backgroundColor: '#222121',
+					color: '#fff'
+				},
+				'&:nth-of-type(even) > td': {
+					backgroundColor: '#171717',
+					color: '#fff'
+				},
+				'&:nth-of-type(even) svg': {
+					color: '#fff'
+				},
+			}
+		},
+	},
+	palette: {
+		type: 'dark',
+		primary: {
+			light: '#7be0e4',
+			main: '#5ce1e6',
+			dark: '#3bc3c8',
+			contrastText: '#000'
+		},
+		secondary: {
+			main: '#ff82d1',
+			contrastText: '#000'
+		},
+		text: {
+			primary: '#e6e6e6',
+			secondary: '#e6e6e6',
+		},
+		background: {
+			default: '#171717',
+			paper: '#222121'
+		}
+	},
 });

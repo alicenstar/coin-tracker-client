@@ -28,6 +28,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const useStyles = makeStyles({
     container: {
         width: '100%',
+        height: '80vh',
         marginLeft: 'auto',
         marginRight: 'auto',
     },
@@ -68,23 +69,23 @@ const StickyTableCell = withStyles((theme: Theme) => ({
 
 interface TableFormData {
     newQuantity: string;
-}
+};
 
 interface IHoldingUpdate {
     quantity: string;
     priceAtTransaction: string;
-}
+};
 
 interface ITransactionData extends IHoldingUpdate {
     coinId: number;
     type: 'Buy' | 'Sell' | 'Adjustment';
     trackerId: string;
-}
+};
 
 interface ITableProps {
     headers?: string[];
     data: any;
-}
+};
 
 export const HoldingsTable: React.FC<ITableProps> = ({
     headers,
@@ -140,7 +141,7 @@ export const HoldingsTable: React.FC<ITableProps> = ({
             });
         } else {
             // Else, if quantity === 0, delete
-            const deleteResponse = await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${activeHolding}`, {
+            await fetch(`https://backend-cointracker-dev.herokuapp.com/api/holdings/${activeHolding}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-type': 'application/json'
@@ -195,13 +196,13 @@ export const HoldingsTable: React.FC<ITableProps> = ({
                             {headers.map((header: string, index: number) => {
                                 if (index === 0) {
                                     return (
-                                        <StickyTableCell key={index}>
+                                        <StickyTableCell key={header}>
                                             {header}
                                         </StickyTableCell>
                                     );
                                 } else {
                                     return (
-                                        <TableCell align="right" key={index}>
+                                        <TableCell align="right" key={header}>
                                             {header}
                                         </TableCell>
                                     );
