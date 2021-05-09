@@ -2,7 +2,9 @@
   "short_name": "Coin Tracker",
   "name": "Coin Tracker: Anonymous Portfolio",
   "description": "Cryptocurrency coin and token tracker",
-  "icons": [],
+  "icons": [
+    "favicon.png"
+  ],
   "start_url": "/",
   "background_color": "#ffffff",
   "display": "browser",
