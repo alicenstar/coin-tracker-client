@@ -78,18 +78,29 @@ export const Portfolio: React.FC = () => {
         height: 0
     });
 
-    const ref = React.useCallback((node) => {
+    // Observe changes to the treemap div's size
+    // in order to make treemap responsive
+    const observeNode = React.useCallback((node) => {
+        let isMounted = true;
+
         const observer = new ResizeObserver((entries: any) => {
             const { height, width } = entries[0].contentRect;
-            setDimensions({
-                width: width,
-                height: height,
-            });
+
+            if (isMounted) {
+                setDimensions({
+                    width: width,
+                    height: height,
+                });
+            }
         });
+
         if (node) {
             observer.observe(node);
         }
+        
+        //  Cleanup
         return () => {
+            isMounted = false;
             observer.unobserve(node);
         };
     }, []);
@@ -175,7 +186,7 @@ export const Portfolio: React.FC = () => {
                                 {tracker.holdings.length > 0 && (
                                     <div
                                      style={{ height: '300px', width: '100%' }}
-                                     ref={ref}
+                                     ref={observeNode}
                                     >
                                         {loaded &&
                                             <PortfolioTreemap
