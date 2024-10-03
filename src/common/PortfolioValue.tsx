@@ -41,65 +41,70 @@ export const PortfolioValue: React.FC = () => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.root} elevation={7} variant="outlined">
-            <Grid container spacing={3}>
-                <Grid
-                 item
-                 container
-                 direction={xsScreen ? "row-reverse" : "column"}
-                 alignItems="center"
-                 justify={xsScreen ? "space-between" : "center"}
-                 xs={12}
-                 sm={6}
-                 md={4}
-                >
-                    <Grid item>
-                        <Typography variant="h3" variantMapping={{ h3: 'h2' }}>
-                            {currencyFormatter.format(portfolioTotal)}
-                        </Typography>
+        <>
+            <div style={{ paddingBottom: "16px", paddingTop: "16px" }} >
+                <b>***IMPORTANT UPDATE***:</b> Cointracker will be discontinued on <b>November 1, 2024</b>. Please download a CSV of your data if you'd like to move it to a different tool. Thank you to anyone that found this tool useful! You can <a href="https://github.com/alicenstar">follow me on GitHub here</a>.
+            </div>
+            <Paper className={classes.root} elevation={7} variant="outlined">
+                <Grid container spacing={3}>
+                    <Grid
+                     item
+                     container
+                     direction={xsScreen ? "row-reverse" : "column"}
+                     alignItems="center"
+                     justify={xsScreen ? "space-between" : "center"}
+                     xs={12}
+                     sm={6}
+                     md={4}
+                    >
+                        <Grid item>
+                            <Typography variant="h3" variantMapping={{ h3: 'h2' }}>
+                                {currencyFormatter.format(portfolioTotal)}
+                            </Typography>
+                        </Grid>
+                        
+                        <Grid item>
+                            <Typography variant="body1">
+                                Portfolio Value
+                            </Typography>
+                        </Grid>
                     </Grid>
-                    
-                    <Grid item>
+                    <Grid
+                     item
+                     container
+                     direction={xsScreen ? "row-reverse" : "column"}
+                     alignItems="center"
+                     justify={xsScreen ? "space-between" : "center"}
+                     xs={12}
+                     sm={6}
+                     md={4}
+                    >
+                        <Typography variant="h3">
+                            {currencyFormatter.format(tracker!.initialInvestment)}
+                        </Typography>
                         <Typography variant="body1">
-                            Portfolio Value
+                            Initial Investment
+                        </Typography>
+                    </Grid>
+                    <Grid
+                     item
+                     container
+                     direction={xsScreen ? "row-reverse" : "column"}
+                     alignItems="center"
+                     justify={xsScreen ? "space-between" : "center"}
+                     xs={12}
+                     sm={6}
+                     md={4}
+                    >
+                        <Typography variant="h3" display="block">
+                            {percentFormatter.format(returnOnInvestment)}
+                        </Typography>
+                        <Typography variant="body1">
+                            Return on Investment
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid
-                 item
-                 container
-                 direction={xsScreen ? "row-reverse" : "column"}
-                 alignItems="center"
-                 justify={xsScreen ? "space-between" : "center"}
-                 xs={12}
-                 sm={6}
-                 md={4}
-                >
-                    <Typography variant="h3">
-                        {currencyFormatter.format(tracker!.initialInvestment)}
-                    </Typography>
-                    <Typography variant="body1">
-                        Initial Investment
-                    </Typography>
-                </Grid>
-                <Grid
-                 item
-                 container
-                 direction={xsScreen ? "row-reverse" : "column"}
-                 alignItems="center"
-                 justify={xsScreen ? "space-between" : "center"}
-                 xs={12}
-                 sm={6}
-                 md={4}
-                >
-                    <Typography variant="h3" display="block">
-                        {percentFormatter.format(returnOnInvestment)}
-                    </Typography>
-                    <Typography variant="body1">
-                        Return on Investment
-                    </Typography>
-                </Grid>
-            </Grid>
-        </Paper>
+            </Paper>
+        </>
     );
 };
