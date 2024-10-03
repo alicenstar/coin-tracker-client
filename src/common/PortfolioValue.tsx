@@ -43,7 +43,7 @@ export const PortfolioValue: React.FC = () => {
     return (
         <>
             <div style={{ paddingBottom: "16px", paddingTop: "16px" }} >
-                <b>***IMPORTANT UPDATE***:</b> Cointracker will be discontinued on <b>November 1, 2024</b>. Please download a CSV of your data if you'd like to move it to a different tool. Thank you to anyone that found this tool useful! You can <a href="https://github.com/alicenstar">follow me on GitHub here</a>.
+                <b>***IMPORTANT UPDATE***:</b> Cointracker will be discontinued on <b>October 13, 2024</b>. Please download a CSV of your data if you'd like to move it to a different tool. Thank you to anyone that found this tool useful! You can <a href="https://github.com/alicenstar">follow me on GitHub here</a>.
             </div>
             <Paper className={classes.root} elevation={7} variant="outlined">
                 <Grid container spacing={3}>
